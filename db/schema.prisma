@@ -19,3 +19,55 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
+
+model PoliticianRole {
+  politician_id Int @id
+
+  function String
+  party String
+
+  politician Politician @relation(fields: [politician_id], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Politician {
+  id Int @id
+  title String
+  first_name String
+  last_name String
+  avatar_url String?
+  party String?
+
+  type String
+  voting_period Int
+  date DateTime
+  base_date DateTime
+  last_updated DateTime
+
+  roles PoliticianRole[]
+  articles Article[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Company {
+  // TODO
+  id Int @id
+
+  Article Article[]
+}
+
+model Article {
+  id Int @id @default(autoincrement())
+  url String
+  stars Int
+
+  politician_id Int
+  company_id Int
+
+  company Company @relation(fields: [company_id], references: [id])
+  politician Politician @relation(fields: [politician_id], references: [id])
+}
