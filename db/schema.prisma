@@ -1,6 +1,6 @@
 datasource db {
   provider = "sqlite"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -11,9 +11,9 @@ model User {
   id Int @id @default(autoincrement())
 
   firstName String
-  lastName String
+  lastName  String
 
-  email String @unique
+  email    String @unique
   password String
 
   createdAt DateTime @default(now())
@@ -24,7 +24,7 @@ model PoliticianRole {
   politician_id Int @id
 
   function String
-  party String
+  party    String
 
   politician Politician @relation(fields: [politician_id], references: [id])
 
@@ -33,20 +33,22 @@ model PoliticianRole {
 }
 
 model Politician {
-  id Int @id
-  title String
+  id         Int     @id
+  title      String
   first_name String
-  last_name String
+  last_name  String
   avatar_url String?
-  party String?
+  party      String?
 
-  type String
+  type          String
   voting_period Int
-  date DateTime
-  base_date DateTime
-  last_updated DateTime
+  date          DateTime
+  base_date     DateTime
+  last_updated  DateTime
 
-  roles PoliticianRole[]
+  ext_abgeordnetenwatch_id Int? // External reference to Abgeordnetenwatch API
+
+  roles    PoliticianRole[]
   articles Article[]
 
   createdAt DateTime @default(now())
@@ -61,13 +63,13 @@ model Company {
 }
 
 model Article {
-  id Int @id @default(autoincrement())
-  url String
+  id    Int    @id @default(autoincrement())
+  url   String
   stars Int
 
   politician_id Int
-  company_id Int
+  company_id    Int
 
-  company Company @relation(fields: [company_id], references: [id])
+  company    Company    @relation(fields: [company_id], references: [id])
   politician Politician @relation(fields: [politician_id], references: [id])
 }
