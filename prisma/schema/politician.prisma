@@ -1,0 +1,19 @@
+model Politician {
+  uuid          String  @id
+  first_name    String
+  last_name     String
+  birth_name    String?
+  profile_image String  @default("avatar_placeholder.png")
+  gender        String? // TODO: Move this to ENUM once we switch to mysql
+  birth_year    Int     @default(-1)
+  party_past    String?
+  education     String?
+  residence     String?
+  occupation    String?
+  field_title   String?
+
+  ext_abgeordnetenwatch_id Int
+
+  party_id Int
+  party    Party @relation(fields: [party_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
+}

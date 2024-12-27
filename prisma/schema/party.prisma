@@ -1,0 +1,7 @@
+model Party {
+  id    Int    @id
+  short String
+  long  String
+
+  Politician Politician[]
+}
