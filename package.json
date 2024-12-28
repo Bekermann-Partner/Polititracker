@@ -12,6 +12,7 @@
         "@prisma/client": "^6.0.1",
         "@types/bcrypt": "^5.0.2",
         "bcrypt": "^5.1.1",
+        "jose": "^5.9.6",
         "next": "15.1.0",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",

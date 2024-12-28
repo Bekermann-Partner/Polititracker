@@ -21,7 +21,7 @@ export default async function PoliticianView({params}: { params: Promise<{ uuid:
 
     let age = -1;
 
-    if (politician?.birth_year) {
+    if (politician?.birth_year && politician.birth_year !== -1) {
         const date = new Date().getUTCFullYear();
         age = date - politician.birth_year;
     }
@@ -52,6 +52,12 @@ export default async function PoliticianView({params}: { params: Promise<{ uuid:
                 </div>
 
                 <h1 className={"mt-8 text-2xl font-semibold"}>Nebentätigkeiten:</h1>
+                {sideJobs.length == 0 &&
+                    <div>
+                        Es wurden keine Nebentätigkeiten für {politician?.first_name} {politician?.last_name} gefunden.
+                    </div>
+                }
+
                 {sideJobs.map(sidejob => {
                     return (<SideJob key={sidejob.id} sidejob={sidejob}/>)
                 })}

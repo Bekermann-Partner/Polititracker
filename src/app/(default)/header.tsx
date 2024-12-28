@@ -1,6 +1,21 @@
 import Link from "next/link";
+import {cookies} from "next/headers";
+import {jwtVerify} from "jose";
+import * as jwt from "jose";
+import {User} from "@prisma/client";
 
-export function Header() {
+export async function Header() {
+    const cookieJar = await cookies();
+    const jwtKey = jwt.base64url.decode(process.env.APP_KEY ?? "");
+
+    const isSignedIn = cookieJar.get("user_session") != null;
+
+    let user: User | null = null;
+    if (isSignedIn) {
+        const {payload} = await jwtVerify(cookieJar.get("user_session")!.value, jwtKey);
+        user = payload as User;
+    }
+
     return (
         <>
             <header id="header" className="group">
@@ -35,24 +50,34 @@ export function Header() {
                                 <div className="mt-6 dark:text-body md:-ml-4 lg:pr-4 lg:mt-0">
                                     <ul className="space-y-6 tracking-wide text-base lg:text-sm lg:flex lg:space-y-0">
                                         <li className={"hover:text-indigo-600 transition-colors"}>
-                                            <a href="#" className="hover:link md:px-4 block">
-                                                <span>Politiker</span>
-                                            </a>
+                                            <Link href={"/politicians"} className={"hover:link md:px-4 block"}>
+                                                Politiker
+                                            </Link>
                                         </li>
                                         <li className={"hover:text-indigo-600 transition-colors"}>
-                                            <a href="#" className="hover:link md:px-4 block">
-                                                <span>Dashboard</span>
-                                            </a>
+                                            <Link href={"/dashboard"} className={"hover:link md:px-4 block"}>
+                                                Dashboard
+                                            </Link>
                                         </li>
                                     </ul>
                                 </div>
 
                                 <div
                                     className="w-full space-y-2 gap-2 pt-6 pb-4 lg:pb-0 border-t items-center flex flex-col lg:flex-row lg:space-y-0 lg:w-fit lg:border-l lg:border-t-0 lg:pt-0 lg:pl-2">
-                                    <Link href={"/auth/sign-in"}
-                                          className={"bg-black hover:bg-gray-800 transition-colors text-white rounded px-3 py-1.5 ml-5"}>
-                                        Anmelden
-                                    </Link>
+                                    {user != null ?
+                                        <>
+                                            <p>{user.firstName} {user.lastName}</p>
+                                            <Link href={"/auth/sign-out"}
+                                                  className={"bg-red-800 hover:bg-red-700 transition-colors text-white rounded px-3 py-1.5 ml-5"}>
+                                                Abmelden
+                                            </Link>
+                                        </>
+                                        :
+                                        <Link href={"/auth/sign-in"}
+                                              className={"bg-black hover:bg-gray-800 transition-colors text-white rounded px-3 py-1.5 ml-5"}>
+                                            Anmelden
+                                        </Link>
+                                    }
                                 </div>
                             </div>
                         </div>

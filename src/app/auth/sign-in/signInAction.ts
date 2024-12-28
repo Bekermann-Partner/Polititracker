@@ -8,6 +8,8 @@ import {cookies} from "next/headers";
 import {User} from "@prisma/client";
 import {excludeFromObject} from "@/_lib/util";
 import {redirect} from "next/navigation";
+import * as jwt from "jose";
+import {USER_SESSION_COOKIE_NAME} from "@/app/auth/config";
 
 const signInUserValidation = zfd.formData({
     email: zfd.text(z.string().email()),
@@ -36,7 +38,15 @@ export async function signIn(formData: FormData): Promise<Omit<User, 'password'>
         }
 
         if (await bcrypt.compare(parse.data.password, user.password)) {
-            cookieStore.set("user", JSON.stringify(excludeFromObject(user, ['password'])));
+            const jwtKey = jwt.base64url.decode(process.env.APP_KEY ?? "");
+
+            const token = await new jwt.SignJWT(excludeFromObject(user, ['password']))
+                .setProtectedHeader({alg: "HS256"})
+                .setIssuedAt()
+                .setExpirationTime('7d')
+                .sign(jwtKey);
+
+            cookieStore.set(USER_SESSION_COOKIE_NAME, token);
             redirect('/');
         }
     }
