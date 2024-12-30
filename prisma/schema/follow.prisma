@@ -1,0 +1,10 @@
+model Follow {
+  id         Int    @id @default(autoincrement())
+  userId     Int
+  polUuid    String
+
+  user       User   @relation(fields: [userId], references: [id])
+  actor      Politician  @relation(fields: [polUuid], references: [uuid])
+
+  @@unique([userId, polUuid]) // make sure User can follow Politician only once
+}

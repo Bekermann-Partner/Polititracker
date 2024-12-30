@@ -2,6 +2,8 @@ import db from "@/_lib/db";
 import Image from "next/image";
 import abgeordnetenWatchApiProvider from "@/_lib/providers/abgw/abgeordnetenWatchApiProvider";
 import {SideJob} from "@/app/(default)/politician/[uuid]/SideJob";
+import FollowToggle from "@/app/components/FollowToggle";
+import { getUser } from "@/_actions/getUser";
 
 export default async function PoliticianView({params}: { params: Promise<{ uuid: string }> }) {
     const polId = (await params).uuid;
@@ -26,6 +28,8 @@ export default async function PoliticianView({params}: { params: Promise<{ uuid:
         age = date - politician.birth_year;
     }
 
+    const user = await getUser();
+
     return (
         <section className={"pt-24"}>
             <div className="mx-auto max-w-6xl">
@@ -35,7 +39,12 @@ export default async function PoliticianView({params}: { params: Promise<{ uuid:
                                height={150} className={"h-full w-auto object-cover"}/>
                     </div>
                     <div className={"w-full ml-6"}>
-                        <h1 className={"text-3xl text-gray-950 font-semibold"}>{politician?.field_title} {politician?.first_name} {politician?.last_name}</h1>
+                        <div className="flex">
+                            <h1 className={"text-3xl text-gray-950 font-semibold"}>{politician?.field_title} {politician?.first_name} {politician?.last_name}</h1>
+                            
+                            <div className="ml-auto"><FollowToggle user={user} polId={polId}/></div>
+                        </div>
+                        
                         <h2 className={"text-xl text-gray-600"}>{politician?.occupation}</h2>
 
                         <div className={"border-b mt-2 mb-2 border-b-gray-300"}></div>
