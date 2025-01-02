@@ -3,7 +3,7 @@
 import {zfd} from "zod-form-data";
 import {z, ZodError} from "zod";
 import db from "@/_lib/db";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import {cookies} from "next/headers";
 import {User} from "@prisma/client";
 import {excludeFromObject} from "@/_lib/util";
@@ -37,6 +37,7 @@ export async function signIn(formData: FormData): Promise<Omit<User, 'password'>
             return undefined;
         }
 
+
         if (await bcrypt.compare(parse.data.password, user.password)) {
             const jwtKey = jwt.base64url.decode(process.env.APP_KEY ?? "");
 
@@ -46,7 +47,11 @@ export async function signIn(formData: FormData): Promise<Omit<User, 'password'>
                 .setExpirationTime('7d')
                 .sign(jwtKey);
 
-            cookieStore.set(USER_SESSION_COOKIE_NAME, token);
+            cookieStore.set(USER_SESSION_COOKIE_NAME, token, {
+                expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+                secure: true,
+                httpOnly: true
+            });
             redirect('/');
         }
     }

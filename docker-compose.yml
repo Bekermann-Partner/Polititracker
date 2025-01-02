@@ -1,0 +1,48 @@
+version: "3.1"
+
+services:
+  db:
+    image: mysql:8.0.12
+    ports:
+      - "3306/tcp"
+    restart: always
+    command: --default-authentication-plugin=mysql_native_password --local-infile=1
+    environment:
+      - MYSQL_USER
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_PASS
+      - MYSQL_DATABASE
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+    volumes:
+      - db-volume:/var/lib/mysql
+
+  db-seeder:
+    depends_on:
+      db:
+        condition: service_healthy
+    build: ./prisma/seeder
+    environment:
+      - MYSQL_USERNAME=test
+      - MYSQL_PASSWORD=a
+      - MYSQL_DATABASE=database
+
+  web:
+    depends_on:
+      db:
+        condition: service_healthy
+      db-seeder:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    ports:
+      - "8000:3000/tcp"
+    build: .
+    environment:
+      - APP_KEY
+      - DATABASE_URL
+
+
+volumes:
+  db-volume:

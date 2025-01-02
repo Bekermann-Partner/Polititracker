@@ -3,7 +3,7 @@
 import {zfd} from "zod-form-data";
 import {z} from "zod";
 import db from "@/_lib/db";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 const createUserValidation = zfd.formData({
     firstName: zfd.text(),
@@ -22,7 +22,6 @@ export async function signUp(formData: FormData) {
     console.log(parse, parse.error);
     if (parse.success) {
         // Hash password
-        // TODO: load salt from .env
         const hashedPassword = await bcrypt.hash(parse.data.password, 10);
 
         console.log("Hashed password: ", hashedPassword);

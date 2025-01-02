@@ -3,12 +3,9 @@
 import React from "react";
 import {signIn} from "@/app/auth/sign-in/signInAction";
 import Link from "next/link";
-import {User} from "@prisma/client";
 
 export default function SignInPage() {
     const [loading, setLoading] = React.useState<boolean>(false);
-    const [user, setUser] = React.useState<Omit<User, 'password'> | null>(null);
-
     const [error, setError] = React.useState<string | null>(null);
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -33,7 +30,6 @@ export default function SignInPage() {
         }
 
         console.log(res);
-        setUser(res);
     }
 
     return (

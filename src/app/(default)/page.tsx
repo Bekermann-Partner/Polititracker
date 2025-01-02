@@ -55,9 +55,11 @@ export default async function LandingPage() {
                                 <h2 className="text-3xl text-gray-950 dark:text-white font-semibold">Finde deine
                                     Lieblingspolitiker</h2>
 
-                                <SearchBar/>
+                                <SearchBar
+                                    politician={randomPoliticianImages[Math.floor(Math.random() * randomPoliticianImages.length)]}/>
                             </div>
-                            <div className="mt-8 relative w-fit h-fit sm:mx-auto sm:px-0 -mx-6 px-6 overflow-x-auto">
+                            <div
+                                className="mt-14 pb-14 relative w-fit h-fit sm:mx-auto sm:px-0 -mx-6 px-6 overflow-x-auto">
                                 <div className="mb-3 flex w-fit mx-auto gap-3">
                                     <div
                                         className="flex relative size-14 mx-auto border bg-white rounded-xl overflow-hidden"
@@ -203,7 +205,7 @@ export default async function LandingPage() {
                                         }}></div>
                                 </div>
                             </div>
-                            <div className="-mx-6 top-[-235px] relative max-w-xl sm:mx-auto">
+                            <div className="-mx-6 top-[-290px] relative max-w-xl sm:mx-auto">
                                 <div
                                     className="absolute inset-0 -top-8 left-1/2 -z-20 h-56 w-full -translate-x-1/2 dark:opacity-10 [background-image:linear-gradient(to_bottom,transparent_98%,theme(colors.gray.200/75%)_98%),linear-gradient(to_right,transparent_94%,_theme(colors.gray.200/75%)_94%)] [background-size:16px_35px] [mask:radial-gradient(black,transparent_95%)]"></div>
                                 <div

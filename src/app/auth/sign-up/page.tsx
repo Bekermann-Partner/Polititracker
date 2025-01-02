@@ -4,7 +4,7 @@ import {signUp} from "@/app/auth/sign-up/signUpAction";
 import React from "react";
 
 export default function SignUpPage() {
-    const [loading, setLoading] = React.useState<boolean>(false);
+    const [loading] = React.useState<boolean>(false);
 
     return (
         <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">

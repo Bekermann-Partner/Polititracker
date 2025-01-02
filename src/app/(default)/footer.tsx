@@ -1,10 +1,12 @@
+import Link from "next/link";
+
 export function Footer() {
     return (
         <>
             <footer className="card variant-outlined !bg-transparent">
                 <div className="max-w-6xl mx-auto space-y-16 px-6 py-16 2xl:px-0">
                     <div className="flex flex-wrap items-center justify-between gap-4 border-b pb-8">
-                        <a href="/" aria-label="tailus logo">
+                        <Link href="/" aria-label="tailus logo">
                             <svg className="text-title h-7" viewBox="0 0 298 84" fill="none"
                                  xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -35,7 +37,7 @@ export function Footer() {
                                       d="M42 84C65.196 84 84 65.196 84 42C84 18.804 65.196 0 42 0C18.804 0 0 18.804 0 42C0 65.196 18.804 84 42 84ZM42 74.518C24.0408 74.518 9.48201 59.9592 9.48201 42C9.48201 24.0408 24.0408 9.48201 42 9.48201C59.9592 9.48201 74.518 24.0408 74.518 42C74.518 59.9592 59.9592 74.518 42 74.518Z"
                                       fill="currentColor"></path>
                             </svg>
-                        </a>
+                        </Link>
                         <div className="flex gap-3">
 
                         </div>
@@ -165,7 +167,8 @@ export function Footer() {
                     </div>
                     <div className="flex items-center justify-between rounded-md px-6 py-3 card variant-soft">
                         <span className="text-title">&copy; tailus 2021 - Present</span>
-                        <a href="#" className="text-sm text-body hover:text-primary-600 dark:hover:text-primary-500">Licence</a>
+                        <a href="#"
+                           className="text-sm text-body hover:text-primary-600 dark:hover:text-primary-500">Licence</a>
                     </div>
                 </div>
             </footer>
