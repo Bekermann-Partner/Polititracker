@@ -2,7 +2,7 @@
 
 import {findPolitician} from "@/_actions/findPolitician";
 import React from "react";
-import {Politician} from "@prisma/client";
+import {Party, Politician} from "@prisma/client";
 import {useDebounce} from "@/_lib/hooks/useDebounce";
 import Image from "next/image";
 import Link from "next/link";
@@ -11,7 +11,7 @@ export function SearchBar({politician}: { politician: Politician }) {
     const [search, setSearch] = React.useState<string>("");
     const debouncedSearch = useDebounce(search, 500);
 
-    const [politicians, setPoliticians] = React.useState<Politician[]>([]);
+    const [politicians, setPoliticians] = React.useState<(Politician & { party?: Party })[]>([]);
 
     React.useEffect(() => {
         async function getResults() {

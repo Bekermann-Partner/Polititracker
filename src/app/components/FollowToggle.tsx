@@ -1,15 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { User } from '@prisma/client';
+import React, {useState, useEffect} from 'react';
+import {User} from '@prisma/client';
 import Toast from '@/app/components/Toast';
+
+import "./heart.css";
 
 interface FollowToggleProps {
     user: User | null;
     polId: string;
 }
 
-export default function FollowToggle({ user, polId }: FollowToggleProps) {
+export default function FollowToggle({user, polId}: FollowToggleProps) {
+    const heartRef = React.useRef<HTMLDivElement | null>(null);
+
     const [isFollowed, setIsFollowed] = useState<boolean | null>(null);
     const [error, setError] = useState<string | null>(null);
 
@@ -46,10 +50,18 @@ export default function FollowToggle({ user, polId }: FollowToggleProps) {
         }
     };
 
+    function handleHeartClickAnimation(e: React.MouseEvent<HTMLDivElement>) {
+        if (user == null) return;
+
+        e.preventDefault();
+        heartRef.current?.classList.remove("is-default-active");
+        heartRef.current?.classList.toggle("is-active");
+    }
+
     return (
         <>
             {error && (
-                <Toast message={error} type="error" onClose={() => setError(null)} />
+                <Toast message={error} type="error" onClose={() => setError(null)}/>
             )}
 
             <button
@@ -57,22 +69,10 @@ export default function FollowToggle({ user, polId }: FollowToggleProps) {
                 aria-label={
                     isFollowed ? 'Unfollow politician' : 'Follow politician'
                 }
-                className="focus:outline-none"
+                className="focus:outline-none relative w-[100px]"
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill={isFollowed ? 'currentColor' : 'none'}
-                    viewBox="0 0 24 24"
-                    strokeWidth={2}
-                    stroke="currentColor"
-                    className="text-gray-500 w-8 h-8 mr-2"
-                >
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M5 3v18l7-5 7 5V3H5z"
-                    />
-                </svg>
+                <div className={"heart" + (isFollowed ? " is-default-active" : "")} ref={heartRef}
+                     onClick={handleHeartClickAnimation}></div>
             </button>
         </>
     );
