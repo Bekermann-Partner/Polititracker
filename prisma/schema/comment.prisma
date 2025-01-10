@@ -1,0 +1,19 @@
+model Comment {
+  id          Int           @id @default(autoincrement())
+  userId      Int
+  polUuid     String
+
+  text        String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now())
+
+  parentId    Int?           // NULL for top-level comments
+  parent      Comment?      @relation("CommentReplies", fields: [parentId], references: [id])
+  replies     Comment[]     @relation("CommentReplies")
+
+  user        User          @relation(fields: [userId], references: [id])   // TODO: this should be 'author'
+  politician  Politician    @relation(fields: [polUuid], references: [uuid])
+
+  @@index([userId])    // for faster search by userId
+  @@index([polUuid])   // for faster search by polUuid
+}

@@ -2,6 +2,7 @@ import db from "@/_lib/db";
 import {LoadingSideJobs, SideJobs} from "@/app/(default)/politician/[uuid]/SideJobs";
 import React from "react";
 import {LoadingPoliticianDetails, PoliticianDetails} from "@/app/(default)/politician/[uuid]/PoliticianDetails";
+import CommentSectionWrapper from "@/app/(default)/politician/[uuid]/comments/CommentSectionWrapper";
 
 async function fetchPolitician(uuid: string) {
     return db.politician.findFirst({
@@ -31,6 +32,7 @@ export default async function PoliticianView({params}: { params: Promise<{ uuid:
                 </React.Suspense>
 
                 <h1 className={"mt-8 text-2xl font-semibold"}>Kommentare:</h1>
+                <CommentSectionWrapper politicianPromise={politician}/>
             </div>
         </section>
     )
