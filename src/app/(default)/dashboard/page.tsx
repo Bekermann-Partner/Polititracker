@@ -1,6 +1,6 @@
-import {User, Politician, Party} from '@prisma/client';
-import {getUser} from '@/_actions/getUser';
-import {getFollowedPoliticians} from '@/_actions/getFollowedPoliticians';
+import { User, Politician, Party } from '@prisma/client';
+import { getUser } from '@/_actions/getUser';
+import { getFollowedPoliticians } from '@/_actions/getFollowedPoliticians';
 import PoliticianCard from '@/app/components/PoliticianCard';
 
 export default async function DashboardPage() {
@@ -11,7 +11,8 @@ export default async function DashboardPage() {
             <section className="pt-24">
                 <div className="mx-auto max-w-6xl">
                     <div className="text-2xl font-bold mb-6">
-                        Please sign in to access your followed politicians.
+                        Melde dich an, um deine gefolgten Politiker sehen zu
+                        können.
                     </div>
                 </div>
             </section>
@@ -19,13 +20,16 @@ export default async function DashboardPage() {
     }
 
     try {
-        const politicians: (Politician & { party: Party })[] = await getFollowedPoliticians(user);
+        const politicians: (Politician & { party: Party })[] =
+            await getFollowedPoliticians(user);
 
         return (
             <>
-                <section className={"pt-24"}>
-                    <div className={"mx-auto max-w-6xl"}>
-                        <h1 className={"text-3xl font-bold"}>{user.firstName} {user.lastName}</h1>
+                <section className={'pt-24'}>
+                    <div className={'mx-auto max-w-6xl'}>
+                        <h1 className={'text-3xl font-bold'}>
+                            {user.firstName} {user.lastName}
+                        </h1>
                     </div>
                 </section>
 
@@ -34,7 +38,7 @@ export default async function DashboardPage() {
                         {politicians.length > 0 ? (
                             <div>
                                 <h1 className="text-2xl font-bold mb-6">
-                                    Your Followed Politicians
+                                    Politiker, denen du folgst:
                                 </h1>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                                     {politicians.map((politician) => (
@@ -47,7 +51,7 @@ export default async function DashboardPage() {
                                 </div>
                             </div>
                         ) : (
-                            <div>You are not following any politicians.</div>
+                            <div>Du folgst noch keinen Politikern</div>
                         )}
                     </div>
                 </section>
@@ -60,8 +64,8 @@ export default async function DashboardPage() {
             <section className="pt-24">
                 <div className="mx-auto max-w-6xl">
                     <div className="text-2xl font-bold mb-6">
-                        An error occurred while fetching your followed
-                        politicians -_-
+                        Deine gefolgten Politiker konnten nicht abgerufen werden
+                        -_-
                     </div>
                 </div>
             </section>

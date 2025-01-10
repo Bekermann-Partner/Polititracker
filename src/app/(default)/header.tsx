@@ -24,7 +24,11 @@ export async function Header() {
                     <div className="px-6 m-auto max-w-6xl 2xl:px-0">
                         <div className="flex flex-wrap items-center justify-between py-2 sm:py-4">
                             <div className="w-full items-center flex justify-between lg:w-auto">
-                                <h1 className={"text-xl font-bold"}>Platzhalter</h1>
+                                <h1 className={"text-xl font-bold"}>
+                                    <Link href={"/"} className={"hover:link md:px-4 block"}>
+                                        Platzhalter
+                                    </Link>
+                                </h1>
                                 <div className="flex lg:hidden">
                                     <button id="menu-btn" aria-label="open menu"
                                             className="btn variant-ghost sz-md icon-only relative z-20 -mr-2.5 block cursor-pointer lg:hidden">
