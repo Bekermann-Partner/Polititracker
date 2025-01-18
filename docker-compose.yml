@@ -4,7 +4,7 @@ services:
   db:
     image: mysql:8.0.12
     ports:
-      - "3306/tcp"
+      - "3306:3306/tcp"
     restart: always
     command: --default-authentication-plugin=mysql_native_password --local-infile=1
     environment:
