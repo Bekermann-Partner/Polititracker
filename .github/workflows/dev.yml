@@ -7,7 +7,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build-and-push-image:
@@ -19,6 +18,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Set lower case repo
+        run: |
+          echo "REPO_LC=${REPO,,}" >>${GITHUB_ENV}
+        env:
+          REPO: '${{ github.repository }}'
 
       #      - name: Prettify code
       #        uses: creyD/prettier_action@v4.3
@@ -34,5 +39,5 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build --pull -t ${{ env.REGISTRY }}/$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')-dev:latest .
-          docker push ${{ env.REGISTRY }}/${{ github.repository }}-dev:latest
+          docker build --pull -t ${{ env.REGISTRY }}/${{ REPO_LC }}-dev:latest .
+          docker push ${{ env.REGISTRY }}/${{ REPO_LC }}-dev:latest
