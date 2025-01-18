@@ -26,7 +26,7 @@ export async function Header() {
                             <div className="w-full items-center flex justify-between lg:w-auto">
                                 <h1 className={"text-xl font-bold"}>
                                     <Link href={"/"} className={"hover:link md:px-4 block"}>
-                                        Platzhalter
+                                        Polititracker
                                     </Link>
                                 </h1>
                                 <div className="flex lg:hidden">
@@ -58,11 +58,13 @@ export async function Header() {
                                                 Politiker
                                             </Link>
                                         </li>
-                                        <li className={"hover:text-indigo-600 transition-colors"}>
-                                            <Link href={"/dashboard"} className={"hover:link md:px-4 block"}>
-                                                Dashboard
-                                            </Link>
-                                        </li>
+                                        {user != null &&
+                                            <li className={"hover:text-indigo-600 transition-colors"}>
+                                                <Link href={"/dashboard"} className={"hover:link md:px-4 block"}>
+                                                    Dashboard
+                                                </Link>
+                                            </li>
+                                        }
                                     </ul>
                                 </div>
 

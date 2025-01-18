@@ -1,74 +1,44 @@
-import { User, Politician, Party } from '@prisma/client';
-import { getUser } from '@/_actions/getUser';
-import { getFollowedPoliticians } from '@/_actions/getFollowedPoliticians';
-import PoliticianCard from '@/app/components/PoliticianCard';
+import {User} from '@prisma/client';
+import {getUser} from '@/_actions/getUser';
+import {FollowedPoliticians} from "@/app/(default)/dashboard/followedPoliticians";
+import Link from "next/link";
 
 export default async function DashboardPage() {
     const user: User | null = await getUser();
 
     if (!user) {
         return (
-            <section className="pt-24">
-                <div className="mx-auto max-w-6xl">
-                    <div className="text-2xl font-bold mb-6">
-                        Melde dich an, um deine gefolgten Politiker sehen zu
-                        können.
-                    </div>
+            <section className={'pt-24'}>
+                <div className={'mx-auto max-w-6xl'}>
+                    <h1 className={'text-3xl font-bold'}>
+                        Ein unerwarteter Fehler ist aufgetreten, versuche es bitte später erneut!
+                    </h1>
                 </div>
             </section>
-        );
+        )
     }
 
-    try {
-        const politicians: (Politician & { party: Party })[] =
-            await getFollowedPoliticians(user);
+    return (
+        <>
+            <section className={'pt-24'}>
+                <div className={'mx-auto max-w-6xl'}>
+                    <h1 className={'text-3xl font-bold'}>
+                        {user.firstName} {user.lastName}
+                    </h1>
 
-        return (
-            <>
-                <section className={'pt-24'}>
-                    <div className={'mx-auto max-w-6xl'}>
-                        <h1 className={'text-3xl font-bold'}>
-                            {user.firstName} {user.lastName}
-                        </h1>
-                    </div>
-                </section>
-
-                <section className="pt-10">
-                    <div className="mx-auto max-w-6xl">
-                        {politicians.length > 0 ? (
-                            <div>
-                                <h1 className="text-2xl font-bold mb-6">
-                                    Politiker, denen du folgst:
-                                </h1>
-                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                                    {politicians.map((politician) => (
-                                        <PoliticianCard
-                                            key={politician.uuid}
-                                            politician={politician}
-                                            party={politician.party}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-                        ) : (
-                            <div>Du folgst noch keinen Politikern</div>
-                        )}
-                    </div>
-                </section>
-            </>
-        );
-    } catch (error) {
-        console.error('Error fetching followed politicians:', error);
-
-        return (
-            <section className="pt-24">
-                <div className="mx-auto max-w-6xl">
-                    <div className="text-2xl font-bold mb-6">
-                        Deine gefolgten Politiker konnten nicht abgerufen werden
-                        -_-
-                    </div>
+                    {user.isAdmin &&
+                        <div className={"mt-5"}>
+                            <Link href={"/admin"}
+                                  className={"bg-black hover:bg-gray-800 transition-colors text-white rounded px-3 py-1.5"}>
+                                Zur Administration
+                            </Link>
+                        </div>
+                    }
                 </div>
             </section>
-        );
-    }
+            <FollowedPoliticians user={user}/>
+        </>
+    )
+
+
 }

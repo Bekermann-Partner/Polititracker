@@ -7,7 +7,6 @@ import bcrypt from "bcryptjs";
 import {cookies} from "next/headers";
 import {User} from "@prisma/client";
 import {excludeFromObject} from "@/_lib/util";
-import {redirect} from "next/navigation";
 import * as jwt from "jose";
 import {USER_SESSION_COOKIE_NAME} from "@/app/auth/config";
 
@@ -52,7 +51,8 @@ export async function signIn(formData: FormData): Promise<Omit<User, 'password'>
                 secure: true,
                 httpOnly: true
             });
-            redirect('/');
+
+            return excludeFromObject(user, ['password']);
         }
     }
 }

@@ -3,12 +3,15 @@
 import React from "react";
 import {signIn} from "@/app/auth/sign-in/signInAction";
 import Link from "next/link";
+import {useRouter} from "next/navigation";
 
 export default function SignInPage() {
+    const router = useRouter();
     const [loading, setLoading] = React.useState<boolean>(false);
     const [error, setError] = React.useState<string | null>(null);
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+
         setError(null);
 
         e.preventDefault();
@@ -30,6 +33,8 @@ export default function SignInPage() {
         }
 
         console.log(res);
+        router.push("/");
+        router.refresh();
     }
 
     return (

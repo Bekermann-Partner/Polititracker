@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 
 interface ToastProps {
     message: string;
@@ -8,11 +8,11 @@ interface ToastProps {
     onClose: () => void;
 }
 
-export default function Toast({ message, type, onClose, timeout = 4000}: ToastProps) {
+export default function Toast({message, type, onClose, timeout = 4000}: ToastProps) {
     const [isVisible, setIsVisible] = useState(true);
 
     useEffect(() => {
-        if (timeout !== -1){
+        if (timeout !== -1) {
             // close Toast after time seconds
             const timer = setTimeout(() => {
                 setIsVisible(false);
@@ -30,12 +30,12 @@ export default function Toast({ message, type, onClose, timeout = 4000}: ToastPr
         <button
             onClick={onClose}
             aria-label="Close toast"
-            className={`fixed top-24 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded-lg shadow-lg text-white ${
+            className={`fixed top-12 left-1/2 transform -translate-x-1/2 z-20 px-6 py-4 rounded-lg shadow-lg text-white ${
                 type === 'success'
                     ? 'bg-green-600'
                     : type === 'error'
-                    ? 'bg-red-600'
-                    : 'bg-blue-600'
+                        ? 'bg-red-600'
+                        : 'bg-blue-600'
             }`}
         >
             {message}

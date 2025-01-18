@@ -4,6 +4,7 @@ import {zfd} from "zod-form-data";
 import {z} from "zod";
 import db from "@/_lib/db";
 import bcrypt from "bcryptjs";
+import {redirect} from "next/navigation";
 
 const createUserValidation = zfd.formData({
     firstName: zfd.text(),
@@ -27,7 +28,7 @@ export async function signUp(formData: FormData) {
         console.log("Hashed password: ", hashedPassword);
 
         // Create user - TODO: check if exists!
-        const r = await db.user.create({
+        await db.user.create({
             data: {
                 firstName: parse.data.firstName,
                 lastName: parse.data.lastName,
@@ -36,6 +37,6 @@ export async function signUp(formData: FormData) {
             }
         });
 
-        console.log(r);
+        return redirect("/auth/sign-in");
     }
 }

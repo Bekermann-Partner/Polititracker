@@ -1,5 +1,6 @@
 import {SearchBar} from "@/app/(default)/searchBar";
 import db from "@/_lib/db";
+import {Counter} from "@/app/components/Counter";
 
 export default async function LandingPage() {
     const randomPoliticianImages = await db.politician.findMany({
@@ -33,6 +34,9 @@ export default async function LandingPage() {
                                     sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
                                     sadipscing elitr, sed diam nonumy eirmod
                                 </p>
+
+                                <Counter initialValue={Math.ceil(randomPoliticianImages.length * 0.8)}
+                                         finalValue={randomPoliticianImages.length} text={"+ Politiker"}/>
                             </div>
                         </div>
                     </div>
