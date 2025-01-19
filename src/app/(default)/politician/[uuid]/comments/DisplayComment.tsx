@@ -105,102 +105,94 @@ export default function DisplayComment({
         <Toast message={error} type="error" onClose={() => setError(null)} />
       )}
 
-            {showUpdateCommentEditor ? (
-                <UpdateCommentEditor
-                    comment={currentComment}
-                    currentUser={currentUser!}
-                    onCloseEditor={() => setShowUpdateCommentEditor(false)}
-                    onUpdateComment={handleUpdateComment}
-                />
-            ) : (
-                <>
-                    {/* Display the Comment */}
-                    <div className="w-full border border-gray-200 rounded mt-2 p-2 shadow text-lg">
-                        <div className="flex">
-                            <Image
-                                src={`/user_avatars/${currentComment.user.profile_image}`}
-                                alt={'Avatar'}
-                                width={28}
-                                height={28}
-                                className={
-                                    'rounded-full object-cover aspect-square mr-2'
-                                }
-                            />
-                            <strong>
-                                {currentComment.user.firstName}{' '}
-                                {currentComment.user.lastName}
-                            </strong>
-                            <span
-                                className="text-gray-500 ml-2"
-                                title={
-                                    currentComment.createdAt !==
-                                    currentComment.updatedAt
-                                        ? `Zuletzt bearbeitet am ${new Intl.DateTimeFormat(
-                                              'de-DE',
-                                              {
-                                                  day: '2-digit',
-                                                  month: 'long',
-                                                  year: 'numeric',
-                                                  hour: '2-digit',
-                                                  minute: '2-digit',
-                                              }
-                                          ).format(
-                                              new Date(currentComment.updatedAt)
-                                          )}`
-                                        : ''
-                                }
-                            >
-                                {new Intl.DateTimeFormat('de-DE', {
-                                    day: '2-digit',
-                                    month: 'long',
-                                    year: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                }).format(new Date(currentComment.createdAt))}
+      {showUpdateCommentEditor ? (
+        <UpdateCommentEditor
+          comment={currentComment}
+          currentUser={currentUser!}
+          onCloseEditor={() => setShowUpdateCommentEditor(false)}
+          onUpdateComment={handleUpdateComment}
+        />
+      ) : (
+        <>
+          {/* Display the Comment */}
+          <div className="w-full border border-gray-200 rounded mt-2 p-2 shadow text-lg">
+            <div className="flex">
+              <Image
+                src={`/user_avatars/${currentComment.user.profile_image}`}
+                alt={'Avatar'}
+                width={28}
+                height={28}
+                className={'rounded-full object-cover aspect-square mr-2'}
+              />
+              <strong>
+                {currentComment.user.firstName} {currentComment.user.lastName}
+              </strong>
+              <span
+                className="text-gray-500 ml-2"
+                title={
+                  currentComment.createdAt !== currentComment.updatedAt
+                    ? `Zuletzt bearbeitet am ${new Intl.DateTimeFormat(
+                        'de-DE',
+                        {
+                          day: '2-digit',
+                          month: 'long',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        }
+                      ).format(new Date(currentComment.updatedAt))}`
+                    : ''
+                }
+              >
+                {new Intl.DateTimeFormat('de-DE', {
+                  day: '2-digit',
+                  month: 'long',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                }).format(new Date(currentComment.createdAt))}
 
                 {currentComment.createdAt !== currentComment.updatedAt && (
                   <span className="ml-1">(bearbeitet)</span>
                 )}
               </span>
 
-                            {/* Button for enabing UpdateComment-Editor */}
-                            {currentUser && currentUser.id === currentComment.userId && (
-                                <div className="ml-auto">
-                                    <button
-                                        className="flex items-center text-sm text-red-500 hover:text-red-700 focus:outline-none"
-                                        onClick={() =>
-                                            setShowUpdateCommentEditor(true)
-                                        }
-                                    >
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            strokeWidth={1.5}
-                                            stroke="currentColor"
-                                            className="h-5 w-5 mr-2"
-                                        >
-                                            <path
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                d="M15.232 5.232a1.5 1.5 0 112.12 2.12L6.621 18.082a4.5 4.5 0 01-1.496 1.11l-2.294.958.958-2.294a4.5 4.5 0 011.11-1.496L15.232 5.232z"
-                                            />
-                                        </svg>
-                                        Bearbeiten
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                        <p className="mt-2">
-                            {currentComment.text // TODO: kann man sicher schöner umsetzen (aktuell ein bisschen cursed, wenn man den Text markiert)
-                                .split('\n')
-                                .map((line, index) => (
-                                    <span key={index}>
-                                        {line}
-                                        <br />
-                                    </span>
-                                ))}
-                        </p>
+              {/* Button for enabing UpdateComment-Editor */}
+              {currentUser && currentUser.id === currentComment.userId && (
+                <div className="ml-auto">
+                  <button
+                    className="flex items-center text-sm text-red-500 hover:text-red-700 focus:outline-none"
+                    onClick={() => setShowUpdateCommentEditor(true)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="h-5 w-5 mr-2"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M15.232 5.232a1.5 1.5 0 112.12 2.12L6.621 18.082a4.5 4.5 0 01-1.496 1.11l-2.294.958.958-2.294a4.5 4.5 0 011.11-1.496L15.232 5.232z"
+                      />
+                    </svg>
+                    Bearbeiten
+                  </button>
+                </div>
+              )}
+            </div>
+            <p className="mt-2">
+              {currentComment.text // TODO: kann man sicher schöner umsetzen (aktuell ein bisschen cursed, wenn man den Text markiert)
+                .split('\n')
+                .map((line, index) => (
+                  <span key={index}>
+                    {line}
+                    <br />
+                  </span>
+                ))}
+            </p>
 
             <div className="flex items-center mt-4 space-x-4">
               {/* "Show replies"-Button */}

@@ -31,14 +31,16 @@ export async function Header() {
                 <h1 className={'text-xl font-bold'}>
                   <Link
                     href={'/'}
-                    className={'hover:link md:px-4 dark:text-white flex items-center'}
+                    className={
+                      'hover:link md:px-4 dark:text-white flex items-center'
+                    }
                   >
                     <Image
-                        src="/img/logo.png" 
-                        alt="Logo" 
-                        width={32}
-                        height={32}
-                        className="rounded-full mr-2"
+                      src="/img/logo.png"
+                      alt="Logo"
+                      width={32}
+                      height={32}
+                      className="rounded-full mr-2"
                     />
                     Polititracker
                   </Link>
