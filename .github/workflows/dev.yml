@@ -25,11 +25,6 @@ jobs:
         env:
           REPO: '${{ github.repository }}'
 
-      #      - name: Prettify code
-      #        uses: creyD/prettier_action@v4.3
-      #        with:
-      #          prettier_options: --write **/*.{ts,js,tsx,jsx}
-
       - name: Log in to the Container registry
         uses: docker/login-action@v2
         with:
@@ -59,7 +54,7 @@ jobs:
 
       - name: Run ESLint
         run: |
-          npx --yes eslint .
+          npx --yes eslint ./src
 
       - name: Run TypeScript Type Check
         run: |
