@@ -2,6 +2,7 @@ import { Politician } from '@prisma/client';
 import { SideJob } from '@/app/(default)/politician/[uuid]/SideJob';
 import abgeordnetenWatchApiProvider from '@/_lib/providers/abgw/abgeordnetenWatchApiProvider';
 import Skeleton from 'react-loading-skeleton';
+import { SkeletonThemeWrapper } from '@/app/components/SkeletonThemeWrapper';
 
 export async function SideJobs({
   politicianPromise,
@@ -34,5 +35,9 @@ export async function SideJobs({
 }
 
 export function LoadingSideJobs() {
-  return <Skeleton count={5} className={'h-14 mt-2'} />;
+  return (
+    <SkeletonThemeWrapper>
+      <Skeleton count={5} className={'h-14 mt-2'} />
+    </SkeletonThemeWrapper>
+  );
 }

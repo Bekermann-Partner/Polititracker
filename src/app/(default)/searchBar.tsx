@@ -34,7 +34,9 @@ export function SearchBar({ politician }: { politician: Politician }) {
       </svg>
       <input
         onChange={(e) => setSearch(e.currentTarget.value)}
-        className={'h-12 w-full border rounded-xl pl-14'}
+        className={
+          'h-12 w-full border rounded-xl pl-14 transition-colors focus:border-indigo-600 dark:bg-gray-800 dark:border-gray-600 outline-none dark:text-white'
+        }
         type={'text'}
         placeholder={politician.first_name + ' ' + politician.last_name}
       />
@@ -42,10 +44,10 @@ export function SearchBar({ politician }: { politician: Politician }) {
       {search.length > 0 && politicians.length > 0 && (
         <div
           className={
-            'absolute w-full bg-white shadow-lg rounded z-20 mt-2 overflow-scroll max-h-72'
+            'absolute w-full bg-white dark:bg-gray-800 shadow-lg rounded z-20 mt-2 overflow-scroll max-h-72'
           }
         >
-          {politicians.map((politician) => {
+          {politicians.map((politician, index, array) => {
             return (
               <Link
                 key={politician.uuid}
@@ -53,7 +55,8 @@ export function SearchBar({ politician }: { politician: Politician }) {
               >
                 <div
                   className={
-                    'flex p-3 border-b w-full text-left hover:bg-gray-200 transition-colors hover:cursor-pointer'
+                    'flex p-3 w-full text-left hover:bg-gray-200 dark:hover:bg-gray-700 dark:border-gray-500 transition-colors hover:cursor-pointer ' +
+                    (index !== array.length - 1 ? 'border-b' : '')
                   }
                 >
                   <Image
@@ -64,11 +67,13 @@ export function SearchBar({ politician }: { politician: Politician }) {
                     height={100}
                   />
                   <div className={'ml-3'}>
-                    <h3 className={'text-lg font-semibold'}>
+                    <h3 className={'text-lg font-semibold dark:text-white'}>
                       {politician.first_name} {politician.last_name} &bull;{' '}
                       {politician.party?.short}
                     </h3>
-                    <p>{politician.occupation}</p>
+                    <p className={'dark:text-gray-300'}>
+                      {politician.occupation}
+                    </p>
                   </div>
                 </div>
               </Link>

@@ -36,12 +36,16 @@ export default async function PoliticianView({
           <PoliticianDetails politicianPromise={politician} />
         </React.Suspense>
 
-        <h1 className={'mt-8 text-2xl font-semibold'}>Nebentätigkeiten:</h1>
+        <h1 className={'mt-8 text-2xl font-semibold dark:text-gray-200'}>
+          Nebentätigkeiten:
+        </h1>
         <React.Suspense fallback={<LoadingSideJobs />}>
           <SideJobs politicianPromise={politician} />
         </React.Suspense>
 
-        <h1 className={'mt-8 text-2xl font-semibold'}>Kommentare:</h1>
+        <h1 className={'mt-8 text-2xl font-semibold dark:text-gray-200'}>
+          Kommentare:
+        </h1>
         <CommentSectionWrapper politicianPromise={politician} />
       </div>
     </section>

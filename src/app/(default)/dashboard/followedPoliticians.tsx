@@ -13,7 +13,7 @@ export async function FollowedPoliticians({ user }: { user: User }) {
           <div className="mx-auto max-w-6xl">
             {politicians.length > 0 ? (
               <div>
-                <h1 className="text-2xl font-bold mb-6">
+                <h1 className="text-2xl font-bold mb-6 dark:text-white">
                   Politiker, denen du folgst:
                 </h1>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -39,7 +39,7 @@ export async function FollowedPoliticians({ user }: { user: User }) {
     return (
       <section className="pt-24">
         <div className="mx-auto max-w-6xl">
-          <div className="text-2xl font-bold mb-6">
+          <div className="text-2xl font-bold mb-6 dark:text-gray-400">
             Deine gefolgten Politiker konnten nicht abgerufen werden -_-
           </div>
         </div>
