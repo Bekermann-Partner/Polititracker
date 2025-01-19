@@ -18,68 +18,68 @@ import db from '@/_lib/db';
  * - 500 Internal Server Error if an error occurs while fetching comments.
  */
 export async function GET(req: Request) {
-    const { searchParams } = new URL(req.url);
-    const polUuid = searchParams.get('polUuid');
-    const userIdString = searchParams.get('userId');
-    const parentIdString = searchParams.get('parentId');
+  const { searchParams } = new URL(req.url);
+  const polUuid = searchParams.get('polUuid');
+  const userIdString = searchParams.get('userId');
+  const parentIdString = searchParams.get('parentId');
 
-    // try parsing params
-    const userId = userIdString ? parseInt(userIdString, 10) : NaN;
-    const parentId =
-        parentIdString && parentIdString !== 'null'
-            ? parseInt(parentIdString, 10)
-            : null;
+  // try parsing params
+  const userId = userIdString ? parseInt(userIdString, 10) : NaN;
+  const parentId =
+    parentIdString && parentIdString !== 'null'
+      ? parseInt(parentIdString, 10)
+      : null;
 
-    // validate parsing of params
-    const parseErrors = [];
-    if (userIdString && isNaN(userId)) {
-        parseErrors.push('Invalid userId: must be a valid Integer');
-    }
-    if (parentIdString && parentIdString !== 'null' && isNaN(parentId!)) {
-        parseErrors.push('Invalid parentId: must be a valid Integer or "null"');
-    }
+  // validate parsing of params
+  const parseErrors = [];
+  if (userIdString && isNaN(userId)) {
+    parseErrors.push('Invalid userId: must be a valid Integer');
+  }
+  if (parentIdString && parentIdString !== 'null' && isNaN(parentId!)) {
+    parseErrors.push('Invalid parentId: must be a valid Integer or "null"');
+  }
 
-    // Return errors if there are invalid parameters
-    if (parseErrors.length > 0) {
-        return NextResponse.json({ error: parseErrors }, { status: 400 });
-    }
+  // Return errors if there are invalid parameters
+  if (parseErrors.length > 0) {
+    return NextResponse.json({ error: parseErrors }, { status: 400 });
+  }
 
-    try {
-        const comments = await db.comment.findMany({
-            where: {
-                // filter by all given params
-                ...(polUuid && { polUuid }),
-                ...(userIdString && { userId }),
-                ...(parentIdString && { parentId }),
-            },
-            include: {
-                user: true,
-                replies: {
-                    include: {
-                        user: true,
-                    },
-                },
-            },
-            orderBy: [
-                {
-                    replies: {
-                        _count: 'desc',
-                    },
-                },
-                {
-                    updatedAt: 'desc',
-                },
-            ],
-        });
+  try {
+    const comments = await db.comment.findMany({
+      where: {
+        // filter by all given params
+        ...(polUuid && { polUuid }),
+        ...(userIdString && { userId }),
+        ...(parentIdString && { parentId }),
+      },
+      include: {
+        user: true,
+        replies: {
+          include: {
+            user: true,
+          },
+        },
+      },
+      orderBy: [
+        {
+          replies: {
+            _count: 'desc',
+          },
+        },
+        {
+          updatedAt: 'desc',
+        },
+      ],
+    });
 
-        return NextResponse.json(comments, { status: 200 });
-    } catch (error) {
-        console.error('Error occured while fetching comments:', error);
-        return NextResponse.json(
-            { message: 'Internal server error' },
-            { status: 500 }
-        );
-    }
+    return NextResponse.json(comments, { status: 200 });
+  } catch (error) {
+    console.error('Error occured while fetching comments:', error);
+    return NextResponse.json(
+      { message: 'Internal server error' },
+      { status: 500 }
+    );
+  }
 }
 
 /**
@@ -97,34 +97,34 @@ export async function GET(req: Request) {
  * - 500 Internal Server Error if an error occurs while creating the comment.
  */
 export async function POST(req: NextRequest) {
-    const body = await req.json();
-    const { userId, polUuid, text, parentId } = body;
+  const body = await req.json();
+  const { userId, polUuid, text, parentId } = body;
 
-    if (!text || !userId || !polUuid) {
-        return NextResponse.json(
-            { error: 'Missing required fields' },
-            { status: 400 }
-        );
-    }
+  if (!text || !userId || !polUuid) {
+    return NextResponse.json(
+      { error: 'Missing required fields' },
+      { status: 400 }
+    );
+  }
 
-    try {
-        const newComment = await db.comment.create({
-            data: {
-                userId,
-                polUuid,
-                text,
-                parentId: parentId || null,
-            },
-        });
+  try {
+    const newComment = await db.comment.create({
+      data: {
+        userId,
+        polUuid,
+        text,
+        parentId: parentId || null,
+      },
+    });
 
-        return NextResponse.json(newComment, { status: 201 });
-    } catch (error) {
-        console.error('Error occured while trying to add new comment:', error);
-        return NextResponse.json(
-            { error: 'Comment could not be created' },
-            { status: 500 }
-        );
-    }
+    return NextResponse.json(newComment, { status: 201 });
+  } catch (error) {
+    console.error('Error occured while trying to add new comment:', error);
+    return NextResponse.json(
+      { error: 'Comment could not be created' },
+      { status: 500 }
+    );
+  }
 }
 
 /**
@@ -142,44 +142,44 @@ export async function POST(req: NextRequest) {
  * - 500 Internal Server Error if an error occurs while updating the comment.
  */
 export async function PUT(req: NextRequest) {
-    const { searchParams } = new URL(req.url);
-    const commentIdString = searchParams.get('commentId');
+  const { searchParams } = new URL(req.url);
+  const commentIdString = searchParams.get('commentId');
 
-    if (!commentIdString || isNaN(parseInt(commentIdString, 10))) {
-        return NextResponse.json(
-            { error: 'Invalid or missing commentId' },
-            { status: 400 }
-        );
-    }
+  if (!commentIdString || isNaN(parseInt(commentIdString, 10))) {
+    return NextResponse.json(
+      { error: 'Invalid or missing commentId' },
+      { status: 400 }
+    );
+  }
 
-    const commentId = parseInt(commentIdString, 10);
-    const body = await req.json();
+  const commentId = parseInt(commentIdString, 10);
+  const body = await req.json();
 
-    const { text } = body;
-    if (!text) {
-        return NextResponse.json(
-            { error: 'Text field is required' },
-            { status: 400 }
-        );
-    }
+  const { text } = body;
+  if (!text) {
+    return NextResponse.json(
+      { error: 'Text field is required' },
+      { status: 400 }
+    );
+  }
 
-    try {
-        const updatedComment = await db.comment.update({
-            where: { id: commentId },
-            data: {
-                text,
-                updatedAt: new Date(), // update 'updatedAt'
-            },
-        });
+  try {
+    const updatedComment = await db.comment.update({
+      where: { id: commentId },
+      data: {
+        text,
+        updatedAt: new Date(), // update 'updatedAt'
+      },
+    });
 
-        return NextResponse.json(updatedComment, { status: 200 });
-    } catch (error) {
-        console.error('Error occurred while updating comment:', error);
-        return NextResponse.json(
-            { error: 'Comment could not be updated' },
-            { status: 500 }
-        );
-    }
+    return NextResponse.json(updatedComment, { status: 200 });
+  } catch (error) {
+    console.error('Error occurred while updating comment:', error);
+    return NextResponse.json(
+      { error: 'Comment could not be updated' },
+      { status: 500 }
+    );
+  }
 }
 
 /*
@@ -200,33 +200,33 @@ export async function PUT(req: NextRequest) {
  * - 500 Internal Server Error if an error occurs while deleting the comment.
  */
 export async function DELETE(req: NextRequest) {
-    const { searchParams } = new URL(req.url);
-    const commentIdString = searchParams.get('commentId');
+  const { searchParams } = new URL(req.url);
+  const commentIdString = searchParams.get('commentId');
 
-    if (!commentIdString || isNaN(parseInt(commentIdString, 10))) {
-        return NextResponse.json(
-            { error: 'Invalid or missing commentId' },
-            { status: 400 }
-        );
-    }
+  if (!commentIdString || isNaN(parseInt(commentIdString, 10))) {
+    return NextResponse.json(
+      { error: 'Invalid or missing commentId' },
+      { status: 400 }
+    );
+  }
 
-    const commentId = parseInt(commentIdString, 10);
+  const commentId = parseInt(commentIdString, 10);
 
-    try {
-        await db.comment.delete({
-            where: { id: commentId },
-        });
-        // TODO: update 'parent‘ and ‘replies‘ for other comments?
+  try {
+    await db.comment.delete({
+      where: { id: commentId },
+    });
+    // TODO: update 'parent‘ and ‘replies‘ for other comments?
 
-        return NextResponse.json(
-            { message: 'Comment deleted successfully' },
-            { status: 200 }
-        );
-    } catch (error) {
-        console.error('Error occurred while deleting comment:', error);
-        return NextResponse.json(
-            { error: 'Comment could not be deleted' },
-            { status: 500 }
-        );
-    }
+    return NextResponse.json(
+      { message: 'Comment deleted successfully' },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error('Error occurred while deleting comment:', error);
+    return NextResponse.json(
+      { error: 'Comment could not be deleted' },
+      { status: 500 }
+    );
+  }
 }

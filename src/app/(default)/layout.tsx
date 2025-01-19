@@ -1,16 +1,16 @@
-import React from "react";
-import {Header} from "@/app/(default)/header";
-import {Footer} from "@/app/(default)/footer";
-import 'react-loading-skeleton/dist/skeleton.css'
+import React from 'react';
+import { Header } from '@/app/(default)/header';
+import { Footer } from '@/app/(default)/footer';
+import 'react-loading-skeleton/dist/skeleton.css';
 
-export default function layout({children}: { children: React.ReactNode }) {
-    return (
-        <>
-            <Header/>
+export default function layout({ children }: { children: React.ReactNode }) {
+  return (
+    <>
+      <Header />
 
-            {children}
+      {children}
 
-            <Footer/>
-        </>
-    )
+      <Footer />
+    </>
+  );
 }
