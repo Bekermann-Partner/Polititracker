@@ -7,6 +7,8 @@ model User {
   email    String @unique
   password String
 
+  profile_image String @default("default_avatar.jpg")
+
   isAdmin Boolean @default(false)
 
   createdAt DateTime @default(now())

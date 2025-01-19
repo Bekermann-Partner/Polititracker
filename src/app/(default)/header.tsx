@@ -3,6 +3,7 @@ import {cookies} from "next/headers";
 import {jwtVerify} from "jose";
 import * as jwt from "jose";
 import {User} from "@prisma/client";
+import Image from "next/image";
 
 export async function Header() {
     const cookieJar = await cookies();
@@ -25,7 +26,14 @@ export async function Header() {
                         <div className="flex flex-wrap items-center justify-between py-2 sm:py-4">
                             <div className="w-full items-center flex justify-between lg:w-auto">
                                 <h1 className={"text-xl font-bold"}>
-                                    <Link href={"/"} className={"hover:link md:px-4 block"}>
+                                    <Link href={"/"} className={"hover:link md:px-4 flex items-center"}>
+                                        <Image 
+                                            src="/img/logo.png" 
+                                            alt="Logo" 
+                                            width={32}
+                                            height={32}
+                                            className="rounded-full mr-2"
+                                        />
                                         Polititracker
                                     </Link>
                                 </h1>
@@ -60,8 +68,8 @@ export async function Header() {
                                         </li>
                                         {user != null &&
                                             <li className={"hover:text-indigo-600 transition-colors"}>
-                                                <Link href={"/dashboard"} className={"hover:link md:px-4 block"}>
-                                                    Dashboard
+                                                <Link href={"/profile"} className={"hover:link md:px-4 block"}>
+                                                    Dein Profil
                                                 </Link>
                                             </li>
                                         }

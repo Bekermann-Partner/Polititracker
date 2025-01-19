@@ -7,6 +7,7 @@ import Toast from '@/app/components/Toast';
 import Skeleton from 'react-loading-skeleton';
 import AddCommentEditor from '@/app/(default)/politician/[uuid]/comments/AddCommentEditor';
 import UpdateCommentEditor from '@/app/(default)/politician/[uuid]/comments/UpdateCommentEditor';
+import Image from 'next/image';
 
 interface DisplayCommentProps {
     currentUser: User | null;
@@ -118,8 +119,17 @@ export default function DisplayComment({
             ) : (
                 <>
                     {/* Display the Comment */}
-                    <div className="p-4 border rounded shadow-sm">
+                    <div className="w-full border border-gray-200 rounded mt-2 p-2 shadow text-lg">
                         <div className="flex">
+                            <Image
+                                src={`/user_avatars/${currentComment.user.profile_image}`}
+                                alt={'Avatar'}
+                                width={28}
+                                height={28}
+                                className={
+                                    'rounded-full object-cover aspect-square mr-2'
+                                }
+                            />
                             <strong>
                                 {currentComment.user.firstName}{' '}
                                 {currentComment.user.lastName}
@@ -159,7 +169,7 @@ export default function DisplayComment({
                             </span>
 
                             {/* Button for enabing UpdateComment-Editor */}
-                            {currentUser && (
+                            {currentUser && currentUser.id === currentComment.userId && (
                                 <div className="ml-auto">
                                     <button
                                         className="flex items-center text-sm text-red-500 hover:text-red-700 focus:outline-none"
