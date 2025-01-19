@@ -21,7 +21,7 @@ export async function UserOverview({ user }: { user: User }) {
                                     }
                                 />
                                 <Link
-                                    href={'/profile/edit'}
+                                    href={'/dashboard/edit'}
                                     className="bg-black hover:bg-gray-700 transition-colors text-white rounded w-full px-3 py-1.5"
                                 >
                                     Profil bearbeiten

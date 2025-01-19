@@ -3,7 +3,7 @@
 import { getUser } from '@/_actions/getUser';
 import { User } from '@prisma/client';
 import { redirect } from 'next/navigation';
-import ProfileEditor from '@/app/(default)/profile/edit/ProfileEditor';
+import ProfileEditor from '@/app/(default)/dashboard/edit/ProfileEditor';
 
 export default async function EditProfilePage() {
     const user: User | null = await getUser();

@@ -4,7 +4,7 @@ import Toast from '@/app/components/Toast';
 import { User } from '@prisma/client';
 import Image from 'next/image';
 import { useState } from 'react';
-import { editUser } from '@/app/(default)/profile/edit/editUserAction';
+import { editUser } from '@/app/(default)/dashboard/edit/editUserAction';
 import { useRouter } from 'next/navigation';
 
 export default function ProfileEditor({ user }: { user: User }) {
@@ -82,9 +82,6 @@ export default function ProfileEditor({ user }: { user: User }) {
             console.error('Failed validation!', res);
             return;
         }
-
-        router.push('/profile/edit');
-        router.refresh();
     }
 
     return (

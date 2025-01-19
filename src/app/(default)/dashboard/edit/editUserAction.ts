@@ -12,6 +12,7 @@ import { USER_SESSION_COOKIE_NAME } from '@/app/auth/config';
 import fs from 'fs/promises';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { revalidatePath } from 'next/cache';
 
 const updateUserValidation = zfd
     .formData({
@@ -111,6 +112,7 @@ export async function editUser(
             httpOnly: true,
         });
 
+        revalidatePath("/dashboard/edit");
         return excludeFromObject(updatedUser, ['password']);
     }
     console.log(parse.error);

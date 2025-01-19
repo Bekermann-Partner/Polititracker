@@ -24,7 +24,7 @@ export async function Header() {
   return (
     <>
       <header id="header" className="group">
-        <nav className="fixed overflow-hidden z-20 w-full border-b dark:border-gray-600 bg-white/50 dark:bg-gray-950/50 backdrop-blur-2xl">
+        <nav className="fixed overflow-hidden z-30 w-full border-b dark:border-gray-600 bg-white/50 dark:bg-gray-950/50 backdrop-blur-2xl">
           <div className="px-6 m-auto max-w-6xl 2xl:px-0">
             <div className="flex flex-wrap items-center justify-between py-2 sm:py-4">
               <div className="w-full items-center flex justify-between lg:w-auto">
