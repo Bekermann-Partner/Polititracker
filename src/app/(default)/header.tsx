@@ -4,6 +4,7 @@ import { jwtVerify } from 'jose';
 import * as jwt from 'jose';
 import { User } from '@prisma/client';
 import { ThemeSelector } from '@/app/components/ThemeSelector';
+import Image from 'next/image';
 
 export async function Header() {
   const cookieJar = await cookies();
@@ -30,8 +31,15 @@ export async function Header() {
                 <h1 className={'text-xl font-bold'}>
                   <Link
                     href={'/'}
-                    className={'hover:link md:px-4 block dark:text-white'}
+                    className={'hover:link md:px-4 dark:text-white flex items-center'}
                   >
+                    <Image
+                        src="/img/logo.png" 
+                        alt="Logo" 
+                        width={32}
+                        height={32}
+                        className="rounded-full mr-2"
+                    />
                     Polititracker
                   </Link>
                 </h1>
