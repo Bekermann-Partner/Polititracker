@@ -1,8 +1,8 @@
 'use client';
 
-import { User, Politician, Comment } from '@prisma/client';
-import { useEffect, useState } from 'react';
-import { CommentWithNestedReplies } from './types';
+import {User, Politician, Comment} from '@prisma/client';
+import {useEffect, useState} from 'react';
+import {CommentWithNestedReplies} from './types';
 import Toast from '@/app/components/Toast';
 import DisplayComment from '@/app/(default)/politician/[uuid]/comments/DisplayComment';
 import AddCommentEditor from '@/app/(default)/politician/[uuid]/comments/AddCommentEditor';
@@ -14,9 +14,9 @@ interface CommentsProps {
 }
 
 export default function CommentSection({
-    currentUser,
-    politician,
-}: CommentsProps) {
+                                           currentUser,
+                                           politician,
+                                       }: CommentsProps) {
     const [comments, setComments] = useState<CommentWithNestedReplies[]>([]);
     const [isFetchingComments, setIsFetchingComments] = useState<boolean>(true);
     const [showAddCommentEditor, setShowAddCommentEditor] = useState(false);
@@ -38,7 +38,7 @@ export default function CommentSection({
                 const errorData = await response.json();
                 setError(
                     errorData.error ||
-                        'Kommentare konnten nicht abgerufen werden'
+                    'Kommentare konnten nicht abgerufen werden'
                 );
             }
         } catch (error) {
@@ -83,7 +83,7 @@ export default function CommentSection({
             {isFetchingComments ? (
                 <>
                     {/* Display Skeleton while loading the comments */}
-                    <Skeleton count={5} className={'h-14 mt-2'} />
+                    <Skeleton count={5} className={'h-14 mt-2'}/>
                 </>
             ) : (
                 <>
@@ -96,8 +96,8 @@ export default function CommentSection({
                                     currentUser
                                         ? setShowAddCommentEditor(true)
                                         : setError(
-                                              'Du musst angemeldet sein um einen Kommentar hinzufügen zu können!'
-                                          )
+                                            'Du musst angemeldet sein um einen Kommentar hinzufügen zu können!'
+                                        )
                                 }
                             >
                                 Neuen Kommentar hinzufügen

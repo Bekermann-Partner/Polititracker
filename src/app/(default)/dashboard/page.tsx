@@ -22,14 +22,14 @@ export default async function DashboardPage() {
         <>
             <section className={'pt-24'}>
                 <div className={'mx-auto max-w-6xl'}>
-                    <h1 className={'text-3xl font-bold'}>
+                    <h1 className={'text-3xl font-bold dark:text-white'}>
                         {user.firstName} {user.lastName}
                     </h1>
 
                     {user.isAdmin &&
                         <div className={"mt-5"}>
                             <Link href={"/admin"}
-                                  className={"bg-black hover:bg-gray-800 transition-colors text-white rounded px-3 py-1.5"}>
+                                  className={"bg-black dark:bg-gray-700 hover:bg-gray-800 transition-colors text-white rounded px-3 py-1.5"}>
                                 Zur Administration
                             </Link>
                         </div>
