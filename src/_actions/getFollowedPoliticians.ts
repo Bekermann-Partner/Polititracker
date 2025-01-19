@@ -8,20 +8,20 @@ import { User, Politician, Party } from '@prisma/client';
  * @returns {Promise<(Politician & { party: Party })[]>} - A list of politicians with their party details.
  */
 export async function getFollowedPoliticians(
-    user: User
+  user: User
 ): Promise<(Politician & { party: Party })[]> {
-    const followedPoliticians = await db.follow.findMany({
-        where: {
-            userId: user.id,
-        },
+  const followedPoliticians = await db.follow.findMany({
+    where: {
+      userId: user.id,
+    },
+    include: {
+      politician: {
         include: {
-            politician: {
-                include: {
-                    party: true, // Include the Party relation
-                },
-            },
+          party: true, // Include the Party relation
         },
-    });
+      },
+    },
+  });
 
-    return followedPoliticians.map((follow) => follow.politician);
+  return followedPoliticians.map((follow) => follow.politician);
 }
