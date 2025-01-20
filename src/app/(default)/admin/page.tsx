@@ -8,7 +8,9 @@ export default async function AdminPage() {
     <>
       <section className="pt-24">
         <div className="mx-auto max-w-6xl">
-          <h1 className={'text-3xl font-bold mb-5'}>Nutzerübersicht</h1>
+          <h1 className={'text-3xl font-bold mb-5 dark:text-white'}>
+            Nutzerübersicht
+          </h1>
 
           <UserList defaultUsers={users} />
         </div>

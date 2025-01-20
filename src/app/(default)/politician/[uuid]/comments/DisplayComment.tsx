@@ -115,7 +115,7 @@ export default function DisplayComment({
       ) : (
         <>
           {/* Display the Comment */}
-          <div className="w-full border border-gray-200 rounded mt-2 p-2 shadow text-lg">
+          <div className="w-full border border-gray-200 rounded mt-2 p-2 shadow text-lg dark:bg-gray-900 dark:border-gray-700 dark:text-white">
             <div className="flex">
               <Image
                 src={`/user_avatars/${currentComment.user.profile_image}`}
