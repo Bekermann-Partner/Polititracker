@@ -7,6 +7,10 @@ on:
 
 env:
   REGISTRY: ghcr.io
+  IMAGE_TAG: ${{ github.sha }}
+  CLOUD_RUN_SERVICE: xxx
+  REGION: fra
+  GCP_PROJECT: xxx
 
 jobs:
   build-and-push-image:
@@ -34,8 +38,9 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          docker build --pull -t ${{ env.REGISTRY }}/${{ env.REPO_LC }}-dev:latest .
-          docker push ${{ env.REGISTRY }}/${{ env.REPO_LC }}-dev:latest
+          docker build --pull -t ${{ env.REGISTRY }}/${{ env.REPO_LC }}-dev:${{ env.IMAGE_TAG }} .
+          docker push ${{ env.REGISTRY }}/${{ env.REPO_LC }}-dev:${{ env.IMAGE_TAG }}
+
   eslint-and-types:
     runs-on: ubuntu-latest
 
@@ -59,6 +64,7 @@ jobs:
       - name: Run TypeScript Type Check
         run: |
           npx --yes tsc --noEmit
+
   prettier-check:
     runs-on: ubuntu-latest
 
