@@ -46,16 +46,6 @@ export default async function LandingPage() {
               </div>
             </div>
           </div>
-          <div className={'flex justify-center gap-3 mt-10'}>
-            <img
-              src="https://cdn.discordapp.com/attachments/1240360841585365015/1318683055027650650/graph-placeholder.png?ex=676336cc&is=6761e54c&hm=d818fe82f951bbf3ea8317b6efb10c025e92b63ce94eb2665803b80a20ef6e3b&"
-              alt=""
-            />
-            <img
-              src="https://cdn.discordapp.com/attachments/1240360841585365015/1318683055027650650/graph-placeholder.png?ex=676336cc&is=6761e54c&hm=d818fe82f951bbf3ea8317b6efb10c025e92b63ce94eb2665803b80a20ef6e3b&"
-              alt=""
-            />
-          </div>
         </section>
         <section></section>
         <section>
