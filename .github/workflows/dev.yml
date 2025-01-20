@@ -6,9 +6,10 @@ on:
     branches: [ "dev" ]
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_TAG: ${{ github.sha }}
-  CLOUD_RUN_SERVICE: xxx
+  REPO: polititracker
+  #  REGISTRY: ghcr.io
+  IMAGE: dev
+  PUSH_SHA: ${{ github.sha }}
   GCP_REGION: europe-west3
   GCP_PROJECT_ID: polititracker-448419
 
@@ -21,11 +22,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Set lower case repo
+      - name: Set vars
         run: |
-          echo "REPO_LC=${REPO,,}" >>${GITHUB_ENV}
+          echo "REPO_LC=${REPO,,}" >>${GITHUB_ENV}\
+          echo "IMAGE_TAG=${GCP_REGION}-docker.pkg.dev/$PROJECT/$REPO/$IMAGE >> $GITHUB_ENV
         env:
           REPO: '${{ github.repository }}'
 
@@ -38,8 +40,8 @@ jobs:
 
       #      - name: Build and push Docker image
       #        run: |
-      #          docker build --pull -t ${{ env.REGISTRY }}/${{ env.REPO_LC }}-dev:${{ env.IMAGE_TAG }} .
-      #          docker push ${{ env.REGISTRY }}/${{ env.REPO_LC }}-dev:${{ env.IMAGE_TAG }}
+      #          docker build --pull -t ${{ env.REGISTRY }}/${{ env.REPO_LC }}-dev:${{ env.PUSH_SHA }} .
+      #          docker push ${{ env.REGISTRY }}/${{ env.REPO_LC }}-dev:${{ env.PUSH_SHA }}
 
       - name: GCP Auth
         uses: google-github-actions/auth@v1
