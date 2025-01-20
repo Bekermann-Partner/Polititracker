@@ -26,8 +26,8 @@ jobs:
 
       - name: Set vars
         run: |
-          echo "REPO_LC=${REPO,,}" >>${GITHUB_ENV}\
-          echo "IMAGE_TAG=${GCP_REGION}-docker.pkg.dev/$PROJECT/$REPO/$IMAGE >> $GITHUB_ENV
+          echo "REPO_LC=${REPO,,}" >>${GITHUB_ENV} \
+          echo "IMAGE_TAG=${GCP_REGION}-docker.pkg.dev/$PROJECT/$REPO/$IMAGE" >> $GITHUB_ENV
         env:
           REPO: '${{ github.repository }}'
 
