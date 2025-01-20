@@ -49,45 +49,52 @@ export function UserList({ defaultUsers }: { defaultUsers: User[] }) {
         />
       )}
 
-      <table className={'w-full'}>
-        <thead className={'bg-gray-50'}>
-          <tr>
-            <th className={'py-3'}>ID</th>
-            <th>Name</th>
-            <th>E-Mail</th>
-            <th>Admin</th>
-            <th>Aktion</th>
-          </tr>
-        </thead>
-        <tbody className={'text-center'}>
-          {users.map((user) => (
-            <tr key={user.id} className={'hover:bg-gray-100'}>
-              <td className={'py-3'}>{user.id}</td>
-              <td>{user.firstName + ' ' + user.lastName}</td>
-              <td>{user.email}</td>
-              <td>{user.isAdmin ? 'Ja' : 'Nein'}</td>
-              <td>
-                <button
-                  className={
-                    'bg-indigo-800 hover:bg-indigo-700 transition-colors text-white rounded px-3 py-1.5 ml-5'
-                  }
-                  onClick={() => makeUserAdmin(user.id)}
-                >
-                  Admin
-                </button>
-                <button
-                  className={
-                    'bg-red-800 hover:bg-red-700 transition-colors text-white rounded px-3 py-1.5 ml-5'
-                  }
-                  onClick={() => deleteUser(user.id)}
-                >
-                  Delete
-                </button>
-              </td>
+      <div className="overflow-hidden rounded-lg border border-gray-200 shadow-md dark:border-gray-700">
+        <table className={'w-full'}>
+          <thead className={'bg-gray-200 dark:bg-gray-800 dark:text-white'}>
+            <tr>
+              <th className={'py-3'}>ID</th>
+              <th>Name</th>
+              <th>E-Mail</th>
+              <th>Admin</th>
+              <th>Aktion</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className={'text-center'}>
+            {users.map((user) => (
+              <tr
+                key={user.id}
+                className={
+                  'hover:bg-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700 dark:text-white'
+                }
+              >
+                <td className={'py-3'}>{user.id}</td>
+                <td>{user.firstName + ' ' + user.lastName}</td>
+                <td>{user.email}</td>
+                <td>{user.isAdmin ? 'Ja' : 'Nein'}</td>
+                <td>
+                  <button
+                    className={
+                      'bg-indigo-800 hover:bg-indigo-700 transition-colors text-white rounded px-3 py-1.5 ml-5'
+                    }
+                    onClick={() => makeUserAdmin(user.id)}
+                  >
+                    Admin
+                  </button>
+                  <button
+                    className={
+                      'bg-red-800 hover:bg-red-700 transition-colors text-white rounded px-3 py-1.5 ml-5'
+                    }
+                    onClick={() => deleteUser(user.id)}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

@@ -102,7 +102,7 @@ export default function AddCommentEditor({
       )}
 
       {/* AddComment-Editor*/}
-      <div className="border border-gray-300 rounded bg-gray-50 shadow-sm p-4 mb-4">
+      <div className="border border-gray-300 rounded bg-gray-50 shadow-sm p-4 mb-4 dark:bg-gray-900 dark:border-gray-700 dark:text-white">
         <div className="flex">
           {currentUser && (
             <strong>
@@ -121,7 +121,7 @@ export default function AddCommentEditor({
         <textarea
           value={newCommentText}
           onChange={(e) => setNewCommentText(e.target.value)}
-          className="w-full border rounded p-2 mt-2"
+          className="w-full border rounded p-2 mt-2 dark:bg-gray-800 dark:border-gray-700"
           placeholder={
             parent
               ? 'Verfasse deine Antwort...'
