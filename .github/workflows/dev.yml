@@ -9,8 +9,8 @@ env:
   REGISTRY: ghcr.io
   IMAGE_TAG: ${{ github.sha }}
   CLOUD_RUN_SERVICE: xxx
-  REGION: fra
-  GCP_PROJECT: xxx
+  GCP_REGION: europe-west3
+  GCP_PROJECT_ID: polititracker-448419
 
 jobs:
   build-and-push-image:
@@ -40,6 +40,22 @@ jobs:
         run: |
           docker build --pull -t ${{ env.REGISTRY }}/${{ env.REPO_LC }}-dev:${{ env.IMAGE_TAG }} .
           docker push ${{ env.REGISTRY }}/${{ env.REPO_LC }}-dev:${{ env.IMAGE_TAG }}
+
+      - name: Set up GCP SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          version: 'latest'
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: ${{ env.GCP_PROJECT_ID }}
+
+      - name: Deploy latest Image to GCP
+        run: |
+          gcloud run deploy $CLOUD_RUN_SERVICE \
+          --image ${{env.REGISTRY}}/${{env.REPO_LC}}:${{env.IMAGE_TAG}} \
+          --region ${{env.GCP_REGION}} \
+          --platform managed \
+          --project ${{env.GCP_PROJECT_ID}} \
+          --allow-unauthenticated
 
   eslint-and-types:
     runs-on: ubuntu-latest
