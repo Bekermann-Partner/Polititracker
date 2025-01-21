@@ -32,7 +32,9 @@ export function Counter({
   }, [finalValue, initialValue]);
 
   return (
-    <h1 className={'text-3xl font-semibold'}>
+    <h1
+      className={'text-3xl font-semibold dark:text-indigo-300 text-indigo-700'}
+    >
       {count}
       {text}
     </h1>
