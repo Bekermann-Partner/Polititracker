@@ -35,12 +35,6 @@ export default async function LandingPage() {
                 </h1>
                 <div className={'flex justify-evenly mt-8'}>
                   <Counter
-                    initialValue={Math.ceil(commentCount * 0.8)}
-                    finalValue={commentCount}
-                    text={' Kommentare'}
-                  />
-
-                  <Counter
                     initialValue={0}
                     finalValue={0}
                     text={' Unternehmen'}
@@ -52,6 +46,12 @@ export default async function LandingPage() {
                     )}
                     finalValue={randomPoliticianImages.length}
                     text={'+ Politiker'}
+                  />
+
+                  <Counter
+                    initialValue={Math.ceil(commentCount * 0.8)}
+                    finalValue={commentCount}
+                    text={' Kommentare'}
                   />
                 </div>
 

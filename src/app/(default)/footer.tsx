@@ -1,7 +1,7 @@
 export function Footer() {
   return (
     <>
-      <footer className="card variant-outlined !bg-transparent border-t dark:border-t-gray-600 mt-28">
+      <footer className="card variant-outlined !bg-transparent border-t dark:border-t-gray-600">
         <div className="max-w-6xl mx-auto space-y-16 px-6 py-10 2xl:px-0">
           <div className="flex items-center justify-between rounded-md px-6 card variant-soft">
             <span className="text-title dark:text-white">
