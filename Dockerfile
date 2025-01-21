@@ -36,6 +36,8 @@ COPY --from=build /app/public ./public
 COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
 
+RUN chown -R nextjs:nextjs /app
+
 USER nextjs
 
 EXPOSE $PORT
