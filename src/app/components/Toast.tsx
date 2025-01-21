@@ -34,7 +34,7 @@ export default function Toast({
     <button
       onClick={onClose}
       aria-label="Close toast"
-      className={`fixed top-12 left-1/2 transform -translate-x-1/2 z-20 px-6 py-4 rounded-lg shadow-lg text-white ${
+      className={`fixed top-12 left-1/2 transform -translate-x-1/2 z-50 px-6 py-4 rounded-lg shadow-lg text-white ${
         type === 'success'
           ? 'bg-green-600'
           : type === 'error'

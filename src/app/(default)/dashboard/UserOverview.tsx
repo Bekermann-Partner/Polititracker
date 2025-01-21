@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
-import Image from 'next/image';
 import Link from 'next/link';
 import db from '@/_lib/db';
+import { GCS_AVATAR_URL_BASE } from '@/app/config';
 
 export async function UserOverview({ user }: { user: User }) {
   const followedPoliticians = await db.follow.count({
@@ -32,8 +32,8 @@ export async function UserOverview({ user }: { user: User }) {
             <div className="flex">
               {/* TODO: Auf kleineren Bildschirmen wird das aktuell noch sehr hässlich :/ */}
               <div className="flex flex-col items-center justify-center mr-4">
-                <Image
-                  src={`/user_avatars/${user.profile_image}`}
+                <img
+                  src={`${GCS_AVATAR_URL_BASE}/${user.profile_image}`}
                   alt={'Avatar'}
                   width={150}
                   height={150}

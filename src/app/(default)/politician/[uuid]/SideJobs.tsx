@@ -21,7 +21,7 @@ export async function SideJobs({
   return (
     <>
       {sideJobs.length == 0 && (
-        <div>
+        <div className={'dark:text-gray-300'}>
           Es wurden keine Nebentätigkeiten für {politician?.first_name}{' '}
           {politician?.last_name} gefunden.
         </div>

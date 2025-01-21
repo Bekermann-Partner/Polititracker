@@ -9,10 +9,10 @@ import * as jwt from 'jose';
 import { cookies } from 'next/headers';
 import { excludeFromObject } from '@/_lib/util';
 import { USER_SESSION_COOKIE_NAME } from '@/app/auth/config';
-import fs from 'fs/promises';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { revalidatePath } from 'next/cache';
+import { Storage } from '@google-cloud/storage';
 
 const updateUserValidation = zfd
   .formData({
@@ -118,35 +118,34 @@ export async function editUser(
 }
 
 async function saveProfileImage(user: User, file: File): Promise<string> {
-  const userImageDirectory = path.join(process.cwd(), 'public', 'user_avatars');
-
-  // create directory, if it does not exist (should never happen since we always have the default_avatar included)
-  await fs.mkdir(userImageDirectory, { recursive: true });
+  const storage = new Storage();
+  const bucket = storage.bucket(process.env.GCS_BUCKET_NAME!);
 
   const fileExtension = path.extname(file.name);
   const fileName = `${uuidv4()}${fileExtension}`;
-  const newFilePath = path.join(userImageDirectory, fileName);
 
-  // delete old file unless old file is default_avatar.jpg
-  if (user.profile_image !== 'default_avatar.jpg') {
-    console.log(
-      'Trying to delete old file: ' +
-        path.join(userImageDirectory, user.profile_image)
-    );
-    const oldFilePath = path.join(userImageDirectory, user.profile_image);
-    try {
-      await fs.unlink(oldFilePath);
-      console.log(`Old image file deleted: ${user.profile_image}`);
-    } catch (err) {
-      console.error(`Failed to delete old image file: ${err}`);
-    }
-  }
-
-  // save new file
-  console.log('Trying to save new image file under: ' + newFilePath);
   const buffer = Buffer.from(await file.arrayBuffer());
-  await fs.writeFile(newFilePath, buffer);
-  console.log(`New file image file saved: ${fileName}`);
+  const fileUpload = bucket.file(`user_avatars/${fileName}`);
+
+  try {
+    await fileUpload.save(buffer, {
+      contentType: file.type,
+    });
+    console.log(`File uploaded to GCS: ${fileName}`);
+
+    if (user.profile_image !== 'default_avatar.jpg') {
+      const oldFile = bucket.file(`user_avatars/${user.profile_image}`);
+      try {
+        await oldFile.delete();
+        console.log(`Old file deleted from GCS: ${user.profile_image}`);
+      } catch (err) {
+        console.error(`Failed to delete old file from GCS: ${err}`);
+      }
+    }
+  } catch (err) {
+    console.error(`Error uploading file to GCS: ${err}`);
+    throw err;
+  }
 
   return fileName;
 }
