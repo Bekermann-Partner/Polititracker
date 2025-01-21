@@ -9,12 +9,13 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@google-cloud/storage": "^7.15.0",
         "@prisma/client": "^6.0.1",
         "@types/bcrypt": "^5.0.2",
         "bcryptjs": "^2.4.3",
         "fuse.js": "^7.0.0",
         "jose": "^5.9.6",
-        "next": "15.1.0",
+        "next": "^15.1.5",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "react-icons": "^5.4.0",

@@ -7,7 +7,7 @@ import Toast from '@/app/components/Toast';
 import Skeleton from 'react-loading-skeleton';
 import AddCommentEditor from '@/app/(default)/politician/[uuid]/comments/AddCommentEditor';
 import UpdateCommentEditor from '@/app/(default)/politician/[uuid]/comments/UpdateCommentEditor';
-import Image from 'next/image';
+import { GCS_AVATAR_URL_BASE } from '@/app/config';
 
 interface DisplayCommentProps {
   currentUser: User | null;
@@ -117,8 +117,8 @@ export default function DisplayComment({
           {/* Display the Comment */}
           <div className="w-full border border-gray-200 rounded mt-2 p-2 shadow text-lg dark:bg-gray-900 dark:border-gray-700 dark:text-white">
             <div className="flex">
-              <Image
-                src={`/user_avatars/${currentComment.user.profile_image}`}
+              <img
+                src={`${GCS_AVATAR_URL_BASE}/${currentComment.user.profile_image}`}
                 alt={'Avatar'}
                 width={28}
                 height={28}

@@ -1,6 +1,6 @@
 import { User } from '@prisma/client';
 import db from '@/_lib/db';
-import Image from 'next/image';
+import { GCS_AVATAR_URL_BASE } from '@/app/config';
 
 export async function UserComments({ user }: { user: User }) {
   const comments = await db.comment.findMany({
@@ -21,8 +21,8 @@ export async function UserComments({ user }: { user: User }) {
               className="w-full border border-gray-200 rounded mt-4 p-2 shadow text-lg dark:bg-gray-900 dark:border-gray-700"
             >
               <div className="flex">
-                <Image
-                  src={`/user_avatars/${user.profile_image}`}
+                <img
+                  src={`${GCS_AVATAR_URL_BASE}/${user.profile_image}`}
                   alt={'Avatar'}
                   width={28}
                   height={28}

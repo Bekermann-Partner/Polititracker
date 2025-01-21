@@ -46,7 +46,9 @@ export async function PoliticianDetails({
             </h2>
           </div>
 
-          <FollowToggle user={user} polId={politician?.uuid ?? ''} />
+          {user != null && (
+            <FollowToggle user={user} polId={politician?.uuid ?? ''} />
+          )}
         </div>
 
         <div

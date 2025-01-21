@@ -2,9 +2,9 @@
 
 import Toast from '@/app/components/Toast';
 import { User } from '@prisma/client';
-import Image from 'next/image';
 import { useState } from 'react';
 import { editUser } from '@/app/(default)/dashboard/edit/editUserAction';
+import { GCS_AVATAR_URL_BASE } from '@/app/config';
 
 export default function ProfileEditor({ user }: { user: User }) {
   const [firstName, setFirstName] = useState<string>(user.firstName);
@@ -15,7 +15,7 @@ export default function ProfileEditor({ user }: { user: User }) {
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string>(
-    `/user_avatars/${user.profile_image}`
+    `${GCS_AVATAR_URL_BASE}/${user.profile_image}`
   );
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -99,7 +99,7 @@ export default function ProfileEditor({ user }: { user: User }) {
             <div className="flex justify-between">
               <div className="flex flex-col items-center">
                 {/* Display current image */}
-                <Image
+                <img
                   src={previewImage}
                   alt="Profilbild"
                   width={150}

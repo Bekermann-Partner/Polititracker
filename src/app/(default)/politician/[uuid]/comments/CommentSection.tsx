@@ -86,7 +86,8 @@ export default function CommentSection({
             <>
               {/* Button for enabing AddComment-Editor */}
               <button
-                className="bg-blue-500 text-white px-4 py-2 rounded mb-2"
+                disabled={currentUser == null}
+                className="disabled:bg-gray-500 disabled:cursor-auto bg-black  dark:disabled:bg-gray-800 dark:disabled:text-gray-500 dark:bg-gray-800 hover:bg-gray-700 text-white rounded px-3 py-1.5 w-fit mx-auto my-3 hover:cursor-pointer transition-all"
                 onClick={() =>
                   currentUser
                     ? setShowAddCommentEditor(true)
