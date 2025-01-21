@@ -36,7 +36,7 @@ COPY --from=build /app/public ./public
 COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-RUN chown -R nextjs:nextjs /app
+RUN chown -R nextjs:nodejs /app
 
 USER nextjs
 
