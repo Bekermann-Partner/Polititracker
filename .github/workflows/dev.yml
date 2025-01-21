@@ -73,7 +73,7 @@ jobs:
         run: |
           echo "REPO_LC=${GH_REPO,,}" >>${GITHUB_ENV}
           echo "IMAGE_TAG=${GCP_REGION}-docker.pkg.dev/$GCP_PROJECT_ID/$GCP_REPO/$GCP_IMAGE" >> $GITHUB_ENV
-          echo "COMMIT_HASH_SHORT=$(echo ${{github.sha}} | cut -c1-14)" >> $GITHUB_ENV
+          echo "COMMIT_HASH_SHORT=$(echo ${{github.sha}} | cut -c1-7)" >> $GITHUB_ENV
         env:
           GH_REPO: '${{ github.repository }}'
 
