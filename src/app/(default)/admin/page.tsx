@@ -6,7 +6,7 @@ export default async function AdminPage() {
 
   return (
     <>
-      <section className="pt-24">
+      <section className="pt-24 pb-24">
         <div className="mx-auto max-w-6xl">
           <h1 className={'text-3xl font-bold mb-5 dark:text-white'}>
             Nutzerübersicht
