@@ -45,7 +45,7 @@ export function ThemeSelector() {
     <div
       onClick={toggleTheme}
       className={
-        'hover:cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 p-1.5 rounded-full transition-colors'
+        'hover:cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 p-1.5 rounded-full transition-colors w-fit'
       }
     >
       {theme === ETheme.LIGHT && (

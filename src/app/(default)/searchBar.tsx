@@ -60,7 +60,7 @@ export function SearchBar({ politician }: { politician: Politician }) {
                   }
                 >
                   <Image
-                    className={'rounded-full'}
+                    className={'rounded-full max-w-[52px] max-h-[52px]'}
                     src={`/pol_profile_img/${politician.profile_image}`}
                     alt={''}
                     width={52}

@@ -5,6 +5,7 @@ import * as jwt from 'jose';
 import { User } from '@prisma/client';
 import { ThemeSelector } from '@/app/components/ThemeSelector';
 import Image from 'next/image';
+import { HeaderDropDownToggle } from '@/app/components/HeaderDropDownToggle';
 
 export async function Header() {
   const cookieJar = await cookies();
@@ -45,44 +46,13 @@ export async function Header() {
                     Polititracker
                   </Link>
                 </h1>
-                <div className="flex lg:hidden">
-                  <button
-                    id="menu-btn"
-                    aria-label="open menu"
-                    className="btn variant-ghost sz-md icon-only relative z-20 -mr-2.5 block cursor-pointer lg:hidden"
-                  >
-                    <svg
-                      className="text-title m-auto size-6 transition-[transform,opacity] duration-300 group-data-[state=active]:rotate-180 group-data-[state=active]:scale-0 group-data-[state=active]:opacity-0"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M3.75 9h16.5m-16.5 6.75h16.5"
-                      ></path>
-                    </svg>
-                    <svg
-                      className="text-title absolute inset-0 m-auto size-6 -rotate-180 scale-0 opacity-0 transition-[transform,opacity] duration-300 group-data-[state=active]:rotate-0 group-data-[state=active]:scale-100 group-data-[state=active]:opacity-100"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth="1.5"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M6 18 18 6M6 6l12 12"
-                      ></path>
-                    </svg>
-                  </button>
-                </div>
+
+                <HeaderDropDownToggle />
               </div>
-              <div className="w-full group-data-[state=active]:h-fit h-0 lg:w-fit flex-wrap justify-end items-center space-y-8 lg:space-y-0 lg:flex lg:h-fit md:flex-nowrap">
+              <div
+                id={'dropdown-elements'}
+                className="w-full group-data-[state=active]:h-fit h-0 lg:w-fit flex-wrap justify-end items-center space-y-8 lg:space-y-0 lg:flex lg:h-fit md:flex-nowrap"
+              >
                 <div className="mt-6 dark:text-body md:-ml-4 lg:mt-0">
                   <ul className="space-y-6 tracking-wide text-base lg:text-sm lg:flex lg:space-y-0">
                     <li
@@ -116,17 +86,17 @@ export async function Header() {
 
                 <div
                   className={
-                    'border-r h-[35px] w-1 dark:border-gray-600 border-gray-400 mr-3'
+                    'border-r h-[35px] w-1 dark:border-gray-600 border-gray-400 mr-3 hidden lg:block'
                   }
                 ></div>
 
-                <div className="w-full gap-2 pt-6 pb-4 lg:pb-0 items-center flex flex-col lg:flex-row lg:w-fit lg:pt-0">
+                <div className="gap-2 lg:pb-0 lg:items-center flex flex-col lg:flex-row w-full lg:w-fit">
                   {user != null ? (
                     <>
                       <Link
                         href={'/auth/sign-out'}
                         className={
-                          'bg-red-800 dark:bg-red-900 hover:bg-red-700 dark:hover:bg-red-800 transition-colors text-white rounded px-3 py-1.5'
+                          'bg-red-800 dark:bg-red-900 hover:bg-red-700 dark:hover:bg-red-800 transition-colors text-white rounded px-3 py-1.5 w-fit'
                         }
                       >
                         Abmelden
@@ -146,7 +116,7 @@ export async function Header() {
 
                 <div
                   className={
-                    'border-r h-[35px] w-1 dark:border-gray-600 border-gray-400 mr-3 ml-3'
+                    'border-r h-[35px] w-1 dark:border-gray-600 border-gray-400 mr-3 ml-3  hidden lg:block'
                   }
                 ></div>
 

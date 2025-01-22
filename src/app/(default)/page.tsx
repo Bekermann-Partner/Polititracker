@@ -33,7 +33,11 @@ export default async function LandingPage() {
                   Erfahre mehr über die Verbindungen zwischen Politikern und
                   Unternehmen!
                 </h1>
-                <div className={'flex justify-evenly mt-8'}>
+                <div
+                  className={
+                    'flex flex-col md:flex-row space-y-3 md:space-y-0 justify-evenly mt-8'
+                  }
+                >
                   <Counter
                     initialValue={0}
                     finalValue={0}
