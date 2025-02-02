@@ -12,11 +12,13 @@ model Politician {
   occupation    String?
   field_title   String?
 
-  ext_abgeordnetenwatch_id Int
+  ext_abgeordnetenwatch_id Int  @unique
 
   party_id Int
   party    Party @relation(fields: [party_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   followedBy   Follow[]   // If we ever need to look up who followed a specific politician
   comments     Comment[]  // comments for a politician
+  ratings      Rating[] @relation("PoliticianRatings")
+
 }
