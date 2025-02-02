@@ -1,0 +1,9 @@
+model Rating {
+  id             Int         @id @default(autoincrement())
+  politician_id  Int
+  url            String
+  company        String
+  stars          Int
+
+  politician     Politician @relation("PoliticianRatings", fields: [politician_id], references: [ext_abgeordnetenwatch_id], onDelete: Cascade)
+}
