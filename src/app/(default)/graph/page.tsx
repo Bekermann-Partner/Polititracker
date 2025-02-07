@@ -128,7 +128,7 @@ const GraphPage = () => {
               'target-arrow-shape': 'triangle',
               'target-arrow-color': '#aaa',
               label: 'data(label)',
-              'text-margin-y': '-10px',
+              'text-margin-y': -10,
               'font-size': '10px',
               color: '#555',
             },
