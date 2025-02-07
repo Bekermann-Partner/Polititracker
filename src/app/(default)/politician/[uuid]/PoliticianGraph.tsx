@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import cytoscape from 'cytoscape';
+declare module 'cytoscape';
 import { findPolitician } from '@/_actions/findPolitician';
 import { useDebounce } from '@/_lib/hooks/useDebounce';
 
@@ -36,7 +37,7 @@ interface Politician {
   ext_abgeordnetenwatch_id: number;
   first_name: string;
   last_name: string;
-  occupation?: string;
+  occupation?: string | null;
   party?: { short: string };
   profile_image?: string;
 }
@@ -51,21 +52,27 @@ interface PoliticianGraphProps {
   politicianId: number;
 }
 
-export default function PoliticianGraph({ 
-  politicianId ,
+export default function PoliticianGraph({
+  politicianId,
 }: PoliticianGraphProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const cyInstanceRef = useRef<cytoscape.Core | null>(null);
 
-  const [elements, setElements] = useState<(CytoscapeNode | CytoscapeEdge)[]>([]);
+  const [elements, setElements] = useState<(CytoscapeNode | CytoscapeEdge)[]>(
+    []
+  );
   const [companies, setCompanies] = useState<string[]>([]);
   const [visibleCompanies, setVisibleCompanies] = useState<string[]>([]);
-  const [originalRatings, setOriginalRatings] = useState<Record<string, number>>({});
+  const [originalRatings, setOriginalRatings] = useState<
+    Record<string, number>
+  >({});
 
   const [search, setSearch] = useState<string>('');
   const debouncedSearch = useDebounce(search, 500);
   const [searchResults, setSearchResults] = useState<Politician[]>([]);
-  const [additionalPoliticians, setAdditionalPoliticians] = useState<AdditionalPolitician[]>([]);
+  const [additionalPoliticians, setAdditionalPoliticians] = useState<
+    AdditionalPolitician[]
+  >([]);
 
   useEffect(() => {
     fetch(`/api/graph/ratings?politicianId=${politicianId}`)
@@ -84,9 +91,10 @@ export default function PoliticianGraph({
 
           if (!nodes.some((n) => n.data.id === politicianNodeId)) {
             nodes.push({
-              data: { 
-                id: politicianNodeId, 
-                label: `Politician ${rating.politician_id}` },
+              data: {
+                id: politicianNodeId,
+                label: `Politician ${rating.politician_id}`,
+              },
               classes: 'politician',
             });
           }
@@ -99,11 +107,11 @@ export default function PoliticianGraph({
           }
 
           edges.push({
-            data: { 
-              id: `edge-${rating.id}`, 
-              source: politicianNodeId, 
-              target: companyNodeId, 
-              label: `${rating.stars} ⭐` 
+            data: {
+              id: `edge-${rating.id}`,
+              source: politicianNodeId,
+              target: companyNodeId,
+              label: `${rating.stars} ⭐`,
             },
             classes: 'rating',
           });
@@ -118,7 +126,7 @@ export default function PoliticianGraph({
         setCompanies(uniqueCompanies);
         setVisibleCompanies(uniqueCompanies);
         setOriginalRatings(ratingsDict);
-      })
+      });
   }, [politicianId]);
 
   useEffect(() => {
@@ -157,7 +165,7 @@ export default function PoliticianGraph({
               'target-arrow-shape': 'triangle',
               'target-arrow-color': '#aaa',
               label: 'data(label)',
-              'text-margin-y': '-10px',
+              'text-margin-y': -10,
               'font-size': '10px',
               color: '#555',
             },
@@ -192,24 +200,26 @@ export default function PoliticianGraph({
     }
   }, [elements]);
 
-  //Update the visibility of company nodes when visibleCompanies changes.
   useEffect(() => {
     if (cyInstanceRef.current) {
       const cy = cyInstanceRef.current;
-      cy.nodes('.company').forEach((node) => {
-        const companyName = node.data('label');
+      cy.nodes('.company').forEach((node: cytoscape.NodeSingular) => {
+        const companyName = node.data('label') as string;
         if (visibleCompanies.includes(companyName)) {
-          node.show();
-          node.connectedEdges().forEach((edge) => edge.show());
+          node.style('display', 'element');
+          node.connectedEdges().forEach((edge: cytoscape.EdgeSingular) => {
+            edge.style('display', 'element');
+          });
         } else {
-          node.hide();
-          node.connectedEdges().forEach((edge) => edge.hide());
+          node.style('display', 'none');
+          node.connectedEdges().forEach((edge: cytoscape.EdgeSingular) => {
+            edge.style('display', 'none');
+          });
         }
       });
     }
   }, [visibleCompanies]);
 
-  //Search for additional politicians
   useEffect(() => {
     if (debouncedSearch.trim().length > 0) {
       findPolitician(debouncedSearch)
