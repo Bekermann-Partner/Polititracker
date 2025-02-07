@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import cytoscape from 'cytoscape';
 
-
 interface Rating {
   id: string;
   politician_id: number;
@@ -29,10 +28,11 @@ interface CytoscapeEdge {
   classes: string;
 }
 
-
 const GraphPage = () => {
   const cyRef = useRef<HTMLDivElement | null>(null);
-  const [elements, setElements] = useState<(CytoscapeNode | CytoscapeEdge)[]>([]);
+  const [elements, setElements] = useState<(CytoscapeNode | CytoscapeEdge)[]>(
+    []
+  );
 
   useEffect(() => {
     fetch('/api/graph/ratings')
@@ -40,31 +40,32 @@ const GraphPage = () => {
         if (!res.ok) throw new Error('Failed to fetch');
         return res.json();
       })
-      .then((data: Rating[]) => {  // Specify the expected API response type
+      .then((data: Rating[]) => {
+        // Specify the expected API response type
         console.log('Fetched Data:', data);
-  
+
         if (!data || data.length === 0) {
           console.warn('No data received from API.');
           return;
         }
-  
+
         const nodes: CytoscapeNode[] = [];
         const edges: CytoscapeEdge[] = [];
-  
+
         data.forEach((rating: Rating) => {
           const politicianId = `p-${rating.politician_id}`;
           const companyId = `c-${rating.company}`;
-  
+
           if (!nodes.find((n) => n.data.id === politicianId)) {
             nodes.push({
-              data: { 
-                id: politicianId, 
-                label: `Politician ${rating.politician_id}` 
+              data: {
+                id: politicianId,
+                label: `Politician ${rating.politician_id}`,
               },
               classes: 'politician',
             });
           }
-  
+
           if (!nodes.find((n) => n.data.id === companyId)) {
             nodes.push({
               data: { id: companyId, label: rating.company },
@@ -72,18 +73,17 @@ const GraphPage = () => {
             });
           }
 
-
           edges.push({
-            data: { 
-              id: `edge-${rating.id}`, 
-              source: politicianId, 
-              target: companyId, 
-              label: `${rating.stars} ⭐` 
+            data: {
+              id: `edge-${rating.id}`,
+              source: politicianId,
+              target: companyId,
+              label: `${rating.stars} ⭐`,
             },
             classes: 'rating',
           });
         });
-  
+
         setElements([...nodes, ...edges]);
       })
       .catch((err) => console.error('Fetch error:', err));
