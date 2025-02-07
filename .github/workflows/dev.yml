@@ -8,7 +8,7 @@ on:
 env:
   PUSH_SHA: ${{ github.sha }}
   GCP_IMAGE: dev
-  GCP_REGION: europe-west4
+  GCP_REGION: europe-west3
   GCP_REPO: polititracker
   GCP_PROJECT_ID: polititracker-448419
 
