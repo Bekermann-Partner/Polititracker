@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import cytoscape from 'cytoscape';
-declare module 'cytoscape';
 import { findPolitician } from '@/_actions/findPolitician';
 import { useDebounce } from '@/_lib/hooks/useDebounce';
 
@@ -10,14 +9,21 @@ interface Rating {
   id: number;
   politician_id: number;
   url: string;
-  company: string;
   stars: number;
+  company?: {
+    id: number;
+    name: string;
+    image: string;
+  } | null;
 }
 
 interface CytoscapeNode {
   data: {
     id: string;
     label?: string;
+    similarity?: number;
+    profileImg?: string;
+    logo?: string;
   };
   classes: string;
 }
@@ -52,6 +58,10 @@ interface PoliticianGraphProps {
   politicianId: number;
 }
 
+const getLogoPath = (companyName: string): string => {
+  return `/logos/${companyName.replace(/\s+/g, '_')}_image.png`;
+};
+
 export default function PoliticianGraph({
   politicianId,
 }: PoliticianGraphProps) {
@@ -83,50 +93,75 @@ export default function PoliticianGraph({
       .then((data: Rating[]) => {
         const nodes: CytoscapeNode[] = [];
         const edges: CytoscapeEdge[] = [];
-        const ratingsDict: Record<string, number> = {};
+
+        const politicianNodeId = `p-${politicianId}`;
+        nodes.push({
+          data: {
+            id: politicianNodeId,
+            label: `Politician ${politicianId}`,
+            profileImg: `/pol_profile_img/${politicianId}.png`,
+          },
+          classes: 'politician',
+        });
+
+        const companyRatingSums: Record<
+          string,
+          { sum: number; count: number; companyId: number }
+        > = {};
 
         data.forEach((rating: Rating) => {
-          const politicianNodeId = `p-${rating.politician_id}`;
-          const companyNodeId = `c-${rating.company}`;
-
-          if (!nodes.some((n) => n.data.id === politicianNodeId)) {
-            nodes.push({
-              data: {
-                id: politicianNodeId,
-                label: `Politician ${rating.politician_id}`,
-              },
-              classes: 'politician',
-            });
-          }
-
-          if (!nodes.some((n) => n.data.id === companyNodeId)) {
-            nodes.push({
-              data: { id: companyNodeId, label: rating.company },
-              classes: 'company',
-            });
-          }
-
-          edges.push({
-            data: {
-              id: `edge-${rating.id}`,
-              source: politicianNodeId,
-              target: companyNodeId,
-              label: `${rating.stars} ⭐`,
-            },
-            classes: 'rating',
-          });
-
-          if (!(rating.company in ratingsDict)) {
-            ratingsDict[rating.company] = rating.stars;
+          if (rating.company) {
+            const companyName = rating.company.name;
+            if (!companyRatingSums[companyName]) {
+              companyRatingSums[companyName] = {
+                sum: 0,
+                count: 0,
+                companyId: rating.company.id,
+              };
+            }
+            companyRatingSums[companyName].sum += rating.stars;
+            companyRatingSums[companyName].count += 1;
           }
         });
 
-        setElements([...nodes, ...edges]);
-        const uniqueCompanies = Array.from(new Set(data.map((r) => r.company)));
+        const avgRatings: Record<string, number> = {};
+        Object.entries(companyRatingSums).forEach(
+          ([companyName, { sum, count }]) => {
+            avgRatings[companyName] = sum / count;
+          }
+        );
+        setOriginalRatings(avgRatings);
+
+        Object.entries(companyRatingSums).forEach(
+          ([companyName, { companyId }]) => {
+            const companyNodeId = `c-${companyId}`;
+            nodes.push({
+              data: {
+                id: companyNodeId,
+                label: companyName,
+                logo: getLogoPath(companyName),
+              },
+              classes: 'company',
+            });
+            edges.push({
+              data: {
+                id: `edge-${politicianId}-${companyId}`,
+                source: politicianNodeId,
+                target: companyNodeId,
+                label: `${Math.round(avgRatings[companyName])} ⭐`,
+              },
+              classes: 'rating',
+            });
+          }
+        );
+
+        const uniqueCompanies = Object.keys(avgRatings);
         setCompanies(uniqueCompanies);
         setVisibleCompanies(uniqueCompanies);
-        setOriginalRatings(ratingsDict);
-      });
+
+        setElements([...nodes, ...edges]);
+      })
+      .catch((err) => console.error('Error loading original ratings:', err));
   }, [politicianId]);
 
   useEffect(() => {
@@ -138,23 +173,32 @@ export default function PoliticianGraph({
           {
             selector: 'node.politician',
             style: {
+              'background-image': 'data(profileImg)',
+              'background-fit': 'contain',
               'background-color': '#007bff',
               label: 'data(label)',
               color: '#fff',
-              'text-valign': 'center',
+              'text-valign': 'bottom',
               'text-halign': 'center',
-              'font-size': '12px',
+              'font-size': '10px',
+              width: '60px',
+              height: '60px',
             },
           },
           {
             selector: 'node.company',
             style: {
+              'background-image': 'data(logo)',
+              'background-fit': 'contain',
               'background-color': '#28a745',
               label: 'data(label)',
               color: '#fff',
-              'text-valign': 'center',
+              'text-valign': 'bottom',
               'text-halign': 'center',
-              'font-size': '12px',
+              'font-size': '10px',
+              'text-margin-y': 5,
+              width: '60px',
+              height: '60px',
             },
           },
           {
@@ -171,15 +215,18 @@ export default function PoliticianGraph({
             },
           },
           {
-            // Additional politicians get a different color.
             selector: 'node.additional',
             style: {
+              'background-image': 'data(profileImg)',
+              'background-fit': 'contain',
               'background-color': '#d63384',
               label: 'data(label)',
               color: '#fff',
-              'text-valign': 'center',
+              'text-valign': 'bottom',
               'text-halign': 'center',
-              'font-size': '12px',
+              'font-size': '10px',
+              width: '60px',
+              height: '60px',
             },
           },
         ],
@@ -230,7 +277,6 @@ export default function PoliticianGraph({
     }
   }, [debouncedSearch]);
 
-  //Function to add an additional politician to the graph.
   const addAdditionalPolitician = async (pol: Politician) => {
     const newPolId = pol.ext_abgeordnetenwatch_id;
     const newPolLabel = `${pol.first_name} ${pol.last_name}`;
@@ -242,49 +288,72 @@ export default function PoliticianGraph({
         throw new Error('Failed to load ratings for additional politician');
       const ratingsData: Rating[] = await resRatings.json();
 
-      //Only include ratings for companies already in the original graph.
-      const filteredRatings = ratingsData.filter((rating) =>
-        companies.includes(rating.company)
-      );
-      if (filteredRatings.length === 0) {
-        alert(
-          'This politician has no connection to the companies in the original graph.'
-        );
-        return;
-      }
-
-      //Calculate similarity with the original politician.
-      let agreements = 0;
-      filteredRatings.forEach((rating) => {
-        if (originalRatings[rating.company] === rating.stars) {
-          agreements++;
+      const additionalSums: Record<
+        string,
+        { sum: number; count: number; companyId: number }
+      > = {};
+      ratingsData.forEach((rating) => {
+        if (rating.company && companies.includes(rating.company.name)) {
+          const compName = rating.company.name;
+          if (!additionalSums[compName]) {
+            additionalSums[compName] = {
+              sum: 0,
+              count: 0,
+              companyId: rating.company.id,
+            };
+          }
+          additionalSums[compName].sum += rating.stars;
+          additionalSums[compName].count += 1;
         }
       });
-      const similarity = Math.round(
-        (agreements / filteredRatings.length) * 100
-      );
+      const additionalAverages: Record<string, number> = {};
+      Object.entries(additionalSums).forEach(([compName, { sum, count }]) => {
+        additionalAverages[compName] = sum / count;
+      });
+
+      let agreements = 0;
+      let commonCompanies = 0;
+      Object.keys(additionalAverages).forEach((compName) => {
+        if (compName in originalRatings) {
+          commonCompanies++;
+          if (
+            Math.round(additionalAverages[compName]) ===
+            Math.round(originalRatings[compName])
+          ) {
+            agreements++;
+          }
+        }
+      });
+      const similarity =
+        commonCompanies > 0
+          ? Math.round((agreements / commonCompanies) * 100)
+          : 0;
 
       if (cyInstanceRef.current) {
         const cy = cyInstanceRef.current;
-        //Add the additional politician node if not already added.
         if (cy.getElementById(`p-${newPolId}`).empty()) {
           cy.add({
             group: 'nodes',
-            data: { id: `p-${newPolId}`, label: newPolLabel, similarity },
+            data: {
+              id: `p-${newPolId}`,
+              label: newPolLabel,
+              similarity,
+              profileImg: `/pol_profile_img/${newPolId}.png`,
+            },
             classes: 'additional',
           });
         }
-        //Add edges for each connection.
-        filteredRatings.forEach((rating) => {
-          const edgeId = `edge-${newPolId}-${rating.company}`;
+        Object.entries(additionalSums).forEach(([compName, { companyId }]) => {
+          const edgeId = `edge-${newPolId}-${companyId}`;
           if (cy.getElementById(edgeId).empty()) {
+            const avg = additionalAverages[compName];
             cy.add({
               group: 'edges',
               data: {
                 id: edgeId,
                 source: `p-${newPolId}`,
-                target: `c-${rating.company}`,
-                label: `${rating.stars} ⭐`,
+                target: `c-${companyId}`,
+                label: `${Math.round(avg)} ⭐`,
               },
               classes: 'rating',
             });
@@ -292,7 +361,6 @@ export default function PoliticianGraph({
         });
       }
 
-      // Update the UI list.
       setAdditionalPoliticians((prev) => [
         ...prev,
         { id: newPolId, name: newPolLabel, similarity },
@@ -330,7 +398,7 @@ export default function PoliticianGraph({
         </div>
       </div>
 
-      {/*Search Bar for Additional Politicians*/}
+      {/* Search Bar for Additional Politicians */}
       <div
         style={{
           position: 'relative',
@@ -348,7 +416,6 @@ export default function PoliticianGraph({
           onChange={(e) => setSearch(e.currentTarget.value)}
           style={{ position: 'relative', zIndex: 1000 }}
           onFocus={() => {
-            //stop any ongoing Cytoscape animations and force a resize.
             if (cyInstanceRef.current) {
               try {
                 cyInstanceRef.current.stop();
@@ -399,7 +466,7 @@ export default function PoliticianGraph({
         )}
       </div>
 
-      {/*Display Added Politicians and Similarity*/}
+      {/* Display Added Politicians and Similarity */}
       {additionalPoliticians.length > 0 && (
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
           <h3>Added Politicians &amp; Agreement Percentage</h3>
@@ -422,7 +489,7 @@ export default function PoliticianGraph({
         </div>
       )}
 
-      {/*Cytoscape Graph Container*/}
+      {/* Cytoscape Graph Container */}
       <div
         ref={containerRef}
         style={{ width: '100%', height: '500px', border: '1px solid black' }}
