@@ -5,13 +5,30 @@ import cytoscape from 'cytoscape';
 import { findPolitician } from '@/_actions/findPolitician';
 import { useDebounce } from '@/_lib/hooks/useDebounce';
 
-// Data interfaces
 interface Rating {
   id: number;
   politician_id: number;
   url: string;
   company: string;
   stars: number;
+}
+
+interface CytoscapeNode {
+  data: {
+    id: string;
+    label?: string;
+  };
+  classes: string;
+}
+
+interface CytoscapeEdge {
+  data: {
+    id: string;
+    source: string;
+    target: string;
+    label?: string;
+  };
+  classes: string;
 }
 
 interface Politician {
@@ -34,25 +51,21 @@ interface PoliticianGraphProps {
   politicianId: number;
 }
 
-export default function PoliticianGraph({
-  politicianId,
+export default function PoliticianGraph({ 
+  politicianId ,
 }: PoliticianGraphProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const cyInstanceRef = useRef<cytoscape.Core | null>(null);
 
-  const [elements, setElements] = useState<any[]>([]);
+  const [elements, setElements] = useState<(CytoscapeNode | CytoscapeEdge)[]>([]);
   const [companies, setCompanies] = useState<string[]>([]);
   const [visibleCompanies, setVisibleCompanies] = useState<string[]>([]);
-  const [originalRatings, setOriginalRatings] = useState<
-    Record<string, number>
-  >({});
+  const [originalRatings, setOriginalRatings] = useState<Record<string, number>>({});
 
   const [search, setSearch] = useState<string>('');
   const debouncedSearch = useDebounce(search, 500);
   const [searchResults, setSearchResults] = useState<Politician[]>([]);
-  const [additionalPoliticians, setAdditionalPoliticians] = useState<
-    AdditionalPolitician[]
-  >([]);
+  const [additionalPoliticians, setAdditionalPoliticians] = useState<AdditionalPolitician[]>([]);
 
   useEffect(() => {
     fetch(`/api/graph/ratings?politicianId=${politicianId}`)
@@ -61,45 +74,40 @@ export default function PoliticianGraph({
         return res.json();
       })
       .then((data: Rating[]) => {
-        const nodes: any[] = [];
-        const edges: any[] = [];
+        const nodes: CytoscapeNode[] = [];
+        const edges: CytoscapeEdge[] = [];
         const ratingsDict: Record<string, number> = {};
 
-        data.forEach((rating) => {
+        data.forEach((rating: Rating) => {
           const politicianNodeId = `p-${rating.politician_id}`;
           const companyNodeId = `c-${rating.company}`;
 
-          // Add politician node (once)
-          if (!nodes.find((n) => n.data.id === politicianNodeId)) {
+          if (!nodes.some((n) => n.data.id === politicianNodeId)) {
             nodes.push({
-              data: {
-                id: politicianNodeId,
-                label: `Politician ${rating.politician_id}`,
-              },
+              data: { 
+                id: politicianNodeId, 
+                label: `Politician ${rating.politician_id}` },
               classes: 'politician',
             });
           }
 
-          // Add company node (once)
-          if (!nodes.find((n) => n.data.id === companyNodeId)) {
+          if (!nodes.some((n) => n.data.id === companyNodeId)) {
             nodes.push({
               data: { id: companyNodeId, label: rating.company },
               classes: 'company',
             });
           }
 
-          // Add edge
           edges.push({
-            data: {
-              id: `edge-${rating.id}`,
-              source: politicianNodeId,
-              target: companyNodeId,
-              label: `${rating.stars} ⭐`,
+            data: { 
+              id: `edge-${rating.id}`, 
+              source: politicianNodeId, 
+              target: companyNodeId, 
+              label: `${rating.stars} ⭐` 
             },
             classes: 'rating',
           });
 
-          // Save original rating for the company (first occurrence only), to be changed, so we take the average
           if (!(rating.company in ratingsDict)) {
             ratingsDict[rating.company] = rating.stars;
           }
@@ -111,7 +119,6 @@ export default function PoliticianGraph({
         setVisibleCompanies(uniqueCompanies);
         setOriginalRatings(ratingsDict);
       })
-      .catch((err) => console.error('Error loading original ratings:', err));
   }, [politicianId]);
 
   useEffect(() => {

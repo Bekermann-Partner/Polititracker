@@ -3,9 +3,36 @@
 import { useEffect, useRef, useState } from 'react';
 import cytoscape from 'cytoscape';
 
+
+interface Rating {
+  id: string;
+  politician_id: number;
+  company: string;
+  stars: number;
+}
+
+interface CytoscapeNode {
+  data: {
+    id: string;
+    label?: string;
+  };
+  classes: string;
+}
+
+interface CytoscapeEdge {
+  data: {
+    id: string;
+    source: string;
+    target: string;
+    label?: string;
+  };
+  classes: string;
+}
+
+
 const GraphPage = () => {
   const cyRef = useRef<HTMLDivElement | null>(null);
-  const [elements, setElements] = useState<any[]>([]);
+  const [elements, setElements] = useState<(CytoscapeNode | CytoscapeEdge)[]>([]);
 
   useEffect(() => {
     fetch('/api/graph/ratings')
@@ -13,33 +40,31 @@ const GraphPage = () => {
         if (!res.ok) throw new Error('Failed to fetch');
         return res.json();
       })
-      .then((data) => {
+      .then((data: Rating[]) => {  // Specify the expected API response type
         console.log('Fetched Data:', data);
-
+  
         if (!data || data.length === 0) {
           console.warn('No data received from API.');
           return;
         }
-
-        const nodes: any[] = [];
-        const edges: any[] = [];
-
-        data.forEach((rating: any) => {
+  
+        const nodes: CytoscapeNode[] = [];
+        const edges: CytoscapeEdge[] = [];
+  
+        data.forEach((rating: Rating) => {
           const politicianId = `p-${rating.politician_id}`;
           const companyId = `c-${rating.company}`;
-
-          // Add Nodes (Politician)
+  
           if (!nodes.find((n) => n.data.id === politicianId)) {
             nodes.push({
-              data: {
-                id: politicianId,
-                label: `Politician ${rating.politician_id}`,
+              data: { 
+                id: politicianId, 
+                label: `Politician ${rating.politician_id}` 
               },
               classes: 'politician',
             });
           }
-
-          // add Nodes (Company)
+  
           if (!nodes.find((n) => n.data.id === companyId)) {
             nodes.push({
               data: { id: companyId, label: rating.company },
@@ -47,19 +72,18 @@ const GraphPage = () => {
             });
           }
 
-          // Add Edge (Rating)
+
           edges.push({
-            data: {
-              id: `edge-${rating.id}`,
-              source: politicianId,
-              target: companyId,
-              label: `${rating.stars} ⭐`,
+            data: { 
+              id: `edge-${rating.id}`, 
+              source: politicianId, 
+              target: companyId, 
+              label: `${rating.stars} ⭐` 
             },
             classes: 'rating',
           });
         });
-
-        console.log('Generated Elements:', [...nodes, ...edges]); // Debugging: Check elements before rendering
+  
         setElements([...nodes, ...edges]);
       })
       .catch((err) => console.error('Fetch error:', err));
