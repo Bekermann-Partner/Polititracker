@@ -46,7 +46,7 @@ export default async function LandingPage() {
             </h2>
             <div className="space-y-4">
               {topCommentedPoliticians.map((pol) => (
-                <Link href={`/politicians/${pol.uuid}`}>
+                <Link href={`/politicians/${pol.uuid}`} key={pol.uuid}>
                   <div className="border rounded-lg shadow-md p-4 flex items-center space-x-4 hover:shadow-lg transition-all duration-200 dark:bg-gray-900 hover:dark:bg-gray-800 dark:border-gray-700 mb-4">
                     <Image
                       src={`/pol_profile_img/${pol.profile_image}`}
@@ -79,7 +79,7 @@ export default async function LandingPage() {
             </h2>
             <div className="space-y-4">
               {topClickedPoliticians.map((pol) => (
-                <Link href={`/politicians/${pol.uuid}`}>
+                <Link href={`/politicians/${pol.uuid}`} key={pol.uuid}>
                   <div className="border rounded-lg shadow-md p-4 flex items-center space-x-4 hover:shadow-lg transition-all duration-200 dark:bg-gray-900 hover:dark:bg-gray-800 dark:border-gray-700 mb-4">
                     <Image
                       src={`/pol_profile_img/${pol.profile_image}`}
