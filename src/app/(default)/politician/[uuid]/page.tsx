@@ -27,6 +27,7 @@ export default async function PoliticianView({
 }: {
   params: Promise<{ uuid: string }>;
 }) {
+
   const polId = (await params).uuid;
   const politician = await fetchPolitician(polId);
 
@@ -48,9 +49,11 @@ export default async function PoliticianView({
         </React.Suspense>
 
         <h1 className="mt-8 text-2xl font-semibold">Kommentare:</h1>
+
         <CommentSectionWrapper
           politicianPromise={Promise.resolve(politician)}
         />
+
 
         {/*Graph inserted here*/}
         <React.Suspense fallback={<div>Loading Graph...</div>}>
