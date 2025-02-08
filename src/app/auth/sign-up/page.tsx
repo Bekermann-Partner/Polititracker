@@ -2,6 +2,7 @@
 
 import { signUp } from '@/app/auth/sign-up/signUpAction';
 import React from 'react';
+import Link from 'next/link';
 
 export default function SignUpPage() {
   const [loading] = React.useState<boolean>(false);
@@ -137,6 +138,12 @@ export default function SignUpPage() {
               >
                 Nutzungbedingungen gelesen
               </label>
+              <Link
+                href="/user-agreement"
+                className="text-sm text-blue-600 hover:underline ml-2"
+              >
+                User Agreement
+              </Link>
             </div>
 
             <div>
