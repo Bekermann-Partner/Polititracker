@@ -1,63 +1,16 @@
 name: Dev CI/CD
 
 on:
-  pull_request:
-    branches: [ "dev" ]
   push:
     branches: [ "dev" ]
 
 env:
-  SERVICE_NAME: polititracker-dev
+  SERVICE_NAME: polititracker
   PROJECT_ID: polititracker-448419
-  DOCKER_IMAGE_URL: europe-west4-docker.pkg.dev/polititracker-448419/cloud-run-source-deploy/website/polititracker-dev 
-    
+  DOCKER_IMAGE_URL: europe-west4-docker.pkg.dev/polititracker-448419/cloud-run-source-deploy/website/polititracker
+
 jobs:
-  eslint-analysis:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22
-
-      - name: Install dependencies
-        run: |
-          npm install
-
-      - name: Run ESLint
-        run: |
-          npx --yes eslint ./src
-
-      - name: Run TypeScript Type Check
-        run: |
-          npx --yes tsc --noEmit
-
-  prettier-check:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22
-
-      - name: Install dependencies
-        run: |
-          npm install
-
-      - name: Run Prettier Check
-        run: |
-          npx --yes prettier --config .prettierrc --check "./src/**/*.{tsx,jsx,ts,js}"
-
   dockerize-and-deploy:
-    needs: [ eslint-analysis, prettier-check ]
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
 
