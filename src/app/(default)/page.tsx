@@ -36,7 +36,7 @@ export default async function LandingPage() {
               <div className="text-center sm:mx-auto sm:w-10/12 lg:mr-auto lg:mt-0 lg:w-4/5">
                 <h1 className="mt-8 text-wrap text-4xl md:text-5xl font-semibold text-title xl:text-5xl xl:[line-height:1.125] dark:text-white">
                   Erfahre mehr über die Verbindungen zwischen Politikern und
-                  Unternehmen!
+                  Unternehmen! TEST TEST TEST
                 </h1>
                 <div
                   className={
