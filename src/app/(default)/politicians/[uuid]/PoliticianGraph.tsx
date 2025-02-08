@@ -373,10 +373,15 @@ export default function PoliticianGraph({
 
   return (
     <div>
-      <h2 style={{ textAlign: 'center' }}>Graph of Ratings</h2>
+      <h2 className="dark:text-white" style={{ textAlign: 'center' }}>
+        Graph of Ratings
+      </h2>
 
       {/* Company Filter */}
-      <div style={{ marginBottom: '10px', textAlign: 'center' }}>
+      <div
+        className="dark:text-white"
+        style={{ marginBottom: '10px', textAlign: 'center' }}
+      >
         <strong>Filter Companies:</strong>
         <div style={{ display: 'inline-block', marginLeft: '10px' }}>
           {companies.map((company) => (
@@ -468,21 +473,23 @@ export default function PoliticianGraph({
 
       {/* Display Added Politicians and Similarity */}
       {additionalPoliticians.length > 0 && (
-        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+        <div
+          className="dark:text-white"
+          style={{ textAlign: 'center', marginBottom: '20px' }}
+        >
           <h3>Added Politicians &amp; Agreement Percentage</h3>
           {additionalPoliticians.map((pol) => (
-            <div key={pol.id} style={{ marginBottom: '10px' }}>
-              <strong>{pol.name}</strong>
-              <div style={{ display: 'inline-block', marginLeft: '10px' }}>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={pol.similarity}
-                  disabled
-                  style={{ width: '200px' }}
-                />
-                <span style={{ marginLeft: '5px' }}>{pol.similarity}%</span>
+            <div key={pol.id}>
+              <div className="inline-block">
+                <div className="flex items-center space-x-2 justify-center">
+                  <strong>{pol.name}</strong>
+                  <progress
+                    value={pol.similarity}
+                    max="100"
+                    className="h-2 w-96 rounded-lg [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:bg-blue-500"
+                  />
+                  <span>{pol.similarity}%</span>
+                </div>
               </div>
             </div>
           ))}
@@ -492,7 +499,7 @@ export default function PoliticianGraph({
       {/* Cytoscape Graph Container */}
       <div
         ref={containerRef}
-        style={{ width: '100%', height: '500px', border: '1px solid black' }}
+        className="w-full h-[500px] border border-black dark:border-gray-700 bg-white dark:bg-gray-900 mb-8"
       />
     </div>
   );

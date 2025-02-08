@@ -56,18 +56,18 @@ export default async function PoliticianView({
           <PoliticianDetails politicianPromise={Promise.resolve(politician)} />
         </React.Suspense>
 
-        <h1 className="mt-8 text-2xl font-semibold">Nebentätigkeiten:</h1>
+        <h1 className="mt-8 text-2xl dark:text-white font-semibold">Nebentätigkeiten:</h1>
         <React.Suspense fallback={<LoadingSideJobs />}>
           <SideJobs politicianPromise={Promise.resolve(politician)} />
         </React.Suspense>
 
-        <h1 className="mt-8 text-2xl font-semibold">Kommentare:</h1>
+        <h1 className="mt-8 text-2xl dark:text-white font-semibold">Kommentare:</h1>
         <CommentSectionWrapper
           politicianPromise={Promise.resolve(politician)}
         />
 
         {/*Graph inserted here*/}
-        <React.Suspense fallback={<div>Loading Graph...</div>}>
+        <React.Suspense fallback={<div className='dark:text-white '>Loading Graph...</div>}>
           <PoliticianGraph politicianId={politicianNumericId} />
         </React.Suspense>
       </div>
