@@ -12,43 +12,40 @@ import db from '@/_lib/db';
  * @returns {NextResponse} - A JSON response with the follow status.
  */
 export async function GET(request: Request) {
-    console.log("Got Follow Request");
+  console.log('Got Follow Request');
 
-    // Get userId and polId from URL parameters
-    const url = new URL(request.url);
-    const userId = url.searchParams.get('userId');
-    const polId = url.searchParams.get('polId');
-    if (!userId || !polId) {
-        return NextResponse.json(
-            { error: 'Missing userId or polId' },
-            { status: 400 }
-        );
+  // Get userId and polId from URL parameters
+  const url = new URL(request.url);
+  const userId = url.searchParams.get('userId');
+  const polId = url.searchParams.get('polId');
+  if (!userId || !polId) {
+    return NextResponse.json(
+      { error: 'Missing userId or polId' },
+      { status: 400 }
+    );
+  }
+
+  try {
+    // Check if the user is following the politician
+    const entry = await db.follow.findUnique({
+      where: {
+        userId_polUuid: {
+          userId: Number(userId),
+          polUuid: polId,
+        },
+      },
+    });
+
+    const isFollowed = entry !== null;
+
+    return NextResponse.json({ isFollowed });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    } else {
+      return NextResponse.json({ error: 'Unknown error' }, { status: 500 });
     }
-
-    try {
-        // Check if the user is following the politician
-        const entry = await db.follow.findUnique({
-            where: {
-                userId_polUuid: {
-                    userId: Number(userId),
-                    polUuid: polId,
-                },
-            },
-        });
-
-        const isFollowed = entry !== null;
-
-        return NextResponse.json({ isFollowed });
-    } catch (error) {
-        if (error instanceof Error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        } else {
-            return NextResponse.json(
-                { error: 'Unknown error' },
-                { status: 500 }
-            );
-        }
-    }
+  }
 }
 
 /**
@@ -62,61 +59,68 @@ export async function GET(request: Request) {
  * @returns {NextResponse} - A JSON response with the updated follow status.
  */
 export async function POST(request: Request) {
-    console.log("Got Toggle Follow Request");
-    
-    // Get userId and polId from URL parameters
-    const url = new URL(request.url);
-    const userId = url.searchParams.get('userId');
-    const polId = url.searchParams.get('polId');
-    if (!polId || !userId) {
-        return NextResponse.json(
-            { error: 'Missing userId or polId' },
-            { status: 400 }
-        );
-    }
+  console.log('Got Toggle Follow Request');
 
-    try {
-        // Check if the user is already following the politician
-        const existingFollow = await db.follow.findUnique({
-            where: {
-                userId_polUuid: {
-                    userId: Number(userId),
-                    polUuid: polId,
-                },
-            },
-        });
+  // Get userId and polId from URL parameters
+  const url = new URL(request.url);
+  const userId = url.searchParams.get('userId');
+  const polId = url.searchParams.get('polId');
+  if (!polId || !userId) {
+    return NextResponse.json(
+      { error: 'Missing userId or polId' },
+      { status: 400 }
+    );
+  }
 
-        if (existingFollow) {
-            // If the user is already following, remove the follow entry (unfollow)
-            await db.follow.delete({
-                where: {
-                    userId_polUuid: {
-                        userId: Number(userId),
-                        polUuid: polId,
-                    },
-                },
-            });
-            console.log("User with id " + userId + " is no longer following politician with id " + polId)
-            return NextResponse.json({ isFollowed: false });
-        } else {
-            // If the user is not following, add a new follow entry (follow)
-            await db.follow.create({
-                data: {
-                    userId: Number(userId),
-                    polUuid: polId,
-                },
-            });
-            console.log("User with id " + userId + " is now following politician with id " + polId)
-            return NextResponse.json({ isFollowed: true });
-        }
-    } catch (error) {
-        if (error instanceof Error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
-        } else {
-            return NextResponse.json(
-                { error: 'Unknown error' },
-                { status: 500 }
-            );
-        }
+  try {
+    // Check if the user is already following the politician
+    const existingFollow = await db.follow.findUnique({
+      where: {
+        userId_polUuid: {
+          userId: Number(userId),
+          polUuid: polId,
+        },
+      },
+    });
+
+    if (existingFollow) {
+      // If the user is already following, remove the follow entry (unfollow)
+      await db.follow.delete({
+        where: {
+          userId_polUuid: {
+            userId: Number(userId),
+            polUuid: polId,
+          },
+        },
+      });
+      console.log(
+        'User with id ' +
+          userId +
+          ' is no longer following politician with id ' +
+          polId
+      );
+      return NextResponse.json({ isFollowed: false });
+    } else {
+      // If the user is not following, add a new follow entry (follow)
+      await db.follow.create({
+        data: {
+          userId: Number(userId),
+          polUuid: polId,
+        },
+      });
+      console.log(
+        'User with id ' +
+          userId +
+          ' is now following politician with id ' +
+          polId
+      );
+      return NextResponse.json({ isFollowed: true });
     }
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    } else {
+      return NextResponse.json({ error: 'Unknown error' }, { status: 500 });
+    }
+  }
 }

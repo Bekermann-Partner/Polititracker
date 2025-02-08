@@ -12,6 +12,8 @@ model Politician {
   occupation    String?
   field_title   String?
 
+  click_count Int @default(0)
+
   ext_abgeordnetenwatch_id Int  @unique
 
   party_id Int
@@ -20,5 +22,4 @@ model Politician {
   followedBy   Follow[]   // If we ever need to look up who followed a specific politician
   comments     Comment[]  // comments for a politician
   ratings      Rating[] @relation("PoliticianRatings")
-
 }

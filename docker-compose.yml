@@ -20,13 +20,11 @@ services:
       - db-volume:/var/lib/mysql
 
   db-seeder:
-    depends_on:
-      db:
-        condition: service_healthy
     build: ./prisma/seeder
     environment:
-      - MYSQL_USERNAME=test
-      - MYSQL_PASSWORD=a
+      - MYSQL_HOST=localhost
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=passwd
       - MYSQL_DATABASE=database
 
   web:

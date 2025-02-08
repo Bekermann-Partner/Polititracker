@@ -1,5 +1,5 @@
-import React from "react";
-import "./globals.css";
+import React from 'react';
+import './globals.css';
 
 export default function RootLayout({
   children,
@@ -8,7 +8,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={"antialiased bg-white dark:bg-gray-950"}>
+      <head>
+        <title>Polititracker</title>
+        <link rel="icon" href="/img/logo.png" />
+      </head>
+      <body className={'antialiased bg-white dark:bg-gray-950'}>
         {children}
       </body>
     </html>
