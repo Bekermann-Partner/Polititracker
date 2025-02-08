@@ -5,13 +5,6 @@ on:
   push:
     branches: [ "dev" ]
 
-#env:
-#  PUSH_SHA: ${{ github.sha }}
-#  GCP_IMAGE: dev
-#  GCP_REGION: europe-west3
-#  GCP_REPO: polititracker
-#  GCP_PROJECT_ID: polititracker-448419
-
 env:
   SERVICE_NAME: polititracker
   PROJECT_ID: polititracker-448419
@@ -63,6 +56,8 @@ jobs:
           npx --yes prettier --config .prettierrc --check "./src/**/*.{tsx,jsx,ts,js}"
 
   dockerize-and-deploy:
+    needs: [ eslint-analysis, prettier-check ]
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
 
     steps:
@@ -89,43 +84,11 @@ jobs:
 
       - name: Deploy to Cloud Run
         run: |
+          DATE=$(date +%d.%m.%Y)
+          echo "COMMIT_HASH_SHORT=$(echo ${{github.sha}} | cut -c1-7)" >> $GITHUB_ENV
           echo SERVICE_NAME $SERVICE_NAME
           gcloud run deploy $SERVICE_NAME \
             --image ${{ env.DOCKER_IMAGE_URL }}:latest \
             --region europe-west4 \
+            --update-env-vars "BUILD_DATE=$DATE,BUILD_VERSION=${{env.COMMIT_HASH_SHORT}}" \
             --allow-unauthenticated
-            
-#      - name: Set vars
-#        run: |
-#          echo "REPO_LC=${GH_REPO,,}" >>${GITHUB_ENV}
-#          echo "IMAGE_TAG=${GCP_REGION}-docker.pkg.dev/$GCP_PROJECT_ID/$GCP_REPO/$GCP_IMAGE" >> $GITHUB_ENV
-#          echo "COMMIT_HASH_SHORT=$(echo ${{github.sha}} | cut -c1-7)" >> $GITHUB_ENV
-#        env:
-#          GH_REPO: '${{ github.repository }}'
-
-#      - name: GCP Auth
-#        uses: google-github-actions/auth@v1
-#        with:
-#          credentials_json: "${{secrets.GC_IMAGE_MANAGER_KEY}}"
-
-#      - name: Setup Cloud SDK
-#        uses: google-github-actions/setup-gcloud@v1
-
-#      - name: Docker auth
-#        run: gcloud auth configure-docker ${{env.GCP_REGION}}-docker.pkg.dev --quiet
-
-#      - name: Build & Push
-#        uses: docker/build-push-action@v5
-#        with:
-#          context: .
-#          push: true
-#          tags: ${{env.IMAGE_TAG}}
-
-#      - name: Deploy to Cloud Run
-#        run: |
-#          DATE=$(date +%d.%m.%Y)
-#          gcloud run deploy dev \
-#          --image="${{env.IMAGE_TAG}}" \
-#          --region="${{env.GCP_REGION}}" \
-#          --update-env-vars "BUILD_DATE=$DATE,BUILD_VERSION=${{env.COMMIT_HASH_SHORT}}" \
-#          --platform=managed --quiet
