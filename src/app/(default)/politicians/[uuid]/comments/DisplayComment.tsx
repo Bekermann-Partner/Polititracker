@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 import { Comment, Politician, User } from '@prisma/client';
-import { CommentWithNestedReplies } from '@/app/(default)/politician/[uuid]/comments/types';
+import { CommentWithNestedReplies } from '@/app/(default)/politicians/[uuid]/comments/types';
 import Toast from '@/app/components/Toast';
 import Skeleton from 'react-loading-skeleton';
-import AddCommentEditor from '@/app/(default)/politician/[uuid]/comments/AddCommentEditor';
-import UpdateCommentEditor from '@/app/(default)/politician/[uuid]/comments/UpdateCommentEditor';
+import AddCommentEditor from '@/app/(default)/politicians/[uuid]/comments/AddCommentEditor';
+import UpdateCommentEditor from '@/app/(default)/politicians/[uuid]/comments/UpdateCommentEditor';
 import { GCS_AVATAR_URL_BASE } from '@/app/config';
 
 interface DisplayCommentProps {
