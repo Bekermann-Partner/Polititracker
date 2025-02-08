@@ -5,9 +5,9 @@ on:
     branches: [ "dev" ]
 
 env:
-  SERVICE_NAME: polititracker
+  SERVICE_NAME: polititracker-dev
   PROJECT_ID: polititracker-448419
-  DOCKER_IMAGE_URL: europe-west4-docker.pkg.dev/polititracker-448419/cloud-run-source-deploy/website/polititracker
+  DOCKER_IMAGE_URL: europe-west4-docker.pkg.dev/polititracker-448419/cloud-run-source-deploy/website/polititracker-dev
 
 jobs:
   dockerize-and-deploy:
