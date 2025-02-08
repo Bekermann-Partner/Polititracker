@@ -103,6 +103,6 @@ jobs:
           DATE=$(date +%d.%m.%Y)
           gcloud run deploy dev \
           --image="${{env.SERVICE_IMAGE_TAG}}" \
-          --region="${{env.SERVICE_GCP_REGION}}" \
+          --region="${{env.SERVICE_REGION}}" \
           --update-env-vars "BUILD_DATE=$DATE,BUILD_VERSION=${{env.COMMIT_HASH_SHORT}}" \
           --platform=managed --quiet
