@@ -64,6 +64,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set commit hash
+        run: echo "COMMIT_HASH_SHORT=$(echo ${{github.sha}} | cut -c1-7)" >> $GITHUB_ENV
+        env:
+          GH_REPO: '${{ github.repository }}'
+
       - name: Google Cloud Auth
         uses: 'google-github-actions/auth@v2'
         with:
@@ -85,7 +90,6 @@ jobs:
       - name: Deploy to Cloud Run
         run: |
           DATE=$(date +%d.%m.%Y)
-          echo "COMMIT_HASH_SHORT=$(echo ${{github.sha}} | cut -c1-7)" >> $GITHUB_ENV
           echo SERVICE_NAME $SERVICE_NAME
           gcloud run deploy $SERVICE_NAME \
             --image ${{ env.DOCKER_IMAGE_URL }}:latest \
