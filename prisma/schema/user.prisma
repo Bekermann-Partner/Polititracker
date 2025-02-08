@@ -1,15 +1,19 @@
 model User {
-  id            Int       @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  firstName     String
-  lastName      String
+  firstName String
+  lastName  String
 
-  email         String    @unique
-  password      String
+  email    String @unique
+  password String
 
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now())
+  profile_image String @default("default_avatar.jpg")
 
-  isFollowing   Follow[]
-  comments      Comment[]
+  isAdmin Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  isFollowing Follow[]
+  comments    Comment[]
 }

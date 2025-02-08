@@ -1,0 +1,573 @@
+id,name,image
+1,Volkswagen,Volkswagen_image.png
+2,Schwarz-Gruppe,Schwarz-Gruppe_image.png
+3,BMW,BMW_image.png
+4,Mercedes-Benz,Mercedes-Benz_image.png
+5,Lidl,Lidl_image.png
+6,Deutsche Telekom,Deutsche_Telekom_image.png
+7,Uniper,Uniper_image.png
+8,E.ON,E.ON_image.png
+9,Bosch,Bosch_image.png
+10,BASF,BASF_image.png
+11,Rewe,Rewe_image.png
+12,DHL,DHL_image.png
+13,Innogy,Innogy_image.png
+14,Siemens,Siemens_image.png
+15,Edeka,Edeka_image.png
+16,Audi,Audi_image.png
+17,Deutsche Bahn,Deutsche_Bahn_image.png
+18,EnBW,EnBW_image.png
+19,Daimler Truck,Daimler_Truck_image.png
+20,Bayer,Bayer_image.png
+21,Traton,Traton_image.png
+22,BP,BP_image.png
+23,Thüga,Thüga_image.png
+24,ZF,ZF_image.png
+25,Continental,Continental_image.png
+26,ThyssenKrupp,ThyssenKrupp_image.png
+27,Fresenius,Fresenius_image.png
+28,Porsche,Porsche_image.png
+29,RWE,RWE_image.png
+30,Phoenix Pharma,Phoenix_Pharma_image.png
+31,Kaufland,Kaufland_image.png
+32,Shell,Shell_image.png
+33,Lufthansa,Lufthansa_image.png
+34,Amazon,Amazon_image.png
+35,SAP,SAP_image.png
+36,Metro,Metro_image.png
+37,Linde,Linde_image.png
+38,Derpart,Derpart_image.png
+39,Vattenfall,Vattenfall_image.png
+40,Siemens Energy,Siemens_Energy_image.png
+41,Aldi Nord,Aldi_Nord_image.png
+42,Mercedes-Benz Mobility,Mercedes-Benz_Mobility_image.png
+43,Hochtief,Hochtief_image.png
+44,Volkswagen Leasing,Volkswagen_Leasing_image.png
+45,Boehringer Ingelheim,Boehringer_Ingelheim_image.png
+46,Heraeus,Heraeus_image.png
+47,Baywa,Baywa_image.png
+48,VNG,VNG_image.png
+49,Adidas,Adidas_image.png
+50,Henkel,Henkel_image.png
+51,MediaMarktSaturn,MediaMarktSaturn_image.png
+52,Ceconomy,Ceconomy_image.png
+53,Siemens Healthineers,Siemens_Healthineers_image.png
+54,ANWR,ANWR_image.png
+55,Heidelberg Materials,Heidelberg_Materials_image.png
+56,Merck,Merck_image.png
+57,Bertelsmann,Bertelsmann_image.png
+58,Würth,Würth_image.png
+59,Fresenius Medical Care,Fresenius_Medical_Care_image.png
+60,Brenntag,Brenntag_image.png
+61,Schenker,Schenker_image.png
+62,SEFE,SEFE_image.png
+63,Wintershall Dea,Wintershall_Dea_image.png
+64,Aurubis,Aurubis_image.png
+65,Evonik,Evonik_image.png
+66,Covestro,Covestro_image.png
+67,Hapag-Lloyd,Hapag-Lloyd_image.png
+68,Aldi Süd,Aldi_Süd_image.png
+69,Biontech,Biontech_image.png
+70,Eurofactor,Eurofactor_image.png
+71,ExxonMobil,ExxonMobil_image.png
+72,Tennet,Tennet_image.png
+73,TUI,TUI_image.png
+74,Schaeffler,Schaeffler_image.png
+75,Lekkerland,Lekkerland_image.png
+76,Marquard & Bahls,Marquard_&_Bahls_image.png
+77,Knauf,Knauf_image.png
+78,MAN Truck & Bus,MAN_Truck_&_Bus_image.png
+79,BSH,BSH_image.png
+80,Total Energies,Total_Energies_image.png
+81,Ford,Ford_image.png
+82,Amprion,Amprion_image.png
+83,Liebherr,Liebherr_image.png
+84,Rossmann,Rossmann_image.png
+85,AirPlus,AirPlus_image.png
+86,Droege,Droege_image.png
+87,Opel,Opel_image.png
+88,Netto,Netto_image.png
+89,Mahle,Mahle_image.png
+90,Salzgitter,Salzgitter_image.png
+91,Penny,Penny_image.png
+92,Helios,Helios_image.png
+93,Strabag,Strabag_image.png
+94,Remondis,Remondis_image.png
+95,50Hertz,50Hertz_image.png
+96,Vodafone,Vodafone_image.png
+97,dm,dm_image.png
+98,Airbus Defence,Airbus_Defence_image.png
+99,Kion,Kion_image.png
+100,Stadtwerke Köln,Stadtwerke_Köln_image.png
+101,SüdFactoring,SüdFactoring_image.png
+102,maxingvest,maxingvest_image.png
+103,Airbus,Airbus_image.png
+104,Zalando,Zalando_image.png
+105,RWE Vertrieb,RWE_Vertrieb_image.png
+106,EWE,EWE_image.png
+107,Carl Zeiss,Carl_Zeiss_image.png
+108,MHK,MHK_image.png
+109,Delivery Hero,Delivery_Hero_image.png
+110,Globus,Globus_image.png
+111,Stadtwerke München,Stadtwerke_München_image.png
+112,Südzucker,Südzucker_image.png
+113,Agravis,Agravis_image.png
+114,Trianel,Trianel_image.png
+115,Edeka Minden-Hannover,Edeka_Minden-Hannover_image.png
+116,McKesson,McKesson_image.png
+117,Eurobaustoff,Eurobaustoff_image.png
+118,E/D/E,E/D/E_image.png
+119,Beiersdorf,Beiersdorf_image.png
+120,B. Braun,B._Braun_image.png
+121,Tengelmann,Tengelmann_image.png
+122,Hoyer,Hoyer_image.png
+123,Enercity,Enercity_image.png
+124,Noweda,Noweda_image.png
+125,Benteler,Benteler_image.png
+126,Theo Müller,Theo_Müller_image.png
+127,Telefónica,Telefónica_image.png
+128,Infineon,Infineon_image.png
+129,TK Elevator,TK_Elevator_image.png
+130,Puma,Puma_image.png
+131,Roche,Roche_image.png
+132,Helm,Helm_image.png
+133,Google,Google_image.png
+134,Fresenius Kabi,Fresenius_Kabi_image.png
+135,Rhenus,Rhenus_image.png
+136,John Deere,John_Deere_image.png
+137,Brose,Brose_image.png
+138,Alliance Healthcare,Alliance_Healthcare_image.png
+139,DB Regio,DB_Regio_image.png
+140,HelloFresh,HelloFresh_image.png
+141,Bosch Rexroth,Bosch_Rexroth_image.png
+142,DB InfraGO,DB_InfraGO_image.png
+143,Samsung,Samsung_image.png
+144,Exyte,Exyte_image.png
+145,Ingram Micro,Ingram_Micro_image.png
+146,Obi,Obi_image.png
+147,Sandoz,Sandoz_image.png
+148,Rheinmetall,Rheinmetall_image.png
+149,Mann+Hummel,Mann+Hummel_image.png
+150,Trumpf,Trumpf_image.png
+151,Stihl,Stihl_image.png
+152,Der Kreis,Der_Kreis_image.png
+153,Norma,Norma_image.png
+154,Galeria,Galeria_image.png
+155,Asklepios,Asklepios_image.png
+156,Miele,Miele_image.png
+157,Microsoft,Microsoft_image.png
+158,Bosch Automotive Steering,Bosch_Automotive_Steering_image.png
+159,Arrow,Arrow_image.png
+160,Stadtwerke Frankfurt,Stadtwerke_Frankfurt_image.png
+161,Züblin,Züblin_image.png
+162,Rehau,Rehau_image.png
+163,Leoni,Leoni_image.png
+164,Deutsche Börse,Deutsche_Börse_image.png
+165,Hilti,Hilti_image.png
+166,Oldendorff,Oldendorff_image.png
+167,Symrise,Symrise_image.png
+168,TD SYNNEX,TD_SYNNEX_image.png
+169,Webasto,Webasto_image.png
+170,Sonepar,Sonepar_image.png
+171,Sanofi,Sanofi_image.png
+172,Berlinwasser,Berlinwasser_image.png
+173,AVIA,AVIA_image.png
+174,DB Cargo,DB_Cargo_image.png
+175,Novartis,Novartis_image.png
+176,Gas-Union,Gas-Union_image.png
+177,Hornbach,Hornbach_image.png
+178,Bilfinger,Bilfinger_image.png
+179,JET,JET_image.png
+180,Edeka Rhein-Ruhr,Edeka_Rhein-Ruhr_image.png
+181,Eni,Eni_image.png
+182,Haniel,Haniel_image.png
+183,McDonald's,McDonald's_image.png
+184,Knorr-Bremse,Knorr-Bremse_image.png
+185,Hugo Boss,Hugo_Boss_image.png
+186,Enercon,Enercon_image.png
+187,EvoBus,EvoBus_image.png
+188,Dr. Oetker,Dr._Oetker_image.png
+189,ProSiebenSat.1,ProSiebenSat.1_image.png
+190,LVV Leipzig,LVV_Leipzig_image.png
+191,Philips,Philips_image.png
+192,FTI,FTI_image.png
+193,1&1,1&1_image.png
+194,Vinci,Vinci_image.png
+195,GIZ,GIZ_image.png
+196,Kuka,Kuka_image.png
+197,Swiss Steel,Swiss_Steel_image.png
+198,Vaillant,Vaillant_image.png
+199,Viessmann,Viessmann_image.png
+200,Fuchs,Fuchs_image.png
+201,Saria,Saria_image.png
+202,Gauselmann,Gauselmann_image.png
+203,Festo,Festo_image.png
+204,PHW,PHW_image.png
+205,Intersnack,Intersnack_image.png
+206,Sixt,Sixt_image.png
+207,Hellmann,Hellmann_image.png
+208,Kostal,Kostal_image.png
+209,Werhahn,Werhahn_image.png
+210,Fressnapf,Fressnapf_image.png
+211,Heinemann,Heinemann_image.png
+212,BASF Coatings,BASF_Coatings_image.png
+213,Zeppelin,Zeppelin_image.png
+214,Steag,Steag_image.png
+215,Emil Frey,Emil_Frey_image.png
+216,Axel Springer,Axel_Springer_image.png
+217,Umicore,Umicore_image.png
+218,Rolls-Royce Power Systems,Rolls-Royce_Power_Systems_image.png
+219,Dow,Dow_image.png
+220,Diehl,Diehl_image.png
+221,Orlen,Orlen_image.png
+222,Stada,Stada_image.png
+223,Dekra,Dekra_image.png
+224,BAT,BAT_image.png
+225,Aunde,Aunde_image.png
+226,OMV,OMV_image.png
+227,Fujitsu,Fujitsu_image.png
+228,Lufthansa Technik,Lufthansa_Technik_image.png
+229,IBM,IBM_image.png
+230,Otto Fuchs,Otto_Fuchs_image.png
+231,MAN Energy Solutions,MAN_Energy_Solutions_image.png
+232,Douglas,Douglas_image.png
+233,Nestlé,Nestlé_image.png
+234,Novelis,Novelis_image.png
+235,Procter & Gamble Germany,Procter_&_Gamble_Germany_image.png
+236,Gemalto,Gemalto_image.png
+237,Hewlett Packard,Hewlett_Packard_image.png
+238,Alfred Kärcher,Alfred_Kärcher_image.png
+239,Cronimet Holding,Cronimet_Holding_image.png
+240,Phoenix Contact,Phoenix_Contact_image.png
+241,Sartorius,Sartorius_image.png
+242,Drägerwerk,Drägerwerk_image.png
+243,Arlanxeo Deutschland,Arlanxeo_Deutschland_image.png
+244,Tchibo,Tchibo_image.png
+245,Vorwerk,Vorwerk_image.png
+246,Handelsgesellschaft Peter Cremer,Handelsgesellschaft_Peter_Cremer_image.png
+247,Wirtgen Group,Wirtgen_Group_image.png
+248,August Storck,August_Storck_image.png
+249,Schmolz + Bickenbach,Schmolz_+_Bickenbach_image.png
+250,T-Systems International,T-Systems_International_image.png
+251,Raiffeisen Waren-Zentrale Rhein-Main,Raiffeisen_Waren-Zentrale_Rhein-Main_image.png
+252,ABB Deutschland,ABB_Deutschland_image.png
+253,Comparex,Comparex_image.png
+254,Hubert Burda Media,Hubert_Burda_Media_image.png
+255,Volkswagen Original Teile Logistik,Volkswagen_Original_Teile_Logistik_image.png
+256,Intel Deutschland,Intel_Deutschland_image.png
+257,Sana Kliniken,Sana_Kliniken_image.png
+258,DB Fernverkehr,DB_Fernverkehr_image.png
+259,Salzgitter Flachstahl,Salzgitter_Flachstahl_image.png
+260,Linde Material Handling,Linde_Material_Handling_image.png
+261,BASF Polyurethanes,BASF_Polyurethanes_image.png
+262,Hansewerk,Hansewerk_image.png
+263,Avacon,Avacon_image.png
+264,Freenet,Freenet_image.png
+265,Edeka Südbayern,Edeka_Südbayern_image.png
+266,Haribo,Haribo_image.png
+267,Union Tank Eckstein (UTA),Union_Tank_Eckstein_(UTA)_image.png
+268,Salzgitter Mannesmann Handel,Salzgitter_Mannesmann_Handel_image.png
+269,H&M Hennes & Mauritz,H&M_Hennes_&_Mauritz_image.png
+270,Westfleisch,Westfleisch_image.png
+271,SMS Group,SMS_Group_image.png
+272,DB Energie,DB_Energie_image.png
+273,FCA Germany,FCA_Germany_image.png
+274,Altana,Altana_image.png
+275,TÜV Süd,TÜV_Süd_image.png
+276,DMG Mori,DMG_Mori_image.png
+277,Hermes Europe,Hermes_Europe_image.png
+278,Synlab,Synlab_image.png
+279,Michelin Reifenwerke,Michelin_Reifenwerke_image.png
+280,IDS Logistik,IDS_Logistik_image.png
+281,Coca-Cola European Partners,Coca-Cola_European_Partners_image.png
+282,Friedhelm Loh Stiftung,Friedhelm_Loh_Stiftung_image.png
+283,Mitteldeutsche Netzgesellschaft Strom,Mitteldeutsche_Netzgesellschaft_Strom_image.png
+284,LSG Lufthansa Service Holding,LSG_Lufthansa_Service_Holding_image.png
+285,Körber,Körber_image.png
+286,E.Dis,E.Dis_image.png
+287,Saarstahl,Saarstahl_image.png
+288,dormakaba Deutschland,dormakaba_Deutschland_image.png
+289,Epcos,Epcos_image.png
+290,Heidelberger Druckmaschinen,Heidelberger_Druckmaschinen_image.png
+291,Technische Werke Dresden,Technische_Werke_Dresden_image.png
+292,Unitymedia,Unitymedia_image.png
+293,RheinEnergie,RheinEnergie_image.png
+294,Aton,Aton_image.png
+295,RTL,RTL_image.png
+296,Edeka Hessenring,Edeka_Hessenring_image.png
+297,IBM Global Business Services,IBM_Global_Business_Services_image.png
+298,Neumann Gruppe,Neumann_Gruppe_image.png
+299,Diebold Nixdorf,Diebold_Nixdorf_image.png
+300,GE Deutschland Holding,GE_Deutschland_Holding_image.png
+301,PricewaterhouseCoopers (PwC),PricewaterhouseCoopers_(PwC)_image.png
+302,FÜR SIE Handelsgenossenschaft,FÜR_SIE_Handelsgenossenschaft_image.png
+303,Lechwerke,Lechwerke_image.png
+304,Randstad Deutschland,Randstad_Deutschland_image.png
+305,EK Servicegroup,EK_Servicegroup_image.png
+306,3M Deutschland,3M_Deutschland_image.png
+307,Hydro Aluminium Rolled Products,Hydro_Aluminium_Rolled_Products_image.png
+308,AVAG Holding,AVAG_Holding_image.png
+309,Bauer Media Group,Bauer_Media_Group_image.png
+310,Dussmann Group,Dussmann_Group_image.png
+311,Max Bögl Bauservice,Max_Bögl_Bauservice_image.png
+312,Charité - Universitätsmedizin Berlin,Charité_-_Universitätsmedizin_Berlin_image.png
+313,Rewe Dortmund Großhandel,Rewe_Dortmund_Großhandel_image.png
+314,ArcelorMittal Bremen,ArcelorMittal_Bremen_image.png
+315,Apleona,Apleona_image.png
+316,Expert,Expert_image.png
+317,PreussenElektra,PreussenElektra_image.png
+318,Senvion,Senvion_image.png
+319,Röchling,Röchling_image.png
+320,Envia Mitteldeutsche Energie,Envia_Mitteldeutsche_Energie_image.png
+321,Hauptgenossenschaft Nord,Hauptgenossenschaft_Nord_image.png
+322,EK Group,EK_Group_image.png
+323,KSB,KSB_image.png
+324,C&A Mode,C&A_Mode_image.png
+325,Bayerngas,Bayerngas_image.png
+326,Paul Hartmann,Paul_Hartmann_image.png
+327,Computacenter,Computacenter_image.png
+328,Fraunhofer-Gesellschaft,Fraunhofer-Gesellschaft_image.png
+329,Georgsmarienhütte,Georgsmarienhütte_image.png
+330,Toom Baumarkt,Toom_Baumarkt_image.png
+331,Giesecke & Devrient,Giesecke_&_Devrient_image.png
+332,Lufthansa Cargo,Lufthansa_Cargo_image.png
+333,J. Bünting Beteiligungs,J._Bünting_Beteiligungs_image.png
+334,Zedach,Zedach_image.png
+335,Sky,Sky_image.png
+336,Hüttenwerke Krupp Mannesmann,Hüttenwerke_Krupp_Mannesmann_image.png
+337,Rolls-Royce Deutschland,Rolls-Royce_Deutschland_image.png
+338,Wortmann Schuh-Holding,Wortmann_Schuh-Holding_image.png
+339,DER Touristik,DER_Touristik_image.png
+340,Leonhard Weiss,Leonhard_Weiss_image.png
+341,Radeberger Gruppe,Radeberger_Gruppe_image.png
+342,Schott,Schott_image.png
+343,Nordzucker,Nordzucker_image.png
+344,Kautex Textron,Kautex_Textron_image.png
+345,Saint-Gobain Building Distribution Deutschland,Saint-Gobain_Building_Distribution_Deutschland_image.png
+346,Volvo Car Germany,Volvo_Car_Germany_image.png
+347,Rohde & Schwarz,Rohde_&_Schwarz_image.png
+348,TÜV Rheinland,TÜV_Rheinland_image.png
+349,Süwag Vertrieb,Süwag_Vertrieb_image.png
+350,Roche Pharma,Roche_Pharma_image.png
+351,JM Holding,JM_Holding_image.png
+352,RAG Deutsche Steinkohle,RAG_Deutsche_Steinkohle_image.png
+353,Europa Möbel-Verbund,Europa_Möbel-Verbund_image.png
+354,Getrag,Getrag_image.png
+355,Fiege Logistik,Fiege_Logistik_image.png
+356,Mars Deutschland,Mars_Deutschland_image.png
+357,Zooplus,Zooplus_image.png
+358,Alba,Alba_image.png
+359,Stadtwerke Düsseldorf,Stadtwerke_Düsseldorf_image.png
+360,Finanz Informatik,Finanz_Informatik_image.png
+361,Kaefer,Kaefer_image.png
+362,Celanese,Celanese_image.png
+363,Bernard Krone Holding,Bernard_Krone_Holding_image.png
+364,Schmitz Cargobull,Schmitz_Cargobull_image.png
+365,AG der Dillinger Hüttenwerke,AG_der_Dillinger_Hüttenwerke_image.png
+366,Einrichtungspartnerring VME,Einrichtungspartnerring_VME_image.png
+367,Heag Holding,Heag_Holding_image.png
+368,Bauer AG,Bauer_AG_image.png
+369,Olympus Europa,Olympus_Europa_image.png
+370,Bäko-Zentrale,Bäko-Zentrale_image.png
+371,Xella International,Xella_International_image.png
+372,Schüco International,Schüco_International_image.png
+373,Pfizer Deutschland,Pfizer_Deutschland_image.png
+374,Grammer,Grammer_image.png
+375,SKF,SKF_image.png
+376,Lausitz Energie Kraftwerke,Lausitz_Energie_Kraftwerke_image.png
+377,Biesterfeld,Biesterfeld_image.png
+378,Reemtsma Cigarettenfabriken,Reemtsma_Cigarettenfabriken_image.png
+379,Adecco Germany Holding,Adecco_Germany_Holding_image.png
+380,DPD Deutschland,DPD_Deutschland_image.png
+381,Westdeutsche Lotterie,Westdeutsche_Lotterie_image.png
+382,Intersport,Intersport_image.png
+383,GVS Gasversorgung Süddeutschland,GVS_Gasversorgung_Süddeutschland_image.png
+384,Friedrich Boysen,Friedrich_Boysen_image.png
+385,Hyundai Motor Deutschland,Hyundai_Motor_Deutschland_image.png
+386,Philip Morris,Philip_Morris_image.png
+387,Imperial Logistic International,Imperial_Logistic_International_image.png
+388,Entega,Entega_image.png
+389,KPMG,KPMG_image.png
+390,Vivantes,Vivantes_image.png
+391,Thüringer Energie,Thüringer_Energie_image.png
+392,swb,swb_image.png
+393,Ernst & Young (EY),Ernst_&_Young_(EY)_image.png
+394,Deutsche Vermögensberatung,Deutsche_Vermögensberatung_image.png
+395,Unilever Deutschland,Unilever_Deutschland_image.png
+396,ElringKlinger,ElringKlinger_image.png
+397,Air Liquide Industriegase,Air_Liquide_Industriegase_image.png
+398,ADM Germany,ADM_Germany_image.png
+399,Seat Deutschland,Seat_Deutschland_image.png
+400,Melitta Unternehmensgruppe,Melitta_Unternehmensgruppe_image.png
+401,Der Holzring,Der_Holzring_image.png
+402,Georg von Holtzbrinck,Georg_von_Holtzbrinck_image.png
+403,Toyota Deutschland,Toyota_Deutschland_image.png
+404,Euronics Deutschland,Euronics_Deutschland_image.png
+405,Peek & Cloppenburg,Peek_&_Cloppenburg_image.png
+406,Takata Europe,Takata_Europe_image.png
+407,Renault Deutschland,Renault_Deutschland_image.png
+408,ISG Sanitär-Handelsgesellschaft,ISG_Sanitär-Handelsgesellschaft_image.png
+409,Pfalzwerke,Pfalzwerke_image.png
+410,Dohle Handelsgruppe Holding,Dohle_Handelsgruppe_Holding_image.png
+411,Indus Holding,Indus_Holding_image.png
+412,GfK SE,GfK_SE_image.png
+413,Heristo AG,Heristo_AG_image.png
+414,Rhön-Klinikum AG,Rhön-Klinikum_AG_image.png
+415,Köster,Köster_image.png
+416,Medion,Medion_image.png
+417,Panalpina Welttransport Deutschland,Panalpina_Welttransport_Deutschland_image.png
+418,A. Moksel,A._Moksel_image.png
+419,VSE,VSE_image.png
+420,Gerresheimer,Gerresheimer_image.png
+421,TÜV Nord,TÜV_Nord_image.png
+422,Peugeot Deutschland,Peugeot_Deutschland_image.png
+423,Wacker Neuson SE,Wacker_Neuson_SE_image.png
+424,Sick,Sick_image.png
+425,Hochwald Foods,Hochwald_Foods_image.png
+426,FMG Flughafen München,FMG_Flughafen_München_image.png
+427,DPD GeoPost Deutschland,DPD_GeoPost_Deutschland_image.png
+428,Beiselen,Beiselen_image.png
+429,Fielmann,Fielmann_image.png
+430,Alltours Flugreisen,Alltours_Flugreisen_image.png
+431,Wirecard,Wirecard_image.png
+432,OpenAI,OpenAI_image.png
+433,Deutsche Bank,Deutsche_Bank_image.png
+434,DZ Bank,DZ_Bank_image.png
+435,KfW,KfW_image.png
+436,Commerzbank,Commerzbank_image.png
+437,Unicredit Bank,Unicredit_Bank_image.png
+438,Landesbank Baden-Württemberg,Landesbank_Baden-Württemberg_image.png
+439,Bayerische Landesbank,Bayerische_Landesbank_image.png
+440,ING,ING_image.png
+441,Landesbank Hessen-Thüringen,Landesbank_Hessen-Thüringen_image.png
+442,Norddeutsche Landesbank,Norddeutsche_Landesbank_image.png
+443,NRW.Bank,NRW.Bank_image.png
+444,DekaBank Deutsche Girozentrale,DekaBank_Deutsche_Girozentrale_image.png
+445,Landwirtschaftliche Rentenbank,Landwirtschaftliche_Rentenbank_image.png
+446,Volkswagen Bank,Volkswagen_Bank_image.png
+447,L-Bank,L-Bank_image.png
+448,Deutsche Pfandbriefbank,Deutsche_Pfandbriefbank_image.png
+449,Hamburg Commercial Bank,Hamburg_Commercial_Bank_image.png
+450,Deutsche Apotheker- und Ärztebank,Deutsche_Apotheker-_und_Ärztebank_image.png
+451,Santander Consumer Bank,Santander_Consumer_Bank_image.png
+452,Landesbank Berlin,Landesbank_Berlin_image.png
+453,Allianz SE,Allianz_SE_image.png
+454,Münchener Rück,Münchener_Rück_image.png
+455,Allianz Deutschland,Allianz_Deutschland_image.png
+456,Talanx AG,Talanx_AG_image.png
+457,Hannover Rück SE,Hannover_Rück_SE_image.png
+458,ERGO Group AG,ERGO_Group_AG_image.png
+459,Generali Deutschland AG,Generali_Deutschland_AG_image.png
+460,R+V Versicherung AG,R+V_Versicherung_AG_image.png
+461,Debeka,Debeka_image.png
+462,Axa Konzern AG,Axa_Konzern_AG_image.png
+463,Versicherungskammer Bayern,Versicherungskammer_Bayern_image.png
+464,HUK-Coburg,HUK-Coburg_image.png
+465,Signal Iduna Gruppe,Signal_Iduna_Gruppe_image.png
+466,Zurich Gruppe Deutschland,Zurich_Gruppe_Deutschland_image.png
+467,AachenMünchener,AachenMünchener_image.png
+468,DKV Deutsche Krankenversicherung,DKV_Deutsche_Krankenversicherung_image.png
+469,Alte Leipziger,Alte_Leipziger_image.png
+470,Gothaer Versicherungsbank,Gothaer_Versicherungsbank_image.png
+471,Wüstenrot & Württembergische,Wüstenrot_&_Württembergische_image.png
+472,Continentale Krankenversicherung,Continentale_Krankenversicherung_image.png
+473,LVM Versicherung,LVM_Versicherung_image.png
+474,Nürnberger Versicherung,Nürnberger_Versicherung_image.png
+475,SV SparkassenVersicherung,SV_SparkassenVersicherung_image.png
+476,Provinzial NordWest,Provinzial_NordWest_image.png
+477,DEVK Versicherungen,DEVK_Versicherungen_image.png
+478,Apple,Apple_image.png
+479,NVIDIA,NVIDIA_image.png
+480,Microsoft,Microsoft_image.png
+481,Amazon,Amazon_image.png
+482,Alphabet,Alphabet_image.png
+483,Meta Platforms,Meta_Platforms_image.png
+484,Tesla,Tesla_image.png
+485,Tencent,Tencent_image.png
+486,Taiwan Semiconductor Manufacturing,Taiwan_Semiconductor_Manufacturing_image.png
+487,Eli Lilly,Eli_Lilly_image.png
+488,Broadcom,Broadcom_image.png
+489,Walmart,Walmart_image.png
+490,JPMorgan Chase,JPMorgan_Chase_image.png
+491,UnitedHealth Group,UnitedHealth_Group_image.png
+492,Visa,Visa_image.png
+493,Exxon Mobil,Exxon_Mobil_image.png
+494,Oracle,Oracle_image.png
+495,Mastercard,Mastercard_image.png
+496,Costco Wholesale,Costco_Wholesale_image.png
+497,Home Depot,Home_Depot_image.png
+498,Procter & Gamble,Procter_&_Gamble_image.png
+499,Alibaba,Alibaba_image.png
+500,Berkshire Hathaway,Berkshire_Hathaway_image.png
+501,China Mobile,China_Mobile_image.png
+502,Netflix,Netflix_image.png
+503,Johnson & Johnson,Johnson_&_Johnson_image.png
+504,Bank of America,Bank_of_America_image.png
+505,Ginkgo Bioworks,Ginkgo_Bioworks_image.png
+506,Novo Nordisk,Novo_Nordisk_image.png
+507,AbbVie,AbbVie_image.png
+508,Salesforce,Salesforce_image.png
+509,LVMH,LVMH_image.png
+510,Chevron,Chevron_image.png
+511,T-Mobile US,T-Mobile_US_image.png
+512,Coca-Cola,Coca-Cola_image.png
+513,SAP,SAP_image.png
+514,Merck & Co.,Merck_&_Co._image.png
+515,ASML,ASML_image.png
+516,Wells Fargo,Wells_Fargo_image.png
+517,Meituan,Meituan_image.png
+518,Samsung Electronics,Samsung_Electronics_image.png
+519,Cisco Systems,Cisco_Systems_image.png
+520,Roche,Roche_image.png
+521,Accenture,Accenture_image.png
+522,Adobe,Adobe_image.png
+523,Hermès,Hermès_image.png
+524,Toyota,Toyota_image.png
+525,PepsiCo,PepsiCo_image.png
+526,Nestlé,Nestlé_image.png
+527,AMD,AMD_image.png
+528,Linde,Linde_image.png
+529,ServiceNow,ServiceNow_image.png
+530,American Express,American_Express_image.png
+531,Walt Disney,Walt_Disney_image.png
+532,McDonald's,McDonald's_image.png
+533,Morgan Stanley,Morgan_Stanley_image.png
+534,IBM,IBM_image.png
+535,AstraZeneca,AstraZeneca_image.png
+536,Abbott Laboratories,Abbott_Laboratories_image.png
+537,Novartis,Novartis_image.png
+538,Philip Morris,Philip_Morris_image.png
+539,Shell,Shell_image.png
+540,Thermo Fisher Scientific,Thermo_Fisher_Scientific_image.png
+541,CNOOC,CNOOC_image.png
+542,GE Aerospace,GE_Aerospace_image.png
+543,Caterpillar,Caterpillar_image.png
+544,Intuitive Surgical,Intuitive_Surgical_image.png
+545,Goldman Sachs,Goldman_Sachs_image.png
+546,L'Oréal,L'Oréal_image.png
+547,Verizon,Verizon_image.png
+548,China Construction Bank,China_Construction_Bank_image.png
+549,Texas Instruments,Texas_Instruments_image.png
+550,Intuit,Intuit_image.png
+551,Royal Bank of Canada,Royal_Bank_of_Canada_image.png
+552,Qualcomm,Qualcomm_image.png
+553,Booking Holdings,Booking_Holdings_image.png
+554,Danaher,Danaher_image.png
+555,Commonwealth Bank of Australia,Commonwealth_Bank_of_Australia_image.png
+556,Inditex,Inditex_image.png
+557,Foxconn,Foxconn_image.png
+558,HSBC,HSBC_image.png
+559,AT&T,AT&T_image.png
+560,AIA Group,AIA_Group_image.png
+561,Comcast,Comcast_image.png
+562,S&P Global,S&P_Global_image.png
+563,NextEra Energy,NextEra_Energy_image.png
+564,RTX,RTX_image.png
+565,BlackRock,BlackRock_image.png
+566,Deutsche Telekom,Deutsche_Telekom_image.png
+567,Lowe's,Lowe's_image.png
+568,BP,BP_image.png
+569,Uber,Uber_image.png
+570,Amgen,Amgen_image.png
+571,Saxon Capital Group,Saxon_Capital_Group_image.png
+572,Honeywell,Honeywell_image.png

@@ -1,0 +1,7 @@
+model Company {
+  id       Int      @id @default(autoincrement())
+  name     String
+  image    String   @default("company_placeholder.png")
+
+  ratings  Rating[]
+}

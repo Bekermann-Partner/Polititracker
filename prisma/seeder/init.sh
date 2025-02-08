@@ -7,12 +7,12 @@ load_csv_if_empty() {
     echo "Checking: '${table}'"
 
     # Check if the table is empty
-    local row_count=$(mysql --host=db --user=${MYSQL_USERNAME} --password=${MYSQL_PASSWORD} --database=${MYSQL_DATABASE} --batch --skip-column-names -e "SELECT COUNT(*) FROM ${table};")
+    local row_count=$(mysql --host="${MYSQL_HOST}" --user=${MYSQL_USERNAME} --password=${MYSQL_PASSWORD} --database=${MYSQL_DATABASE} --batch --skip-column-names -e "SELECT COUNT(*) FROM ${table};")
     row_count=${row_count:-0}
 
     if [ "$row_count" -eq 0 ]; then
         echo "Table '${table}' is empty. Importing data from ${file}..."
-        mysql --local-infile=1 --host=db --user=${MYSQL_USERNAME} --password=${MYSQL_PASSWORD} --database=${MYSQL_DATABASE} <<EOF
+        mysql --local-infile=1 --host="${MYSQL_HOST}" --user=${MYSQL_USERNAME} --password=${MYSQL_PASSWORD} --database=${MYSQL_DATABASE} <<EOF
 LOAD DATA LOCAL INFILE '/tmp/data/${file}'
 INTO TABLE ${table}
 FIELDS TERMINATED BY ','

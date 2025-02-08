@@ -1,0 +1,52 @@
+name: Dev CI/CD
+
+on:
+  push:
+    branches: [ "dev" ]
+
+env:
+  SERVICE_NAME: polititracker-dev
+  PROJECT_ID: polititracker-448419
+  DOCKER_IMAGE_URL: europe-west4-docker.pkg.dev/polititracker-448419/cloud-run-source-deploy/website/polititracker-dev
+
+jobs:
+  dockerize-and-deploy:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set commit hash
+        run: echo "COMMIT_HASH_SHORT=$(echo ${{github.sha}} | cut -c1-7)" >> $GITHUB_ENV
+        env:
+          GH_REPO: '${{ github.repository }}'
+
+      - name: Google Cloud Auth
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GC_IMAGE_MANAGER_KEY }}'
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: Configure Docker
+        run: |
+          gcloud auth configure-docker europe-west4-docker.pkg.dev
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ env.DOCKER_IMAGE_URL }}:latest -f Dockerfile .
+          docker push ${{ env.DOCKER_IMAGE_URL }}:latest
+
+      - name: Deploy to Cloud Run
+        run: |
+          DATE=$(date +%d.%m.%Y)
+          echo SERVICE_NAME $SERVICE_NAME
+          gcloud run deploy $SERVICE_NAME \
+            --image ${{ env.DOCKER_IMAGE_URL }}:latest \
+            --region europe-west4 \
+            --update-env-vars "BUILD_DATE=$DATE,BUILD_VERSION=${{env.COMMIT_HASH_SHORT}}" \
+            --allow-unauthenticated
