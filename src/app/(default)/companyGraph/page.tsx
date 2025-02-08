@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import CompanyGraph from './companyGraph';
 import { CompanySearchBar } from '@/app/(default)/companyGraph/companySearchBar';
-import CompanyInfoDB from '@/app/(default)/companyGraph/CompanyInfoDB';
+import CompanyInfoDB from '@/app/(default)/companyGraph/companyInfoDB';
 import { Company } from '@/app/(default)/companyGraph/companySearchBar';
 
 export default function GraphPage() {
