@@ -9,7 +9,6 @@ interface Rating {
   id: number;
   politician_id: number;
   url: string;
-
   stars: number;
   company?: {
     id: number;
@@ -44,9 +43,7 @@ interface Politician {
   ext_abgeordnetenwatch_id: number;
   first_name: string;
   last_name: string;
-
   occupation?: string | null;
-
   party?: { short: string };
   profile_image?: string;
 }
@@ -60,7 +57,6 @@ interface AdditionalPolitician {
 interface PoliticianGraphProps {
   politicianId: number;
 }
-
 
 const getLogoPath = (companyName: string): string => {
   return `/logos/${companyName.replace(/\s+/g, '_')}_image.png`;
@@ -88,11 +84,9 @@ export default function PoliticianGraph({
     AdditionalPolitician[]
   >([]);
 
-
   useEffect(() => {
     fetch(`/api/graph/ratings?politicianId=${politicianId}`)
       .then((res) => {
-
         if (!res.ok) throw new Error('Failed to load ratings');
         return res.json();
       })
@@ -168,7 +162,6 @@ export default function PoliticianGraph({
         setElements([...nodes, ...edges]);
       })
       .catch((err) => console.error('Error loading original ratings:', err));
-
   }, [politicianId]);
 
   useEffect(() => {
@@ -178,7 +171,6 @@ export default function PoliticianGraph({
         elements,
         style: [
           {
-
             selector: 'node.politician',
             style: {
               'background-image': 'data(profileImg)',
@@ -239,7 +231,6 @@ export default function PoliticianGraph({
           },
         ],
         layout: { name: 'cose', animate: false },
-
       });
       cyInstanceRef.current = cy;
 
@@ -248,9 +239,7 @@ export default function PoliticianGraph({
           try {
             cyInstanceRef.current.destroy();
           } catch (error) {
-
             console.error('Error destroying Cytoscape instance:', error);
-
           }
           cyInstanceRef.current = null;
         }
@@ -282,9 +271,7 @@ export default function PoliticianGraph({
     if (debouncedSearch.trim().length > 0) {
       findPolitician(debouncedSearch)
         .then((results: Politician[]) => setSearchResults(results))
-
         .catch((err) => console.error('Search error:', err));
-
     } else {
       setSearchResults([]);
     }
@@ -294,7 +281,6 @@ export default function PoliticianGraph({
     const newPolId = pol.ext_abgeordnetenwatch_id;
     const newPolLabel = `${pol.first_name} ${pol.last_name}`;
     try {
-
       const resRatings = await fetch(
         `/api/graph/ratings?politicianId=${newPolId}`
       );
@@ -380,7 +366,6 @@ export default function PoliticianGraph({
         { id: newPolId, name: newPolLabel, similarity },
       ]);
     } catch (err) {
-
       console.error('Error adding additional politician:', err);
       alert('Error adding politician.');
     }
@@ -388,8 +373,8 @@ export default function PoliticianGraph({
 
   return (
     <div>
-
       <h2 style={{ textAlign: 'center' }}>Graph of Ratings</h2>
+
       {/* Company Filter */}
       <div style={{ marginBottom: '10px', textAlign: 'center' }}>
         <strong>Filter Companies:</strong>
@@ -406,9 +391,7 @@ export default function PoliticianGraph({
                       : [...prev, company]
                   )
                 }
-
               />{' '}
-
               {company}
             </label>
           ))}
@@ -421,7 +404,6 @@ export default function PoliticianGraph({
           position: 'relative',
           marginBottom: '10px',
           textAlign: 'center',
-
           zIndex: 1000,
         }}
         onClick={(e) => e.stopPropagation()}
@@ -432,18 +414,14 @@ export default function PoliticianGraph({
           placeholder="Search for a politician"
           value={search}
           onChange={(e) => setSearch(e.currentTarget.value)}
-
           style={{ position: 'relative', zIndex: 1000 }}
           onFocus={() => {
-
             if (cyInstanceRef.current) {
               try {
                 cyInstanceRef.current.stop();
                 cyInstanceRef.current.resize();
               } catch (err) {
-
                 console.error('Error on search input focus:', err);
-
               }
             }
           }}
@@ -451,7 +429,6 @@ export default function PoliticianGraph({
         {search.length > 0 && searchResults.length > 0 && (
           <div
             style={{
-
               position: 'absolute',
               width: '100%',
               backgroundColor: 'white',
@@ -468,7 +445,6 @@ export default function PoliticianGraph({
                 key={result.uuid}
                 onClick={() => {
                   addAdditionalPolitician(result);
-
                   setSearch('');
                   setSearchResults([]);
                 }}
@@ -490,7 +466,6 @@ export default function PoliticianGraph({
         )}
       </div>
 
-
       {/* Display Added Politicians and Similarity */}
       {additionalPoliticians.length > 0 && (
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
@@ -499,7 +474,6 @@ export default function PoliticianGraph({
             <div key={pol.id} style={{ marginBottom: '10px' }}>
               <strong>{pol.name}</strong>
               <div style={{ display: 'inline-block', marginLeft: '10px' }}>
-
                 <input
                   type="range"
                   min="0"
@@ -509,7 +483,6 @@ export default function PoliticianGraph({
                   style={{ width: '200px' }}
                 />
                 <span style={{ marginLeft: '5px' }}>{pol.similarity}%</span>
-
               </div>
             </div>
           ))}
