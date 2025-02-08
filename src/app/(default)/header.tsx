@@ -78,14 +78,6 @@ export async function Header() {
                         </Link>
                       </li>
                     )}
-                    <li className="hover:text-indigo-600 transition-colors dark:text-gray-100 dark:hover:text-indigo-300">
-                      <Link
-                        href="/user-agreement"
-                        className="hover:link md:px-4 block"
-                      >
-                        User Agreement
-                      </Link>
-                    </li>
                   </ul>
                 </div>
 
