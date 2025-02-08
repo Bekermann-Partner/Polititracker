@@ -51,7 +51,7 @@ export function SearchBar({ politician }: { politician: Politician }) {
             return (
               <Link
                 key={politician.uuid}
-                href={`/politician/${politician.uuid}`}
+                href={`/politicians/${politician.uuid}`}
               >
                 <div
                   className={

@@ -112,7 +112,7 @@ export default async function LandingPage() {
                 <div className="mb-3 flex w-fit mx-auto gap-3">
                   {[...Array(4).keys()].map((i) => (
                     <Link
-                      href={`/politician/${randomPoliticianImages[i].polUuid}`}
+                      href={`/politicians/${randomPoliticianImages[i].polUuid}`}
                       key={i}
                     >
                       <PoliticianGridImage
@@ -127,7 +127,7 @@ export default async function LandingPage() {
                     .map((i) => i + 4)
                     .map((i) => (
                       <Link
-                        href={`/politician/${randomPoliticianImages[i].polUuid}`}
+                        href={`/politicians/${randomPoliticianImages[i].polUuid}`}
                         key={i}
                       >
                         <PoliticianGridImage
@@ -142,7 +142,7 @@ export default async function LandingPage() {
                     .map((i) => i + 9)
                     .map((i) => (
                       <Link
-                        href={`/politician/${randomPoliticianImages[i].polUuid}`}
+                        href={`/politicians/${randomPoliticianImages[i].polUuid}`}
                         key={i}
                       >
                         <PoliticianGridImage
@@ -157,7 +157,7 @@ export default async function LandingPage() {
                     .map((i) => i + 15)
                     .map((i) => (
                       <Link
-                        href={`/politician/${randomPoliticianImages[i].polUuid}`}
+                        href={`/politicians/${randomPoliticianImages[i].polUuid}`}
                         key={i}
                       >
                         <PoliticianGridImage
@@ -172,7 +172,7 @@ export default async function LandingPage() {
                     .map((i) => i + 20)
                     .map((i) => (
                       <Link
-                        href={`/politician/${randomPoliticianImages[i].polUuid}`}
+                        href={`/politicians/${randomPoliticianImages[i].polUuid}`}
                         key={i}
                       >
                         <PoliticianGridImage

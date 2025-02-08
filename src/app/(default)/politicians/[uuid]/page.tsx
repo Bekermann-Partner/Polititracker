@@ -2,17 +2,17 @@ import db from '@/_lib/db';
 import {
   LoadingSideJobs,
   SideJobs,
-} from '@/app/(default)/politician/[uuid]/SideJobs';
+} from '@/app/(default)/politicians/[uuid]/SideJobs';
 import React from 'react';
 import {
   LoadingPoliticianDetails,
   PoliticianDetails,
-} from '@/app/(default)/politician/[uuid]/PoliticianDetails';
-import CommentSectionWrapper from '@/app/(default)/politician/[uuid]/comments/CommentSectionWrapper';
+} from '@/app/(default)/politicians/[uuid]/PoliticianDetails';
+import CommentSectionWrapper from '@/app/(default)/politicians/[uuid]/comments/CommentSectionWrapper';
 import PoliticianGraph from './PoliticianGraph';
 
 async function fetchPolitician(uuid: string) {
-  return db.politician.findFirst({
+  const politician = db.politician.findFirst({
     where: {
       uuid,
     },
@@ -20,6 +20,20 @@ async function fetchPolitician(uuid: string) {
       party: true,
     },
   });
+
+  if (!politician) return null;
+
+  // increment click_count by one
+  await db.politician.update({
+    where: { uuid },
+    data: {
+      click_count: {
+        increment: 1,
+      },
+    },
+  });
+
+  return politician;
 }
 
 export default async function PoliticianView({

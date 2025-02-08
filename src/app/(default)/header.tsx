@@ -60,6 +60,14 @@ export async function Header() {
                         Politiker
                       </Link>
                     </li>
+                    <li className="hover:text-indigo-600 transition-colors dark:text-gray-100 dark:hover:text-indigo-300">
+                      <Link
+                        href="/companyGraph"
+                        className="hover:link md:px-4 block"
+                      >
+                        Unternehmens Graph
+                      </Link>
+                    </li>
                     {user != null && (
                       <li className="hover:text-indigo-600 transition-colors dark:text-gray-100 dark:hover:text-indigo-300">
                         <Link
@@ -70,14 +78,6 @@ export async function Header() {
                         </Link>
                       </li>
                     )}
-                    <li className="hover:text-indigo-600 transition-colors dark:text-gray-100 dark:hover:text-indigo-300">
-                      <Link
-                        href="/companyGraph"
-                        className="hover:link md:px-4 block"
-                      >
-                        Company Graph
-                      </Link>
-                    </li>
                   </ul>
                 </div>
 

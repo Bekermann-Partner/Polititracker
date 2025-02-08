@@ -2,7 +2,7 @@
 
 import { Politician } from '@prisma/client';
 import { getUser } from '@/_actions/getUser';
-import CommentSection from '@/app/(default)/politician/[uuid]/comments/CommentSection';
+import CommentSection from '@/app/(default)/politicians/[uuid]/comments/CommentSection';
 
 export default async function CommentSectionWrapper({
   politicianPromise,

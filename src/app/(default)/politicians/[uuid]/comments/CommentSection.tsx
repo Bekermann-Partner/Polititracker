@@ -4,8 +4,8 @@ import { User, Politician, Comment } from '@prisma/client';
 import { useEffect, useState } from 'react';
 import { CommentWithNestedReplies } from './types';
 import Toast from '@/app/components/Toast';
-import DisplayComment from '@/app/(default)/politician/[uuid]/comments/DisplayComment';
-import AddCommentEditor from '@/app/(default)/politician/[uuid]/comments/AddCommentEditor';
+import DisplayComment from '@/app/(default)/politicians/[uuid]/comments/DisplayComment';
+import AddCommentEditor from '@/app/(default)/politicians/[uuid]/comments/AddCommentEditor';
 import Skeleton from 'react-loading-skeleton';
 
 interface CommentsProps {

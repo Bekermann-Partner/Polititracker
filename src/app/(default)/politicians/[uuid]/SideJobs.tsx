@@ -1,5 +1,5 @@
 import { Politician } from '@prisma/client';
-import { SideJob } from '@/app/(default)/politician/[uuid]/SideJob';
+import { SideJob } from '@/app/(default)/politicians/[uuid]/SideJob';
 import abgeordnetenWatchApiProvider from '@/_lib/providers/abgw/abgeordnetenWatchApiProvider';
 import Skeleton from 'react-loading-skeleton';
 import { SkeletonThemeWrapper } from '@/app/components/SkeletonThemeWrapper';
