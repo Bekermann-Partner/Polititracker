@@ -11,8 +11,6 @@ env:
   GCP_REGION: europe-west3
   GCP_REPO: polititracker
   GCP_PROJECT_ID: polititracker-448419
-  SERVICE_REGION: europe-west4
-  SERVICE_IMAGE: polititracker
 
 jobs:
   eslint-analysis:
@@ -75,7 +73,6 @@ jobs:
         run: |
           echo "REPO_LC=${GH_REPO,,}" >>${GITHUB_ENV}
           echo "IMAGE_TAG=${GCP_REGION}-docker.pkg.dev/$GCP_PROJECT_ID/$GCP_REPO/$GCP_IMAGE" >> $GITHUB_ENV
-          echo "SERVICE_IMAGE_TAG=${SERVICE_REGION}-docker.pkg.dev/$GCP_PROJECT_ID/$GCP_REPO/$SERVICE_IMAGE" >> $GITHUB_ENV
           echo "COMMIT_HASH_SHORT=$(echo ${{github.sha}} | cut -c1-7)" >> $GITHUB_ENV
         env:
           GH_REPO: '${{ github.repository }}'
@@ -102,7 +99,7 @@ jobs:
         run: |
           DATE=$(date +%d.%m.%Y)
           gcloud run deploy dev \
-          --image="${{env.SERVICE_IMAGE_TAG}}" \
-          --region="${{env.SERVICE_REGION}}" \
+          --image="${{env.IMAGE_TAG}}" \
+          --region="${{env.GCP_REGION}}" \
           --update-env-vars "BUILD_DATE=$DATE,BUILD_VERSION=${{env.COMMIT_HASH_SHORT}}" \
           --platform=managed --quiet
