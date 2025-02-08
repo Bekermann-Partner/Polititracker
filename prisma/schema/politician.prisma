@@ -14,6 +14,8 @@ model Politician {
 
   click_count Int @default(0)
 
+  ext_abgeordnetenwatch_id Int  @unique
+
   party_id Int
   party    Party @relation(fields: [party_id], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
