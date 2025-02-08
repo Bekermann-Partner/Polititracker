@@ -11,6 +11,11 @@ on:
 #  GCP_REGION: europe-west3
 #  GCP_REPO: polititracker
 #  GCP_PROJECT_ID: polititracker-448419
+
+env:
+  SERVICE_NAME: polititracker
+  PROJECT_ID: polititracker-448419
+  DOCKER_IMAGE_URL: europe-west4-docker.pkg.dev/polititracker-448419/polititracker
     
 jobs:
   eslint-analysis:
@@ -57,25 +62,39 @@ jobs:
         run: |
           npx --yes prettier --config .prettierrc --check "./src/**/*.{tsx,jsx,ts,js}"
 
-  build-and-push-image:
-    needs: [ eslint-analysis, prettier-check ]
-    if: github.event_name != 'pull_request'
+  dockerize-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v2
 
-      - name: Trigger Cloud Build
-        uses: google-github-actions/cloud-build@v1
+      - name: Google Cloud Auth
+        uses: 'google-github-actions/auth@v2'
         with:
-          project: polititracker-448419
-          build_config: Dockerfile
-          credentials: ${{ secrets.GCP_IMAGE_MANAGER_KEY }}
+          credentials_json: '${{ secrets.GC_IMAGE_MANAGER_KEY }}'
+          project_id: ${{ env.PROJECT_ID }}
 
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: Configure Docker
+        run: |
+          gcloud auth configure-docker europe-west4-docker.pkg.dev
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ env.DOCKER_IMAGE_URL }}:latest -f Dockerfile .
+          docker push ${{ env.DOCKER_IMAGE_URL }}:latest
+
+      - name: Deploy to Cloud Run
+        run: |
+          echo SERVICE_NAME $SERVICE_NAME
+          gcloud run deploy $SERVICE_NAME \
+            --image ${{ env.DOCKER_IMAGE_URL }}:latest \
+            --region europe-west4 \
+            --allow-unauthenticated
+            
 #      - name: Set vars
 #        run: |
 #          echo "REPO_LC=${GH_REPO,,}" >>${GITHUB_ENV}
