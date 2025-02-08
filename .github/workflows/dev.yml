@@ -15,7 +15,7 @@ on:
 env:
   SERVICE_NAME: polititracker
   PROJECT_ID: polititracker-448419
-  DOCKER_IMAGE_URL: europe-west4-docker.pkg.dev/polititracker-448419/cloud-run-source-deploy
+  DOCKER_IMAGE_URL: europe-west4-docker.pkg.dev/polititracker-448419/cloud-run-source-deploy/website/polititracker 
     
 jobs:
   eslint-analysis:
