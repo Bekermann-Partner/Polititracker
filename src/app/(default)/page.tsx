@@ -4,9 +4,10 @@ import { Counter } from '@/app/components/Counter';
 import { FaArrowRight } from 'react-icons/fa6';
 import { ScrollToIdOnClick } from '@/app/components/ScrollToIdOnClick';
 import { PoliticianGridImage } from '@/app/components/PoliticianGridImage';
+import Link from 'next/link';
 
 export default async function LandingPage() {
-  const randomPoliticianImages = await db.politician.findMany({
+  const politiciansWithImages = await db.politician.findMany({
     where: {
       profile_image: {
         not: undefined,
@@ -15,12 +16,16 @@ export default async function LandingPage() {
   });
 
   const commentCount = await db.comment.count();
+  const companyCount = await db.company.count();
 
-  const images = randomPoliticianImages
-    .map((politician) => `/pol_profile_img/${politician.profile_image}`)
-    .map((value) => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
+  const randomPoliticianImages = politiciansWithImages
+    .map((politician) => ({
+      polUuid: politician.uuid,
+      imgageSource: `/pol_profile_img/${politician.profile_image}`,
+      sortValue: Math.random(),
+    }))
+    .sort((a, b) => a.sortValue - b.sortValue)
+    .map((e) => ({ polUuid: e.polUuid, imageSource: e.imgageSource }));
 
   return (
     <>
@@ -39,17 +44,15 @@ export default async function LandingPage() {
                   }
                 >
                   <Counter
-                    initialValue={0}
-                    finalValue={0}
+                    initialValue={Math.ceil(companyCount * 0.8)}
+                    finalValue={companyCount}
                     text={' Unternehmen'}
                   />
 
                   <Counter
-                    initialValue={Math.ceil(
-                      randomPoliticianImages.length * 0.8
-                    )}
-                    finalValue={randomPoliticianImages.length}
-                    text={'+ Politiker'}
+                    initialValue={Math.ceil(politiciansWithImages.length * 0.8)}
+                    finalValue={politiciansWithImages.length}
+                    text={' Politiker'}
                   />
 
                   <Counter
@@ -99,50 +102,90 @@ export default async function LandingPage() {
 
                 <SearchBar
                   politician={
-                    randomPoliticianImages[
-                      Math.floor(Math.random() * randomPoliticianImages.length)
+                    politiciansWithImages[
+                      Math.floor(Math.random() * politiciansWithImages.length)
                     ]
                   }
                 />
               </div>
               <div className="mt-14 pb-14 relative w-fit h-fit sm:mx-auto sm:px-0 -mx-6 px-6 overflow-x-auto">
                 <div className="mb-3 flex w-fit mx-auto gap-3">
-                  {[...Array(3).keys()].map((i) => {
-                    return <PoliticianGridImage key={i} url={images[i]} />;
-                  })}
+                  {[...Array(4).keys()].map((i) => (
+                    <Link
+                      href={`/politician/${randomPoliticianImages[i].polUuid}`}
+                      key={i}
+                    >
+                      <PoliticianGridImage
+                        key={i}
+                        url={randomPoliticianImages[i].imageSource}
+                      />
+                    </Link>
+                  ))}
                 </div>
                 <div className="flex w-fit mx-auto gap-3">
-                  {[...Array(4).keys()]
-                    .map((i) => i + 3)
-                    .map((i) => {
-                      return <PoliticianGridImage key={i} url={images[i]} />;
-                    })}
+                  {[...Array(5).keys()]
+                    .map((i) => i + 4)
+                    .map((i) => (
+                      <Link
+                        href={`/politician/${randomPoliticianImages[i].polUuid}`}
+                        key={i}
+                      >
+                        <PoliticianGridImage
+                          key={i}
+                          url={randomPoliticianImages[i].imageSource}
+                        />
+                      </Link>
+                    ))}
                 </div>
                 <div className="my-3 flex w-fit mx-auto gap-3">
-                  {[...Array(5).keys()]
-                    .map((i) => i + 7)
-                    .map((i) => {
-                      return <PoliticianGridImage key={i} url={images[i]} />;
-                    })}
-                </div>
-                <div className="flex w-fit mx-auto gap-3">
-                  {[...Array(4).keys()]
-                    .map((i) => i + 12)
-                    .map((i) => {
-                      return <PoliticianGridImage key={i} url={images[i]} />;
-                    })}
+                  {[...Array(6).keys()]
+                    .map((i) => i + 9)
+                    .map((i) => (
+                      <Link
+                        href={`/politician/${randomPoliticianImages[i].polUuid}`}
+                        key={i}
+                      >
+                        <PoliticianGridImage
+                          key={i}
+                          url={randomPoliticianImages[i].imageSource}
+                        />
+                      </Link>
+                    ))}
                 </div>
                 <div className="mt-3 flex w-fit mx-auto gap-3">
-                  {[...Array(3).keys()]
-                    .map((i) => i + 16)
-                    .map((i) => {
-                      return <PoliticianGridImage key={i} url={images[i]} />;
-                    })}
+                  {[...Array(5).keys()]
+                    .map((i) => i + 15)
+                    .map((i) => (
+                      <Link
+                        href={`/politician/${randomPoliticianImages[i].polUuid}`}
+                        key={i}
+                      >
+                        <PoliticianGridImage
+                          key={i}
+                          url={randomPoliticianImages[i].imageSource}
+                        />
+                      </Link>
+                    ))}
+                </div>
+                <div className="mt-3 flex w-fit mx-auto gap-3">
+                  {[...Array(4).keys()]
+                    .map((i) => i + 20)
+                    .map((i) => (
+                      <Link
+                        href={`/politician/${randomPoliticianImages[i].polUuid}`}
+                        key={i}
+                      >
+                        <PoliticianGridImage
+                          key={i}
+                          url={randomPoliticianImages[i].imageSource}
+                        />
+                      </Link>
+                    ))}
                 </div>
               </div>
               <div className="-mx-6 top-[-290px] relative max-w-xl sm:mx-auto">
                 <div className="absolute inset-0 -top-8 left-1/2 -z-20 h-56 w-full -translate-x-1/2 dark:opacity-10 [background-image:linear-gradient(to_bottom,transparent_98%,theme(colors.gray.200/75%)_98%),linear-gradient(to_right,transparent_94%,_theme(colors.gray.200/75%)_94%)] [background-size:16px_35px] [mask:radial-gradient(black,transparent_95%)]"></div>
-                <div className="absolute top-0 inset-x-0 w-2/3 h-44 -z-[1] rounded-full bg-blue-300 dark:bg-white/20 mx-auto blur-3xl"></div>
+                <div className="absolute top-0 inset-x-0 w-2/3 h-44 -z-[1] rounded-full bg-blue-200 dark:bg-white/20 mx-auto blur-3xl"></div>
               </div>
             </div>
           </div>
