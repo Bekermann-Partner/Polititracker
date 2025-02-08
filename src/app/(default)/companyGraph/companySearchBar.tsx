@@ -9,6 +9,7 @@ export interface Company {
   id: number;
   name: string;
   image: string;
+  symbol?: string;
 }
 
 export function CompanySearchBar({
