@@ -29,12 +29,16 @@ export default async function LandingPage() {
       <div className="mx-auto max-w-6xl">
         {/* Hero Section */}
         <section className="text-center mb-12">
-          <h1 className="text-4xl font-bold dark:text-white">Politiker Insights</h1>
+          <h1 className="text-4xl font-bold dark:text-white">
+            Politiker Insights
+          </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">
             Welche Politiker werden am häufigsten abgerufen? Welche erhalten die
             meisten Kommentiert?
           </p>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">Finde es heraus!</p>
+          <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">
+            Finde es heraus!
+          </p>
         </section>
 
         {/* Grid Layout */}
@@ -64,7 +68,9 @@ export default async function LandingPage() {
                         <p className="text-sm text-gray-500">{`Tätigkeit: ${pol.occupation}`}</p>
                       )}
 
-                      <p className="mt-2 dark:text-gray-400">Kommentare: {pol._count.comments}</p>
+                      <p className="mt-2 dark:text-gray-400">
+                        Kommentare: {pol._count.comments}
+                      </p>
                     </div>
                   </div>
                 </Link>
@@ -97,7 +103,9 @@ export default async function LandingPage() {
                         <p className="text-sm text-gray-500">{`Tätigkeit: ${pol.occupation}`}</p>
                       )}
 
-                      <p className="mt-2 dark:text-gray-400">Aufrufe: {pol.click_count}</p>
+                      <p className="mt-2 dark:text-gray-400">
+                        Aufrufe: {pol.click_count}
+                      </p>
                     </div>
                   </div>
                 </Link>
