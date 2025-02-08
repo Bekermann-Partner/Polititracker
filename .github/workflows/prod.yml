@@ -1,37 +1,51 @@
-name: Build PROD Docker Image
+name: Prod CI/CD
 
 on:
-  pull_request:
+  push:
     branches: [ "main" ]
 
 env:
-  REGISTRY: ghcr.io
-
+  SERVICE_NAME: polititracker
+  PROJECT_ID: polititracker-448419
+  DOCKER_IMAGE_URL: europe-west4-docker.pkg.dev/polititracker-448419/cloud-run-source-deploy/website/polititracker
+    
 jobs:
-  build-and-push-image:
+  dockerize-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
 
-      - name: Set lower case repo
-        run: |
-          echo "REPO_LC=${REPO,,}" >>${GITHUB_ENV}
+      - name: Set commit hash
+        run: echo "COMMIT_HASH_SHORT=$(echo ${{github.sha}} | cut -c1-7)" >> $GITHUB_ENV
         env:
-          REPO: '${{ github.repository }}'
+          GH_REPO: '${{ github.repository }}'
 
-      - name: Log in to the Container registry
-        uses: docker/login-action@v2
+      - name: Google Cloud Auth
+        uses: 'google-github-actions/auth@v2'
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          credentials_json: '${{ secrets.GC_IMAGE_MANAGER_KEY }}'
+          project_id: ${{ env.PROJECT_ID }}
 
-      - name: Build and push Docker image
+      - name: Set up Cloud SDK
+        uses: 'google-github-actions/setup-gcloud@v2'
+
+      - name: Configure Docker
         run: |
-          docker build --pull -t ${{ env.REGISTRY }}/${{ env.REPO_LC }}:latest .
-          docker push ${{ env.REGISTRY }}/${{ env.REPO_LC }}:latest
+          gcloud auth configure-docker europe-west4-docker.pkg.dev
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ${{ env.DOCKER_IMAGE_URL }}:latest -f Dockerfile .
+          docker push ${{ env.DOCKER_IMAGE_URL }}:latest
+
+      - name: Deploy to Cloud Run
+        run: |
+          DATE=$(date +%d.%m.%Y)
+          echo SERVICE_NAME $SERVICE_NAME
+          gcloud run deploy $SERVICE_NAME \
+            --image ${{ env.DOCKER_IMAGE_URL }}:latest \
+            --region europe-west4 \
+            --update-env-vars "BUILD_DATE=$DATE,BUILD_VERSION=${{env.COMMIT_HASH_SHORT}}" \
+            --allow-unauthenticated
