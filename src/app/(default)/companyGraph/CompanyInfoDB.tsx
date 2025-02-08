@@ -101,7 +101,9 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
         margin: '20px auto',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}>
+      <div
+        style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}
+      >
         <img
           src={profile.image}
           alt={profile.companyName}
@@ -143,13 +145,15 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
         </p>
         <p>
           <strong>Market Cap:</strong>{' '}
-          {profile.mktCap ? profile.mktCap.toLocaleString() : 'N/A'} {profile.currency}
+          {profile.mktCap ? profile.mktCap.toLocaleString() : 'N/A'}{' '}
+          {profile.currency}
         </p>
         <p>
           <strong>Employees:</strong> {profile.fullTimeEmployees}
         </p>
         <p>
-          <strong>Headquarters:</strong> {profile.address}, {profile.city}, {profile.state} {profile.zip}
+          <strong>Headquarters:</strong> {profile.address}, {profile.city},{' '}
+          {profile.state} {profile.zip}
         </p>
         <p>
           <strong>Phone:</strong> {profile.phone}
