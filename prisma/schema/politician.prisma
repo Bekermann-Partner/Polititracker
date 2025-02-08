@@ -12,6 +12,8 @@ model Politician {
   occupation    String?
   field_title   String?
 
+  click_count Int @default(0)
+
   ext_abgeordnetenwatch_id Int  @unique
 
   party_id Int
