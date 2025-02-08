@@ -25,24 +25,28 @@ export default async function LandingPage() {
   });
 
   return (
-    <section className="pt-24">
+    <section className="pt-24 mb-4">
       <div className="mx-auto max-w-6xl">
         {/* Hero Section */}
         <section className="text-center mb-12">
-          <h1 className="text-4xl font-bold">Politiker Insights</h1>
-          <p className="text-lg text-gray-600 mt-2">
+          <h1 className="text-4xl font-bold dark:text-white">
+            Politiker Insights
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">
             Welche Politiker werden am häufigsten abgerufen? Welche erhalten die
             meisten Kommentiert?
           </p>
-          <p className="text-lg text-gray-600 mt-2">Finde es Heraus!</p>
+          <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">
+            Finde es heraus!
+          </p>
         </section>
 
         {/* Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Most Commented Politicians */}
           <section>
-            <h2 className="text-2xl font-semibold mb-4">
-              🔥 Am meisten Kommentiert
+            <h2 className="text-2xl dark:text-white font-semibold mb-4">
+              🔥 Am meisten kommentiert
             </h2>
             <div className="space-y-4">
               {topCommentedPoliticians.map((pol) => (
@@ -64,7 +68,9 @@ export default async function LandingPage() {
                         <p className="text-sm text-gray-500">{`Tätigkeit: ${pol.occupation}`}</p>
                       )}
 
-                      <p className="mt-2">Kommentare: {pol._count.comments}</p>
+                      <p className="mt-2 dark:text-gray-400">
+                        Kommentare: {pol._count.comments}
+                      </p>
                     </div>
                   </div>
                 </Link>
@@ -74,8 +80,8 @@ export default async function LandingPage() {
 
           {/* Most Clicked Politicians */}
           <section>
-            <h2 className="text-2xl font-semibold mb-4">
-              📊 Am meisten Aufgerufen
+            <h2 className="text-2xl dark:text-white font-semibold mb-4">
+              📊 Am meisten aufgerufen
             </h2>
             <div className="space-y-4">
               {topClickedPoliticians.map((pol) => (
@@ -97,7 +103,9 @@ export default async function LandingPage() {
                         <p className="text-sm text-gray-500">{`Tätigkeit: ${pol.occupation}`}</p>
                       )}
 
-                      <p className="mt-2">Aufrufe: {pol.click_count}</p>
+                      <p className="mt-2 dark:text-gray-400">
+                        Aufrufe: {pol.click_count}
+                      </p>
                     </div>
                   </div>
                 </Link>
