@@ -1,6 +1,6 @@
 # Polititracker
 
-[![Next.js](https://img.shields.io/badge/next.js-13.x-blue)](https://nextjs.org/) [![Tailwind CSS](https://img.shields.io/badge/tailwind-css-3.x-blue)](https://tailwindcss.com/) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Next.js](https://img.shields.io/badge/next.js-13.x-blue)](https://nextjs.org/) [![Tailwind CSS](https://img.shields.io/badge/tailwind.css-3.x-blue)](https://tailwindcss.com/)
 
 **Polititracker** ist ein interaktives Analyse-Tool, das Transparenz schafft, indem es die Verbindungen zwischen Politikern und Unternehmen offenlegt. Die Plattform aggregiert Daten aus unterschiedlichen Nachrichtenquellen und Datenbanken, um klare Einblicke in politische Netzwerke und potenzielle Interessenkonflikte zu bieten. Besuche [polititracker.de](https://polititracker.de), um die Live-Seite zu erkunden!
 
