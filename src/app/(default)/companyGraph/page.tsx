@@ -9,6 +9,7 @@ import { Company } from '@/app/(default)/companyGraph/companySearchBar';
 export default function GraphPage() {
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
 
+  
   return (
     <div style={{ paddingTop: '80px' }}>
       <h2 style={{ textAlign: 'center' }}>
