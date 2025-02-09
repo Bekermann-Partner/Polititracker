@@ -72,7 +72,7 @@ export async function UserComments({ user }: { user: User }) {
                       alt={'Avatar'}
                       width={28}
                       height={28}
-                      className="rounded-full object-cover mr-2"
+                      className="rounded-full object-cover aspect-square mr-2"
                     />
                     <strong className="dark:text-gray-200">
                       {user.firstName} {user.lastName}
