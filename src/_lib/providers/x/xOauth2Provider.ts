@@ -1,4 +1,6 @@
-function getAuthUrl(): string {
+'use server';
+
+export async function getAuthUrl() {
   const authUrl = new URL('https://x.com/i/oauth2/authorize');
   authUrl.searchParams.set('response_type', 'code');
   authUrl.searchParams.set('client_id', process.env.X_OAUTH_CLIENT!);
@@ -10,9 +12,3 @@ function getAuthUrl(): string {
 
   return authUrl.toString();
 }
-
-const XOauth2Provider = {
-  getAuthUrl,
-};
-
-export default XOauth2Provider;

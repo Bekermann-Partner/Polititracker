@@ -1,8 +1,8 @@
 import { SignInForm } from '@/app/auth/sign-in/SignInForm';
-import XOauth2Provider from '@/_lib/providers/x/xOauth2Provider';
+import { getAuthUrl } from '@/_lib/providers/x/xOauth2Provider';
 
-export default function SignInPage() {
-  const xAuthRedirectURL = XOauth2Provider.getAuthUrl();
+export default async function SignInPage() {
+  const xAuthRedirectURL = await getAuthUrl();
 
   return <SignInForm XRedirectURL={xAuthRedirectURL} />;
 }
