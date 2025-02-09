@@ -15,6 +15,19 @@ const signInUserValidation = zfd.formData({
   password: zfd.text(z.string()),
 });
 
+export async function getXAuthURL() {
+  const authUrl = new URL('https://x.com/i/oauth2/authorize');
+  authUrl.searchParams.set('response_type', 'code');
+  authUrl.searchParams.set('client_id', process.env.X_OAUTH_CLIENT!);
+  authUrl.searchParams.set('redirect_uri', process.env.X_OAUTH_REDIRECT!);
+  authUrl.searchParams.set('scope', 'users.read tweet.read');
+  authUrl.searchParams.set('state', 'state');
+  authUrl.searchParams.set('code_challenge', 'challenge');
+  authUrl.searchParams.set('code_challenge_method', 'plain');
+
+  return authUrl.toString();
+}
+
 /**
  * Attempts to sign in a user based on their email and password.
  * On success, sets session cookies and notifies the frontend in order to redirect to profile page (or current page?)
@@ -23,7 +36,7 @@ const signInUserValidation = zfd.formData({
  * @param formData
  */
 export async function signIn(
-  formData: FormData
+  formData: FormData,
 ): Promise<Omit<User, 'password'> | ZodError | undefined> {
   const cookieStore = await cookies();
   const parse = signInUserValidation.safeParse(formData);
