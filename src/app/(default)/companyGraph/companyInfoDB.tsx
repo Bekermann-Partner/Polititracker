@@ -41,6 +41,7 @@ export interface CompanyProfileDB {
   isActivelyTrading: boolean;
   isAdr: boolean;
   isFund: boolean;
+  founded: Date | number;
 }
 
 interface CompanyInfoDBProps {
@@ -123,7 +124,7 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
 
   // Compute the image URL based on the company name.
   // Adjust the replace logic if your file names follow a different convention.
-  const logoSrc = `/logos/${profile.companyName.replace(/\s+/g, '_')}_image.png`;
+  const logoSrc = `/logos/${profile.name.replace(/\s+/g, '_')}_image.png`;
 
   return (
     <div
@@ -163,18 +164,18 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
           <strong>CEO:</strong> {profile.ceo}
         </p>
         <p>
-          <strong>Gegründet (IPO Date):</strong>{' '}
-          {profile.ipoDate
-            ? profile.ipoDate instanceof Date
-              ? profile.ipoDate.toLocaleDateString()
-              : String(profile.ipoDate)
+          <strong>Founded:</strong>{' '}
+          {profile.founded
+            ? profile.founded instanceof Date
+              ? profile.founded.toLocaleDateString()
+              : String(profile.founded)
             : 'N/A'}
         </p>
       </div>
 
       <div style={{ marginBottom: '20px', fontSize: '14px', lineHeight: 1.5 }}>
         <p>
-          <strong>Beschreibung:</strong> {profile.description}
+          <strong>Description:</strong> {profile.description}
         </p>
       </div>
 
@@ -190,7 +191,7 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
               fontSize: '16px',
             }}
           >
-            Besuche Website
+            Visit Website
           </a>
         </div>
       )}
