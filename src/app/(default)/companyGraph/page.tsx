@@ -25,6 +25,9 @@ export default function GraphPage() {
 
       {selectedCompany && (
         <div>
+          <CompanySearchBar
+            onSelect={(company) => setSelectedCompany(company)}
+          />
           <CompanyInfoDB companyId={selectedCompany.id} />
           <CompanyGraph selectedCompany={selectedCompany} />
         </div>
