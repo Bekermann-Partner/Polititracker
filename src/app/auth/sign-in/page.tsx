@@ -9,3 +9,5 @@ export default async function SignInPage() {
 
   return <SignInForm XRedirectURL={xAuthRedirectURL} />;
 }
+
+export const dynamic = 'force-dynamic';
