@@ -1,38 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Polititracker
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/next.js-13.x-blue)](https://nextjs.org/) [![Tailwind CSS](https://img.shields.io/badge/tailwind.css-3.x-blue)](https://tailwindcss.com/)
 
-First, run the development server:
+**Polititracker** ist ein interaktives Analyse-Tool, das Transparenz schafft, indem es die Verbindungen zwischen Politikern und Unternehmen offenlegt. Die Plattform aggregiert Daten aus unterschiedlichen Nachrichtenquellen und Datenbanken, um klare Einblicke in politische Netzwerke und potenzielle Interessenkonflikte zu bieten. Besuche [polititracker.de](https://polititracker.de), um die Live-Seite zu erkunden!
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Inhaltsverzeichnis
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [Überblick](#überblick)
+- [Features](#features)
+- [Technologien](#technologien)
+- [Nutzung](#nutzung)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Überblick
 
-To learn more about Next.js, take a look at the following resources:
+In einer Zeit, in der Transparenz in politischen Entscheidungsprozessen wichtiger denn je ist, nutzt **Polititracker** Daten aus verschiedenen Quellen, um die komplexen Beziehungen zwischen Politikern und Unternehmen abzubilden. Durch die Visualisierung dieser Verbindungen will die Plattform Bürgerinnen und Bürgern mögliche wirtschaftliche Interessen und Einflüsse innerhalb politischer Prozesse aufzeigen.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Auf der Startseite des Projekts findest du:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Dynamische Zähler:** Echtzeit-Zähler, die die Anzahl der Unternehmen, Politiker und Kommentare anzeigen.
+- **Interaktive Suche:** Eine Suchleiste, mit der Nutzer schnell ihre Lieblingspolitiker finden können.
+- **Ansprechendes Layout:** Ein Mosaik aus zufällig angeordneten Politikerbildern, die zu detaillierten Profilen führen.
+- **Informative Abschnitte:** Ein "Über uns"-Bereich, der den Zweck und die Vision von Polititracker erklärt.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Echtzeit-Datenvisualisierung:** Dynamische Zähler zeigen stets aktuelle Statistiken, wie die Anzahl der Unternehmen, Politiker und Kommentare.
+- **Suchfunktion:** Eine speziell entwickelte Suchleiste ermöglicht es, detaillierte Profile der bevorzugten Politiker zu finden.
+- **Zufällig angeordnetes Grid:** Politikerprofile werden zufällig gemischt und in einem ansprechenden Rasterlayout angezeigt.
+- **Sanfte Navigation:** Eine Scroll-to-Section-Funktion sorgt für ein nahtloses Nutzererlebnis.
+- **Responsives Design:** Das Layout passt sich optimal an unterschiedliche Bildschirmgrößen an und unterstützt sowohl helle als auch dunkle Themes.
 
-npm install cytoscape
+---
+
+## Technologien
+
+- **Framework:** [Next.js](https://nextjs.org/) – Ein React-Framework für die Produktion.
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) – Ein Utility-first CSS-Framework.
+- **Icons:** [React Icons](https://react-icons.github.io/react-icons/) – Für skalierbare und ansprechende Icons.
+- **Datenbank-Integration:** ORM-basierte Techniken (z. B. Prisma) zur Abfrage und Verwaltung der Daten von Politikern, Kommentaren und Unternehmen.
+- **Backend:** Asynchrone Datenabfragen zur dynamischen Darstellung der Inhalte auf der Startseite.
+
+---
+
+## Nutzung
+
+Besuche [polititracker.de](https://polititracker.de), um die Live-Seite zu erkunden. Dort kannst du:
+
+- **Das Dashboard erkunden:** Dynamische Zähler zeigen aktuelle Statistiken zu Unternehmen, Politikern und Kommentaren an.
+- **Politiker suchen:** Nutze die Suchleiste, um detaillierte Profile deiner Lieblingspolitiker zu finden.
+- **Im Grid navigieren:** Klicke auf die zufällig angeordneten Politikerbilder, um zu den jeweiligen Profilseiten zu gelangen.
+- **Mehr über das Projekt erfahren:** Scrolle nach unten, um mehr über die Mission und die Features von Polititracker zu lesen.
+
+---
+
+*Danke, dass du Polititracker erkundest!*
