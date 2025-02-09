@@ -54,7 +54,7 @@ export function CompanySearchBar({
         className="h-12 w-full border rounded-xl pl-14 transition-colors focus:border-indigo-600 dark:bg-gray-800 dark:border-gray-600 outline-none dark:text-white"
       />
       {search.length > 0 && companies.length > 0 && (
-        <div className="absolute w-full bg-white dark:bg-gray-800 shadow-lg rounded z-20 mt-2 overflow-scroll max-h-72">
+        <div className="absolute w-full bg-white dark:bg-gray-800 shadow-lg rounded z-50 mt-2 overflow-scroll max-h-72">
           {companies.map((company) => (
             <div
               key={company.id}
