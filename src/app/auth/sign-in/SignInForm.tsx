@@ -133,14 +133,23 @@ export function SignInForm({ XRedirectURL }: { XRedirectURL: string }) {
 
             <div>
               <Link
-                className={'flex w-full justify-center rounded-md bg-black dark:bg-gray-700 hover:bg-gray-800 transition-colors px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'}
-                href={XRedirectURL} suppressHydrationWarning>Anmelden mit <span className={'inline-block my-auto ml-2'}>
-                <Image className={'invert'}
-                       src={'/img/x_logo.png'}
-                       alt={'logo for X'}
-                       height={28}
-                       width={28} />
-              </span></Link>
+                className={
+                  'flex w-full justify-center rounded-md bg-black dark:bg-gray-700 hover:bg-gray-800 transition-colors px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                }
+                href={XRedirectURL}
+                suppressHydrationWarning
+              >
+                Anmelden mit{' '}
+                <span className={'inline-block my-auto ml-2'}>
+                  <Image
+                    className={'invert'}
+                    src={'/img/x_logo.png'}
+                    alt={'logo for X'}
+                    height={28}
+                    width={28}
+                  />
+                </span>
+              </Link>
             </div>
           </form>
 

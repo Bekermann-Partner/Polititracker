@@ -18,30 +18,33 @@ export async function oauthSignIn(code?: string) {
   const authHeader = 'Basic ' + Buffer.from(clientIdSecret).toString('base64');
 
   try {
-    const clientCredentials: { access_token: string } = await fetch('https://api.x.com/2/oauth2/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept': 'application/json',
-        'Authorization': `Basic ${authHeader}`,
-      },
-      body: new URLSearchParams({
-        code: code,
-        grant_type: 'authorization_code',
-        client_id: process.env.X_OAUTH_CLIENT!,
-        redirect_uri: process.env.X_OAUTH_REDIRECT!,
-        code_verifier: 'challenge',
-      }),
-    }).then(res => res.json());
+    const clientCredentials: { access_token: string } = await fetch(
+      'https://api.x.com/2/oauth2/token',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Accept: 'application/json',
+          Authorization: `Basic ${authHeader}`,
+        },
+        body: new URLSearchParams({
+          code: code,
+          grant_type: 'authorization_code',
+          client_id: process.env.X_OAUTH_CLIENT!,
+          redirect_uri: process.env.X_OAUTH_REDIRECT!,
+          code_verifier: 'challenge',
+        }),
+      }
+    ).then((res) => res.json());
 
     const accessToken = clientCredentials.access_token;
 
     const user = await fetch('https://api.x.com/2/users/me', {
       headers: {
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${accessToken}`,
+        Accept: 'application/json',
+        Authorization: `Bearer ${accessToken}`,
       },
-    }).then(res => res.json());
+    }).then((res) => res.json());
 
     // Try to find user with ext_twitter_id or create one otherwise
     const dbUser = await db.user.findFirst({
@@ -76,7 +79,9 @@ export async function oauthSignIn(code?: string) {
 
     const jwtKey = jwt.base64url.decode(process.env.APP_KEY ?? '');
 
-    const token = await new jwt.SignJWT(excludeFromObject(signInUser, ['password']))
+    const token = await new jwt.SignJWT(
+      excludeFromObject(signInUser, ['password'])
+    )
       .setProtectedHeader({ alg: 'HS256' })
       .setIssuedAt()
       .setExpirationTime('7d')

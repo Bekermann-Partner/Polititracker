@@ -34,7 +34,8 @@ export default function Page() {
           </h2>
 
           <h5 className={'text-lg text-gray-600 mt-3 text-center'}>
-            Habe bitte kurz Geduld. Dies kann einige Sekunden in Anspruch nehmen.
+            Habe bitte kurz Geduld. Dies kann einige Sekunden in Anspruch
+            nehmen.
           </h5>
         </div>
 
