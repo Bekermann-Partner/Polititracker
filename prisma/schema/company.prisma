@@ -37,6 +37,7 @@ model Company {
   isActivelyTrading Boolean  @default(true)
   isAdr             Boolean  @default(false)
   isFund            Boolean  @default(false)
+  founded           Int?
 
   ratings           Rating[]
 }
