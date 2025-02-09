@@ -140,7 +140,7 @@ export default function SignUpPage() {
               </label>
               <Link
                 href="/user-agreement"
-                className="text-sm text-blue-600 hover:underline ml-2"
+                className="text-sm font-medium text-blue-600 hover:underline ml-2"
               >
                 User Agreement
               </Link>
