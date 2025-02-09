@@ -63,13 +63,13 @@ const getLogoPath = (companyName: string): string => {
 };
 
 export default function PoliticianGraph({
-                                          politicianId,
-                                        }: PoliticianGraphProps) {
+  politicianId,
+}: PoliticianGraphProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const cyInstanceRef = useRef<cytoscape.Core | null>(null);
 
   const [elements, setElements] = useState<(CytoscapeNode | CytoscapeEdge)[]>(
-    [],
+    []
   );
   const [companies, setCompanies] = useState<string[]>([]);
   const [visibleCompanies, setVisibleCompanies] = useState<string[]>([]);
@@ -128,7 +128,7 @@ export default function PoliticianGraph({
         Object.entries(companyRatingSums).forEach(
           ([companyName, { sum, count }]) => {
             avgRatings[companyName] = sum / count;
-          },
+          }
         );
         setOriginalRatings(avgRatings);
 
@@ -152,7 +152,7 @@ export default function PoliticianGraph({
               },
               classes: 'rating',
             });
-          },
+          }
         );
 
         const uniqueCompanies = Object.keys(avgRatings);
@@ -282,7 +282,7 @@ export default function PoliticianGraph({
     const newPolLabel = `${pol.first_name} ${pol.last_name}`;
     try {
       const resRatings = await fetch(
-        `/api/graph/ratings?politicianId=${newPolId}`,
+        `/api/graph/ratings?politicianId=${newPolId}`
       );
       if (!resRatings.ok)
         throw new Error('Failed to load ratings for additional politician');
@@ -393,7 +393,7 @@ export default function PoliticianGraph({
                   setVisibleCompanies((prev) =>
                     prev.includes(company)
                       ? prev.filter((c) => c !== company)
-                      : [...prev, company],
+                      : [...prev, company]
                   )
                 }
               />{' '}
