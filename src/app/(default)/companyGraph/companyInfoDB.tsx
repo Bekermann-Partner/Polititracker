@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
 export interface CompanyProfileDB {
   id: number;
@@ -51,6 +51,38 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
   const [profile, setProfile] = useState<CompanyProfileDB | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+  const [isDark, setIsDark] = useState<boolean>(false);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    setIsDark(html.classList.contains('dark'));
+
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    });
+
+    observer.observe(html, { attributes: true, attributeFilter: ['class'] });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const themeStyles = useMemo(() => {
+    if (isDark) {
+      return {
+        containerBackground: 'transparent',
+        containerBorder: '1px solid #fff',
+        textColor: '#fff',
+        linkColor: '#9cf',
+      };
+    } else {
+      return {
+        containerBackground: 'transparent',
+        containerBorder: '1px solid #000',
+        textColor: '#000',
+        linkColor: '#0070f3',
+      };
+    }
+  }, [isDark]);
 
   useEffect(() => {
     async function fetchCompanyProfile() {
@@ -80,13 +112,13 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
   }, [companyId]);
 
   if (loading) {
-    return <p>Loading company profile...</p>;
+    return <p style={{ textAlign: 'center' }}>Loading company profile...</p>;
   }
   if (error) {
-    return <p>Error: {error}</p>;
+    return <p style={{ textAlign: 'center' }}>Error: {error}</p>;
   }
   if (!profile) {
-    return <p>No profile available.</p>;
+    return <p style={{ textAlign: 'center' }}>No profile available.</p>;
   }
 
   return (
@@ -94,11 +126,12 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
       style={{
         marginTop: '20px',
         padding: '20px',
-        border: '1px solid #ddd',
+        border: themeStyles.containerBorder,
         borderRadius: '8px',
-        backgroundColor: '#f9f9f9',
+        backgroundColor: themeStyles.containerBackground,
         maxWidth: '800px',
         margin: '20px auto',
+        color: themeStyles.textColor,
       }}
     >
       <div
@@ -118,10 +151,6 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
           <h3 style={{ margin: 0 }}>
             {profile.companyName} ({profile.symbol})
           </h3>
-          <p style={{ margin: 0 }}>
-            Price: {profile.price} {profile.currency}
-          </p>
-          <p style={{ margin: 0 }}>Exchange: {profile.exchangeShortName}</p>
         </div>
       </div>
 
@@ -130,33 +159,12 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
           <strong>CEO:</strong> {profile.ceo}
         </p>
         <p>
-          <strong>Industry:</strong> {profile.industry}
-        </p>
-        <p>
-          <strong>Sector:</strong> {profile.sector}
-        </p>
-        <p>
           <strong>Founded (IPO Date):</strong>{' '}
           {profile.ipoDate
             ? profile.ipoDate instanceof Date
               ? profile.ipoDate.toLocaleDateString()
               : String(profile.ipoDate)
             : 'N/A'}
-        </p>
-        <p>
-          <strong>Market Cap:</strong>{' '}
-          {profile.mktCap ? profile.mktCap.toLocaleString() : 'N/A'}{' '}
-          {profile.currency}
-        </p>
-        <p>
-          <strong>Employees:</strong> {profile.fullTimeEmployees}
-        </p>
-        <p>
-          <strong>Headquarters:</strong> {profile.address}, {profile.city},{' '}
-          {profile.state} {profile.zip}
-        </p>
-        <p>
-          <strong>Phone:</strong> {profile.phone}
         </p>
       </div>
 
@@ -172,7 +180,11 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
             href={profile.website}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: '#0070f3', fontWeight: 'bold', fontSize: '16px' }}
+            style={{
+              color: themeStyles.linkColor,
+              fontWeight: 'bold',
+              fontSize: '16px',
+            }}
           >
             Visit Website
           </a>
