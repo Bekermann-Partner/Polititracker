@@ -118,10 +118,6 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
           <h3 style={{ margin: 0 }}>
             {profile.companyName} ({profile.symbol})
           </h3>
-          <p style={{ margin: 0 }}>
-            Price: {profile.price} {profile.currency}
-          </p>
-          <p style={{ margin: 0 }}>Exchange: {profile.exchangeShortName}</p>
         </div>
       </div>
 
@@ -130,33 +126,12 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
           <strong>CEO:</strong> {profile.ceo}
         </p>
         <p>
-          <strong>Industry:</strong> {profile.industry}
-        </p>
-        <p>
-          <strong>Sector:</strong> {profile.sector}
-        </p>
-        <p>
           <strong>Founded (IPO Date):</strong>{' '}
           {profile.ipoDate
             ? profile.ipoDate instanceof Date
               ? profile.ipoDate.toLocaleDateString()
               : String(profile.ipoDate)
             : 'N/A'}
-        </p>
-        <p>
-          <strong>Market Cap:</strong>{' '}
-          {profile.mktCap ? profile.mktCap.toLocaleString() : 'N/A'}{' '}
-          {profile.currency}
-        </p>
-        <p>
-          <strong>Employees:</strong> {profile.fullTimeEmployees}
-        </p>
-        <p>
-          <strong>Headquarters:</strong> {profile.address}, {profile.city},{' '}
-          {profile.state} {profile.zip}
-        </p>
-        <p>
-          <strong>Phone:</strong> {profile.phone}
         </p>
       </div>
 
