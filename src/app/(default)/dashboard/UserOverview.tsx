@@ -26,7 +26,7 @@ export async function UserOverview({ user }: { user: User }) {
 
   return (
     <>
-      <section className={'pt-24'}>
+      <section className={'mt-10'}>
         <div className={'mx-auto max-w-6xl'}>
           <div className="border rounded-lg shadow-md p-4 duration-200 dark:bg-gray-900 dark:border-gray-700">
             <div className="flex">
