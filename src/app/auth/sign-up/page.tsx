@@ -136,14 +136,13 @@ export default function SignUpPage() {
                 htmlFor="checked-checkbox"
                 className="ms-2 text-sm font-medium text-gray-900 dark:text-white"
               >
-                Nutzungbedingungen gelesen
+                <Link
+                  href="/user-agreement"
+                  className="text-sm font-medium text-blue-600 hover:underline ml-2"
+                >
+                  Nutzungsvereinbarung
+                </Link>
               </label>
-              <Link
-                href="/user-agreement"
-                className="text-sm font-medium text-blue-600 hover:underline ml-2"
-              >
-                User Agreement
-              </Link>
             </div>
 
             <div>
