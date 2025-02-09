@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 
 export interface CompanyProfileDB {
   id: number;
@@ -51,6 +51,38 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
   const [profile, setProfile] = useState<CompanyProfileDB | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+  const [isDark, setIsDark] = useState<boolean>(false);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    setIsDark(html.classList.contains('dark'));
+
+    const observer = new MutationObserver(() => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    });
+
+    observer.observe(html, { attributes: true, attributeFilter: ['class'] });
+
+    return () => observer.disconnect();
+  }, []);
+
+  const themeStyles = useMemo(() => {
+    if (isDark) {
+      return {
+        containerBackground: 'transparent',
+        containerBorder: '1px solid #fff',
+        textColor: '#fff',
+        linkColor: '#9cf',
+      };
+    } else {
+      return {
+        containerBackground: 'transparent',
+        containerBorder: '1px solid #000',
+        textColor: '#000',
+        linkColor: '#0070f3',
+      };
+    }
+  }, [isDark]);
 
   useEffect(() => {
     async function fetchCompanyProfile() {
@@ -80,32 +112,37 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
   }, [companyId]);
 
   if (loading) {
-    return <p>Loading company profile...</p>;
+    return <p style={{ textAlign: 'center' }}>Loading company profile...</p>;
   }
   if (error) {
-    return <p>Error: {error}</p>;
+    return <p style={{ textAlign: 'center' }}>Error: {error}</p>;
   }
   if (!profile) {
-    return <p>No profile available.</p>;
+    return <p style={{ textAlign: 'center' }}>No profile available.</p>;
   }
+
+  // Compute the image URL based on the company name.
+  // Adjust the replace logic if your file names follow a different convention.
+  const logoSrc = `/logos/${profile.companyName.replace(/\s+/g, '_')}_image.png`;
 
   return (
     <div
       style={{
         marginTop: '20px',
         padding: '20px',
-        border: '1px solid #ddd',
+        border: themeStyles.containerBorder,
         borderRadius: '8px',
-        backgroundColor: '#f9f9f9',
+        backgroundColor: themeStyles.containerBackground,
         maxWidth: '800px',
         margin: '20px auto',
+        color: themeStyles.textColor,
       }}
     >
       <div
         style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}
       >
         <img
-          src={profile.image}
+          src={logoSrc}
           alt={profile.companyName}
           style={{
             width: '100px',
@@ -126,7 +163,7 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
           <strong>CEO:</strong> {profile.ceo}
         </p>
         <p>
-          <strong>Founded (IPO Date):</strong>{' '}
+          <strong>Gegründet (IPO Date):</strong>{' '}
           {profile.ipoDate
             ? profile.ipoDate instanceof Date
               ? profile.ipoDate.toLocaleDateString()
@@ -137,7 +174,7 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
 
       <div style={{ marginBottom: '20px', fontSize: '14px', lineHeight: 1.5 }}>
         <p>
-          <strong>Description:</strong> {profile.description}
+          <strong>Beschreibung:</strong> {profile.description}
         </p>
       </div>
 
@@ -147,9 +184,13 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
             href={profile.website}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: '#0070f3', fontWeight: 'bold', fontSize: '16px' }}
+            style={{
+              color: themeStyles.linkColor,
+              fontWeight: 'bold',
+              fontSize: '16px',
+            }}
           >
-            Visit Website
+            Besuche Website
           </a>
         </div>
       )}

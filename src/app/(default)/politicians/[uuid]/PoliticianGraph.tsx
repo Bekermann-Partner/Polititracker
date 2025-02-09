@@ -1,12 +1,11 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import cytoscape from 'cytoscape';
-import { findPolitician } from '@/_actions/findPolitician';
-import { useDebounce } from '@/_lib/hooks/useDebounce';
 
 interface Rating {
   id: number;
+  company_id: number;
   politician_id: number;
   url: string;
   stars: number;
@@ -15,13 +14,24 @@ interface Rating {
     name: string;
     image: string;
   } | null;
+  politician?: Politician | null;
+}
+
+interface Politician {
+  uuid: string;
+  ext_abgeordnetenwatch_id: number;
+  first_name: string;
+  last_name: string;
+  occupation?: string | null;
+  party?: { short: string };
+  profile_image?: string;
 }
 
 interface CytoscapeNode {
   data: {
     id: string;
     label?: string;
-    similarity?: number;
+    averageRating?: number;
     profileImg?: string;
     logo?: string;
   };
@@ -38,56 +48,67 @@ interface CytoscapeEdge {
   classes: string;
 }
 
-interface Politician {
-  uuid: string;
-  ext_abgeordnetenwatch_id: number;
-  first_name: string;
-  last_name: string;
-  occupation?: string | null;
-  party?: { short: string };
-  profile_image?: string;
-}
-
-interface AdditionalPolitician {
-  id: number;
-  name: string;
-  similarity: number;
-}
+const getLogoPath = (companyName: string): string => {
+  return `/logos/${companyName.replace(/\s+/g, '_')}_image.png`;
+};
 
 interface PoliticianGraphProps {
   politicianId: number;
 }
-
-const getLogoPath = (companyName: string): string => {
-  return `/logos/${companyName.replace(/\s+/g, '_')}_image.png`;
-};
 
 export default function PoliticianGraph({
   politicianId,
 }: PoliticianGraphProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const cyInstanceRef = useRef<cytoscape.Core | null>(null);
-
   const [elements, setElements] = useState<(CytoscapeNode | CytoscapeEdge)[]>(
     []
   );
-  const [companies, setCompanies] = useState<string[]>([]);
+  const [isDark, setIsDark] = useState<boolean>(false);
+  // For filtering companies in the graph
   const [visibleCompanies, setVisibleCompanies] = useState<string[]>([]);
-  const [originalRatings, setOriginalRatings] = useState<
-    Record<string, number>
-  >({});
 
-  const [search, setSearch] = useState<string>('');
-  const debouncedSearch = useDebounce(search, 500);
-  const [searchResults, setSearchResults] = useState<Politician[]>([]);
-  const [additionalPoliticians, setAdditionalPoliticians] = useState<
-    AdditionalPolitician[]
-  >([]);
+  // Dark mode detection.
+  useEffect(() => {
+    const html = document.documentElement;
+    setIsDark(!html.classList.contains('dark'));
+    function handleThemeChange() {
+      setIsDark(!document.documentElement.classList.contains('dark'));
+    }
+    window.addEventListener('theme-mode-change', handleThemeChange);
+    return () =>
+      window.removeEventListener('theme-mode-change', handleThemeChange);
+  }, []);
 
+  useEffect(() => {
+    setVisibleCompanies([]);
+  }, []);
+
+  const themeStyles = useMemo(() => {
+    if (isDark) {
+      return {
+        containerBackground: 'transparent',
+        companyNode: { backgroundColor: '#4caf50', borderColor: '#388e3c' },
+        politicianNode: { backgroundColor: '#42a5f5', borderColor: '#1e88e5' },
+        edge: { lineColor: '#90a4ae' },
+        textColor: '#fff',
+      };
+    } else {
+      return {
+        containerBackground: 'transparent',
+        companyNode: { backgroundColor: '#2d6a4f', borderColor: '#1b4332' },
+        politicianNode: { backgroundColor: '#1d3557', borderColor: '#457b9d' },
+        edge: { lineColor: '#a8dadc' },
+        textColor: '#000',
+      };
+    }
+  }, [isDark]);
+
+  // Fetch ratings for the politician and build nodes/edges.
   useEffect(() => {
     fetch(`/api/graph/ratings?politicianId=${politicianId}`)
       .then((res) => {
-        if (!res.ok) throw new Error('Failed to load ratings');
+        if (!res.ok) throw new Error('Failed to load ratings for politician');
         return res.json();
       })
       .then((data: Rating[]) => {
@@ -104,68 +125,73 @@ export default function PoliticianGraph({
           classes: 'politician',
         });
 
+        // Aggregate ratings by company.
         const companyRatingSums: Record<
-          string,
-          { sum: number; count: number; companyId: number }
+          number,
+          {
+            sum: number;
+            count: number;
+            company: { id: number; name: string; image: string };
+          }
         > = {};
-
-        data.forEach((rating: Rating) => {
+        data.forEach((rating) => {
           if (rating.company) {
-            const companyName = rating.company.name;
-            if (!companyRatingSums[companyName]) {
-              companyRatingSums[companyName] = {
+            const companyId = rating.company.id;
+            if (!companyRatingSums[companyId]) {
+              companyRatingSums[companyId] = {
                 sum: 0,
                 count: 0,
-                companyId: rating.company.id,
+                company: rating.company,
               };
             }
-            companyRatingSums[companyName].sum += rating.stars;
-            companyRatingSums[companyName].count += 1;
+            companyRatingSums[companyId].sum += rating.stars;
+            companyRatingSums[companyId].count += 1;
           }
         });
 
-        const avgRatings: Record<string, number> = {};
         Object.entries(companyRatingSums).forEach(
-          ([companyName, { sum, count }]) => {
-            avgRatings[companyName] = sum / count;
-          }
-        );
-        setOriginalRatings(avgRatings);
-
-        Object.entries(companyRatingSums).forEach(
-          ([companyName, { companyId }]) => {
-            const companyNodeId = `c-${companyId}`;
+          ([, { sum, count, company }]) => {
+            const avgRating = sum / count;
+            const companyNodeId = `c-${company.id}`;
             nodes.push({
               data: {
                 id: companyNodeId,
-                label: companyName,
-                logo: getLogoPath(companyName),
+                label: company.name,
+                logo: getLogoPath(company.name),
               },
               classes: 'company',
             });
             edges.push({
               data: {
-                id: `edge-${politicianId}-${companyId}`,
+                id: `edge-${politicianId}-${company.id}`,
                 source: politicianNodeId,
                 target: companyNodeId,
-                label: `${Math.round(avgRatings[companyName])} ⭐`,
+                label: `${Math.round(avgRating)} ⭐`,
               },
               classes: 'rating',
             });
           }
         );
 
-        const uniqueCompanies = Object.keys(avgRatings);
-        setCompanies(uniqueCompanies);
-        setVisibleCompanies(uniqueCompanies);
-
         setElements([...nodes, ...edges]);
       })
-      .catch((err) => console.error('Error loading original ratings:', err));
+      .catch((err) =>
+        console.error('Error loading ratings for politician:', err)
+      );
   }, [politicianId]);
 
+  // Initialize Cytoscape.
   useEffect(() => {
     if (containerRef.current && elements.length > 0) {
+      if (cyInstanceRef.current) {
+        try {
+          cyInstanceRef.current.destroy();
+        } catch (error) {
+          console.error('Error destroying Cytoscape instance:', error);
+        }
+        cyInstanceRef.current = null;
+      }
+
       const cy = cytoscape({
         container: containerRef.current,
         elements,
@@ -173,64 +199,54 @@ export default function PoliticianGraph({
           {
             selector: 'node.politician',
             style: {
+              shape: 'ellipse',
               'background-image': 'data(profileImg)',
               'background-fit': 'contain',
-              'background-color': '#007bff',
+              'background-color': themeStyles.politicianNode.backgroundColor,
               label: 'data(label)',
-              color: '#fff',
+              color: themeStyles.textColor,
               'text-valign': 'bottom',
               'text-halign': 'center',
               'font-size': '10px',
-              width: '60px',
-              height: '60px',
+              width: '80px',
+              height: '80px',
             },
           },
           {
             selector: 'node.company',
             style: {
+              shape: 'ellipse',
               'background-image': 'data(logo)',
               'background-fit': 'contain',
-              'background-color': '#28a745',
+              'background-color': themeStyles.companyNode.backgroundColor,
               label: 'data(label)',
-              color: '#fff',
+              color: themeStyles.textColor,
               'text-valign': 'bottom',
               'text-halign': 'center',
               'font-size': '10px',
-              'text-margin-y': 5,
-              width: '60px',
-              height: '60px',
+              width: '80px',
+              height: '80px',
             },
           },
           {
             selector: 'edge.rating',
             style: {
               width: 2,
-              'line-color': '#aaa',
+              'line-color': themeStyles.edge.lineColor,
               'target-arrow-shape': 'triangle',
-              'target-arrow-color': '#aaa',
+              'target-arrow-color': themeStyles.edge.lineColor,
               label: 'data(label)',
               'text-margin-y': -10,
               'font-size': '10px',
               color: '#555',
             },
           },
-          {
-            selector: 'node.additional',
-            style: {
-              'background-image': 'data(profileImg)',
-              'background-fit': 'contain',
-              'background-color': '#d63384',
-              label: 'data(label)',
-              color: '#fff',
-              'text-valign': 'bottom',
-              'text-halign': 'center',
-              'font-size': '10px',
-              width: '60px',
-              height: '60px',
-            },
-          },
         ],
         layout: { name: 'cose', animate: false },
+        userZoomingEnabled: true,
+        userPanningEnabled: true,
+        minZoom: 0.4,
+        maxZoom: 5.0,
       });
       cyInstanceRef.current = cy;
 
@@ -245,261 +261,35 @@ export default function PoliticianGraph({
         }
       };
     }
-  }, [elements]);
+  }, [elements, themeStyles]);
 
   useEffect(() => {
     if (cyInstanceRef.current) {
       const cy = cyInstanceRef.current;
-      cy.nodes('.company').forEach((node: cytoscape.NodeSingular) => {
-        const companyName = node.data('label') as string;
-        if (visibleCompanies.includes(companyName)) {
-          node.style('display', 'element');
-          node.connectedEdges().forEach((edge: cytoscape.EdgeSingular) => {
-            edge.style('display', 'element');
-          });
-        } else {
-          node.style('display', 'none');
-          node.connectedEdges().forEach((edge: cytoscape.EdgeSingular) => {
-            edge.style('display', 'none');
-          });
-        }
+      cy.nodes('.company').forEach((node) => {
+        node.style('display', 'element');
+        node.connectedEdges().forEach((edge) => {
+          edge.style('display', 'element');
+        });
       });
     }
   }, [visibleCompanies]);
 
-  useEffect(() => {
-    if (debouncedSearch.trim().length > 0) {
-      findPolitician(debouncedSearch)
-        .then((results: Politician[]) => setSearchResults(results))
-        .catch((err) => console.error('Search error:', err));
-    } else {
-      setSearchResults([]);
-    }
-  }, [debouncedSearch]);
-
-  const addAdditionalPolitician = async (pol: Politician) => {
-    const newPolId = pol.ext_abgeordnetenwatch_id;
-    const newPolLabel = `${pol.first_name} ${pol.last_name}`;
-    try {
-      const resRatings = await fetch(
-        `/api/graph/ratings?politicianId=${newPolId}`
-      );
-      if (!resRatings.ok)
-        throw new Error('Failed to load ratings for additional politician');
-      const ratingsData: Rating[] = await resRatings.json();
-
-      const additionalSums: Record<
-        string,
-        { sum: number; count: number; companyId: number }
-      > = {};
-      ratingsData.forEach((rating) => {
-        if (rating.company && companies.includes(rating.company.name)) {
-          const compName = rating.company.name;
-          if (!additionalSums[compName]) {
-            additionalSums[compName] = {
-              sum: 0,
-              count: 0,
-              companyId: rating.company.id,
-            };
-          }
-          additionalSums[compName].sum += rating.stars;
-          additionalSums[compName].count += 1;
-        }
-      });
-      const additionalAverages: Record<string, number> = {};
-      Object.entries(additionalSums).forEach(([compName, { sum, count }]) => {
-        additionalAverages[compName] = sum / count;
-      });
-
-      let agreements = 0;
-      let commonCompanies = 0;
-      Object.keys(additionalAverages).forEach((compName) => {
-        if (compName in originalRatings) {
-          commonCompanies++;
-          if (
-            Math.round(additionalAverages[compName]) ===
-            Math.round(originalRatings[compName])
-          ) {
-            agreements++;
-          }
-        }
-      });
-      const similarity =
-        commonCompanies > 0
-          ? Math.round((agreements / commonCompanies) * 100)
-          : 0;
-
-      if (cyInstanceRef.current) {
-        const cy = cyInstanceRef.current;
-        if (cy.getElementById(`p-${newPolId}`).empty()) {
-          cy.add({
-            group: 'nodes',
-            data: {
-              id: `p-${newPolId}`,
-              label: newPolLabel,
-              similarity,
-              profileImg: `/pol_profile_img/${newPolId}.png`,
-            },
-            classes: 'additional',
-          });
-        }
-        Object.entries(additionalSums).forEach(([compName, { companyId }]) => {
-          const edgeId = `edge-${newPolId}-${companyId}`;
-          if (cy.getElementById(edgeId).empty()) {
-            const avg = additionalAverages[compName];
-            cy.add({
-              group: 'edges',
-              data: {
-                id: edgeId,
-                source: `p-${newPolId}`,
-                target: `c-${companyId}`,
-                label: `${Math.round(avg)} ⭐`,
-              },
-              classes: 'rating',
-            });
-          }
-        });
-      }
-
-      setAdditionalPoliticians((prev) => [
-        ...prev,
-        { id: newPolId, name: newPolLabel, similarity },
-      ]);
-    } catch (err) {
-      console.error('Error adding additional politician:', err);
-      alert('Error adding politician.');
-    }
-  };
-
   return (
-    <div>
-      <h2 className="dark:text-white" style={{ textAlign: 'center' }}>
-        Graph of Ratings
-      </h2>
-
-      {/* Company Filter */}
-      <div
-        className="dark:text-white"
-        style={{ marginBottom: '10px', textAlign: 'center' }}
-      >
-        <strong>Filter Companies:</strong>
-        <div style={{ display: 'inline-block', marginLeft: '10px' }}>
-          {companies.map((company) => (
-            <label key={company} style={{ marginRight: '10px' }}>
-              <input
-                type="checkbox"
-                checked={visibleCompanies.includes(company)}
-                onChange={() =>
-                  setVisibleCompanies((prev) =>
-                    prev.includes(company)
-                      ? prev.filter((c) => c !== company)
-                      : [...prev, company]
-                  )
-                }
-              />{' '}
-              {company}
-            </label>
-          ))}
-        </div>
-      </div>
-
-      {/* Search Bar for Additional Politicians */}
-      <div
+    <div style={{ position: 'relative' }}>
+      <h3
         style={{
-          position: 'relative',
-          marginBottom: '10px',
           textAlign: 'center',
-          zIndex: 1000,
+          fontFamily: 'Helvetica, Arial, sans-serif',
+          marginBottom: '10px',
+          color: themeStyles.textColor,
         }}
-        onClick={(e) => e.stopPropagation()}
       >
-        <input
-          type="text"
-          className="h-12 w-full border rounded-xl pl-4"
-          placeholder="Search for a politician"
-          value={search}
-          onChange={(e) => setSearch(e.currentTarget.value)}
-          style={{ position: 'relative', zIndex: 1000 }}
-          onFocus={() => {
-            if (cyInstanceRef.current) {
-              try {
-                cyInstanceRef.current.stop();
-                cyInstanceRef.current.resize();
-              } catch (err) {
-                console.error('Error on search input focus:', err);
-              }
-            }
-          }}
-        />
-        {search.length > 0 && searchResults.length > 0 && (
-          <div
-            style={{
-              position: 'absolute',
-              width: '100%',
-              backgroundColor: 'white',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-              borderRadius: '4px',
-              zIndex: 1010,
-              marginTop: '2px',
-              maxHeight: '300px',
-              overflowY: 'auto',
-            }}
-          >
-            {searchResults.map((result) => (
-              <div
-                key={result.uuid}
-                onClick={() => {
-                  addAdditionalPolitician(result);
-                  setSearch('');
-                  setSearchResults([]);
-                }}
-                style={{
-                  padding: '10px',
-                  borderBottom: '1px solid #eee',
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                }}
-              >
-                <strong>
-                  {result.first_name} {result.last_name} &bull;{' '}
-                  {result.party?.short}
-                </strong>
-                <div>{result.occupation}</div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Display Added Politicians and Similarity */}
-      {additionalPoliticians.length > 0 && (
-        <div
-          className="dark:text-white"
-          style={{ textAlign: 'center', marginBottom: '20px' }}
-        >
-          <h3>Added Politicians &amp; Agreement Percentage</h3>
-          {additionalPoliticians.map((pol) => (
-            <div key={pol.id}>
-              <div className="inline-block">
-                <div className="flex items-center space-x-2 justify-center">
-                  <strong>{pol.name}</strong>
-                  <progress
-                    value={pol.similarity}
-                    max="100"
-                    className="h-2 w-96 rounded-lg [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:bg-blue-500"
-                  />
-                  <span>{pol.similarity}%</span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Cytoscape Graph Container */}
+        Politician Graph
+      </h3>
       <div
         ref={containerRef}
-        className="w-full h-[500px] border border-black dark:border-gray-700 bg-white dark:bg-gray-900 mb-8"
+        style={{ width: '100%', height: '500px', border: '1px solid black' }}
       />
     </div>
   );
