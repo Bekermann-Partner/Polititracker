@@ -9,7 +9,6 @@ interface Rating {
   id: number;
   politician_id: number;
   url: string;
-
   stars: number;
   company?: {
     id: number;
@@ -44,9 +43,7 @@ interface Politician {
   ext_abgeordnetenwatch_id: number;
   first_name: string;
   last_name: string;
-
   occupation?: string | null;
-
   party?: { short: string };
   profile_image?: string;
 }
@@ -66,13 +63,13 @@ const getLogoPath = (companyName: string): string => {
 };
 
 export default function PoliticianGraph({
-  politicianId,
-}: PoliticianGraphProps) {
+                                          politicianId,
+                                        }: PoliticianGraphProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const cyInstanceRef = useRef<cytoscape.Core | null>(null);
 
   const [elements, setElements] = useState<(CytoscapeNode | CytoscapeEdge)[]>(
-    []
+    [],
   );
   const [companies, setCompanies] = useState<string[]>([]);
   const [visibleCompanies, setVisibleCompanies] = useState<string[]>([]);
@@ -131,7 +128,7 @@ export default function PoliticianGraph({
         Object.entries(companyRatingSums).forEach(
           ([companyName, { sum, count }]) => {
             avgRatings[companyName] = sum / count;
-          }
+          },
         );
         setOriginalRatings(avgRatings);
 
@@ -155,7 +152,7 @@ export default function PoliticianGraph({
               },
               classes: 'rating',
             });
-          }
+          },
         );
 
         const uniqueCompanies = Object.keys(avgRatings);
@@ -274,7 +271,6 @@ export default function PoliticianGraph({
     if (debouncedSearch.trim().length > 0) {
       findPolitician(debouncedSearch)
         .then((results: Politician[]) => setSearchResults(results))
-
         .catch((err) => console.error('Search error:', err));
     } else {
       setSearchResults([]);
@@ -286,7 +282,7 @@ export default function PoliticianGraph({
     const newPolLabel = `${pol.first_name} ${pol.last_name}`;
     try {
       const resRatings = await fetch(
-        `/api/graph/ratings?politicianId=${newPolId}`
+        `/api/graph/ratings?politicianId=${newPolId}`,
       );
       if (!resRatings.ok)
         throw new Error('Failed to load ratings for additional politician');
@@ -377,9 +373,15 @@ export default function PoliticianGraph({
 
   return (
     <div>
-      <h2 style={{ textAlign: 'center' }}>Graph of Ratings</h2>
+      <h2 className="dark:text-white" style={{ textAlign: 'center' }}>
+        Graph of Ratings
+      </h2>
+
       {/* Company Filter */}
-      <div style={{ marginBottom: '10px', textAlign: 'center' }}>
+      <div
+        className="dark:text-white"
+        style={{ marginBottom: '10px', textAlign: 'center' }}
+      >
         <strong>Filter Companies:</strong>
         <div style={{ display: 'inline-block', marginLeft: '10px' }}>
           {companies.map((company) => (
@@ -391,7 +393,7 @@ export default function PoliticianGraph({
                   setVisibleCompanies((prev) =>
                     prev.includes(company)
                       ? prev.filter((c) => c !== company)
-                      : [...prev, company]
+                      : [...prev, company],
                   )
                 }
               />{' '}
@@ -407,7 +409,6 @@ export default function PoliticianGraph({
           position: 'relative',
           marginBottom: '10px',
           textAlign: 'center',
-
           zIndex: 1000,
         }}
         onClick={(e) => e.stopPropagation()}
@@ -449,7 +450,6 @@ export default function PoliticianGraph({
                 key={result.uuid}
                 onClick={() => {
                   addAdditionalPolitician(result);
-
                   setSearch('');
                   setSearchResults([]);
                 }}
@@ -473,21 +473,23 @@ export default function PoliticianGraph({
 
       {/* Display Added Politicians and Similarity */}
       {additionalPoliticians.length > 0 && (
-        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+        <div
+          className="dark:text-white"
+          style={{ textAlign: 'center', marginBottom: '20px' }}
+        >
           <h3>Added Politicians &amp; Agreement Percentage</h3>
           {additionalPoliticians.map((pol) => (
-            <div key={pol.id} style={{ marginBottom: '10px' }}>
-              <strong>{pol.name}</strong>
-              <div style={{ display: 'inline-block', marginLeft: '10px' }}>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={pol.similarity}
-                  disabled
-                  style={{ width: '200px' }}
-                />
-                <span style={{ marginLeft: '5px' }}>{pol.similarity}%</span>
+            <div key={pol.id}>
+              <div className="inline-block">
+                <div className="flex items-center space-x-2 justify-center">
+                  <strong>{pol.name}</strong>
+                  <progress
+                    value={pol.similarity}
+                    max="100"
+                    className="h-2 w-96 rounded-lg [&::-webkit-progress-bar]:rounded-lg [&::-webkit-progress-value]:bg-blue-500"
+                  />
+                  <span>{pol.similarity}%</span>
+                </div>
               </div>
             </div>
           ))}
@@ -497,7 +499,7 @@ export default function PoliticianGraph({
       {/* Cytoscape Graph Container */}
       <div
         ref={containerRef}
-        style={{ width: '100%', height: '500px', border: '1px solid black' }}
+        className="w-full h-[500px] border border-black dark:border-gray-700 bg-white dark:bg-gray-900 mb-8"
       />
     </div>
   );
