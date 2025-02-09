@@ -121,6 +121,10 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
     return <p style={{ textAlign: 'center' }}>No profile available.</p>;
   }
 
+  // Compute the image URL based on the company name.
+  // Adjust the replace logic if your file names follow a different convention.
+  const logoSrc = `/logos/${profile.companyName.replace(/\s+/g, '_')}_image.png`;
+
   return (
     <div
       style={{
@@ -138,7 +142,7 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
         style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}
       >
         <img
-          src={profile.image}
+          src={logoSrc}
           alt={profile.companyName}
           style={{
             width: '100px',
@@ -159,7 +163,7 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
           <strong>CEO:</strong> {profile.ceo}
         </p>
         <p>
-          <strong>Founded (IPO Date):</strong>{' '}
+          <strong>Gegründet (IPO Date):</strong>{' '}
           {profile.ipoDate
             ? profile.ipoDate instanceof Date
               ? profile.ipoDate.toLocaleDateString()
@@ -170,7 +174,7 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
 
       <div style={{ marginBottom: '20px', fontSize: '14px', lineHeight: 1.5 }}>
         <p>
-          <strong>Description:</strong> {profile.description}
+          <strong>Beschreibung:</strong> {profile.description}
         </p>
       </div>
 
@@ -186,7 +190,7 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
               fontSize: '16px',
             }}
           >
-            Visit Website
+            Besuche Website
           </a>
         </div>
       )}
