@@ -36,7 +36,7 @@ export async function getXAuthURL() {
  * @param formData
  */
 export async function signIn(
-  formData: FormData,
+  formData: FormData
 ): Promise<Omit<User, 'password'> | ZodError | undefined> {
   const cookieStore = await cookies();
   const parse = signInUserValidation.safeParse(formData);
