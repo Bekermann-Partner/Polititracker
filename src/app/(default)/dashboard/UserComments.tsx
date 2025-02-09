@@ -9,7 +9,7 @@ export async function UserComments({ user }: { user: User }) {
 
   return (
     <>
-      <section className="pt-10">
+      <section className="pt-10 pb-10">
         <div className="mx-auto max-w-6xl">
           <h1 className="text-2xl font-bold mb-6 dark:text-white">
             Von dir verfasste Kommentare:

@@ -50,7 +50,7 @@ export default async function PoliticianView({
   }
 
   return (
-    <section className="pt-24">
+    <section className={'mt-10'}>
       <div className="mx-auto max-w-6xl">
         <React.Suspense fallback={<LoadingPoliticianDetails />}>
           <PoliticianDetails politicianPromise={Promise.resolve(politician)} />
