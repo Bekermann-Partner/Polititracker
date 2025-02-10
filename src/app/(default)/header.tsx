@@ -65,7 +65,7 @@ export async function Header() {
                         href="/companyGraph"
                         className="hover:link md:px-4 block"
                       >
-                        Unternehmens Graph
+                        Unternehmensgraph
                       </Link>
                     </li>
                     {user != null && (
