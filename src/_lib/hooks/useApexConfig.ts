@@ -3,9 +3,6 @@ import { ApexOptions } from 'apexcharts';
 import { ETheme, getTheme } from '@/_lib/providers/themeProvider';
 
 const defaultOptions: ApexOptions = {
-  chart: {
-    id: 'basic-bar',
-  },
   theme: {
     mode: 'light',
   },

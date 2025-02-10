@@ -1,6 +1,7 @@
 import db from '@/_lib/db';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ConnectionGraph } from '@/app/(default)/politicians/connectionGraph';
 
 export default async function LandingPage() {
   const topClickedPoliticians = await db.politician.findMany({
@@ -23,6 +24,33 @@ export default async function LandingPage() {
     },
     take: 5,
   });
+
+  const ratings = await db.rating.findMany({
+    include: {
+      politician: {
+        include: {
+          party: {
+            select: { short: true },
+          },
+        },
+      },
+    },
+  });
+
+  const partyRatingHashMap = new Map<string, number>();
+
+  for (const rating of ratings) {
+    const partyShort = rating.politician.party.short;
+
+    if (partyRatingHashMap.has(partyShort)) {
+      partyRatingHashMap.set(
+        partyShort,
+        partyRatingHashMap.get(partyShort)! + 1
+      );
+    } else {
+      partyRatingHashMap.set(partyShort, 1);
+    }
+  }
 
   return (
     <section className="mt-10 mb-4">
@@ -112,6 +140,13 @@ export default async function LandingPage() {
               ))}
             </div>
           </section>
+        </div>
+
+        <h2 className="mt-10 text-2xl dark:text-white font-semibold mb-4">
+          📊 Parteien nach Ratings
+        </h2>
+        <div className={'w-full h-96 border rounded-lg shadow-md p-4'}>
+          <ConnectionGraph partyRatingHash={partyRatingHashMap} />
         </div>
       </div>
     </section>
