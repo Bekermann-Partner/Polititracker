@@ -10,28 +10,35 @@ export default function GraphPage() {
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
 
   return (
-    <div style={{ paddingTop: '80px' }}>
-      <h2 style={{ textAlign: 'center' }}>
-        Company Graph: Connections to Politicians
-      </h2>
+    <section className="mt-10">
+      <div className="mx-auto max-w-6xl">
+        <h2 className="text-center text-2xl dark:text-white font-semibold">
+          Unternehmensgraph: Verbindungen zu Politikern
+        </h2>
 
-      {!selectedCompany && (
-        <div style={{ marginBottom: '380px', textAlign: 'center' }}>
-          <CompanySearchBar
-            onSelect={(company) => setSelectedCompany(company)}
-          />
-        </div>
-      )}
+        enhanced/company-graph-prettier-and-stable
+        {!selectedCompany && (
+          <div className="mb-20 text-center" style={{ marginBottom: '380px' }}>
+            <CompanySearchBar
+              onSelect={(company) => setSelectedCompany(company)}
+            />
+          </div>
+        )}
 
-      {selectedCompany && (
-        <div>
-          <CompanySearchBar
-            onSelect={(company) => setSelectedCompany(company)}
-          />
-          <CompanyInfoDB companyId={selectedCompany.id} />
-          <CompanyGraph selectedCompany={selectedCompany} />
-        </div>
-      )}
-    </div>
+        {selectedCompany && (
+          <div className="mb-10">
+            <CompanySearchBar
+              onSelect={(company) => setSelectedCompany(company)}
+            />
+            <div className="mt-10">
+              <CompanyInfoDB companyId={selectedCompany.id} />
+            </div>
+            <div className="mt-10">
+              <CompanyGraph selectedCompany={selectedCompany} />
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
