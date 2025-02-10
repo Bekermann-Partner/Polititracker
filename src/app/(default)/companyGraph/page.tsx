@@ -16,7 +16,6 @@ export default function GraphPage() {
           Unternehmensgraph: Verbindungen zu Politikern
         </h2>
 
-        enhanced/company-graph-prettier-and-stable
         {!selectedCompany && (
           <div className="mb-20 text-center" style={{ marginBottom: '380px' }}>
             <CompanySearchBar
