@@ -88,7 +88,7 @@ export default function PoliticianGraph({
     if (isDark) {
       return {
         containerBackground: 'transparent',
-        companyNode: { backgroundColor: '#4caf50', borderColor: '#388e3c' },
+        companyNode: { backgroundColor: '#d1d1d1', borderColor: '#388e3c' },
         politicianNode: { backgroundColor: '#42a5f5', borderColor: '#1e88e5' },
         edge: { lineColor: '#90a4ae' },
         textColor: '#fff',
@@ -96,7 +96,7 @@ export default function PoliticianGraph({
     } else {
       return {
         containerBackground: 'transparent',
-        companyNode: { backgroundColor: '#2d6a4f', borderColor: '#1b4332' },
+        companyNode: { backgroundColor: '#d1d1d1', borderColor: '#1b4332' },
         politicianNode: { backgroundColor: '#1d3557', borderColor: '#457b9d' },
         edge: { lineColor: '#a8dadc' },
         textColor: '#000',
