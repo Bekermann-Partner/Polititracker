@@ -21,7 +21,7 @@ const updateUserValidation = zfd
     lastName: zfd.text(z.string().min(1)),
     oldEmail: zfd.text(z.string().email().min(1)),
     email: zfd.text(z.string().email().min(1)),
-    oldPassword: zfd.text(z.string().min(1)),
+    oldPassword: zfd.text(z.string().optional()),
     newPassword: zfd.text(z.string().optional()),
     confirmPassword: zfd.text(z.string().optional()),
   })
@@ -62,15 +62,20 @@ export async function editUser(
       return undefined;
     }
 
-    // check for correct password
-    if (!(await bcrypt.compare(oldPassword, user.password))) {
-      console.log('oldPassword incorrect');
-      return new Error('The oldPassword is incorrect.');
-    }
-
     // update password if newPassword was provided
     if (newPassword) {
       console.log('newPassword provided');
+      if (!oldPassword) {
+        console.log('Failed updating password: oldPassword was not provided');
+        return new Error('Updating password requires oldPassword.');
+      }
+
+      // check for correct old password
+      if (!(await bcrypt.compare(oldPassword, user.password))) {
+        console.log('oldPassword incorrect');
+        return new Error('The oldPassword is incorrect.');
+      }
+
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       await db.user.update({
         where: { email: oldEmail },
