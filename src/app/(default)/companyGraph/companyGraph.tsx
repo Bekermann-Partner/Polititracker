@@ -346,7 +346,7 @@ export default function CompanyGraph({ selectedCompany }: CompanyGraphProps) {
           fontFamily: 'Helvetica, Arial, sans-serif',
           marginBottom: '10px',
         }}
-        className='dark:text-white'
+        className="dark:text-white"
       >
         {selectedCompany.name}
       </h3>
