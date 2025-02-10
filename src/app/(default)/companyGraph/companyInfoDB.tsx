@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useMemo } from 'react';
+import { ETheme, getTheme } from '@/_lib/providers/themeProvider';
 
 export interface CompanyProfileDB {
   id: number;
@@ -54,37 +55,54 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
   const [error, setError] = useState<string>('');
   const [isDark, setIsDark] = useState<boolean>(false);
 
+  // Set the initial dark mode state based on your theme provider.
   useEffect(() => {
-    const html = document.documentElement;
-    setIsDark(html.classList.contains('dark'));
-
-    const observer = new MutationObserver(() => {
-      setIsDark(document.documentElement.classList.contains('dark'));
-    });
-
-    observer.observe(html, { attributes: true, attributeFilter: ['class'] });
-
-    return () => observer.disconnect();
+    const theme = getTheme();
+    setIsDark(theme === ETheme.DARK);
   }, []);
 
+  // Listen for theme changes via a custom event, similar to your Apex hook.
+  useEffect(() => {
+    const handleThemeChange = (e: CustomEventInit<string>) => {
+      if (!e.detail) return;
+      // In your Apex code, a detail of 'light' means switching to dark mode.
+      if (e.detail === 'light') {
+        setIsDark(true);
+      } else if (e.detail === 'dark') {
+        setIsDark(false);
+      }
+    };
+
+    window.addEventListener(
+      'theme-mode-change',
+      handleThemeChange as EventListener
+    );
+    return () => {
+      window.removeEventListener(
+        'theme-mode-change',
+        handleThemeChange as EventListener
+      );
+    };
+  }, []);
+
+  // Update styles based on the isDark state.
   const themeStyles = useMemo(() => {
-    if (isDark) {
-      return {
-        containerBackground: 'transparent',
-        containerBorder: '1px solid #fff',
-        textColor: '#fff',
-        linkColor: '#9cf',
-      };
-    } else {
-      return {
-        containerBackground: 'transparent',
-        containerBorder: '1px solid #000',
-        textColor: '#000',
-        linkColor: '#0070f3',
-      };
-    }
+    return isDark
+      ? {
+          containerBackground: 'transparent',
+          containerBorder: '1px solid #fff',
+          textColor: '#fff',
+          linkColor: '#9cf',
+        }
+      : {
+          containerBackground: 'transparent',
+          containerBorder: '1px solid #000',
+          textColor: '#000',
+          linkColor: '#0070f3',
+        };
   }, [isDark]);
 
+  // Fetch the company profile.
   useEffect(() => {
     async function fetchCompanyProfile() {
       try {
@@ -123,7 +141,6 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
   }
 
   // Compute the image URL based on the company name.
-  // Adjust the replace logic if your file names follow a different convention.
   const logoSrc = `/logos/${profile.name.replace(/\s+/g, '_')}_image.png`;
 
   return (
