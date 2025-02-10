@@ -1,8 +1,16 @@
+import { getUser } from '@/_actions/getUser';
 import db from '@/_lib/db';
 import { UserList } from '@/app/(default)/admin/userList';
+import { User } from '@prisma/client';
+import { redirect } from 'next/navigation';
 
 export default async function AdminPage() {
-  const users = await db.user.findMany();
+  const currentUser: User | null = await getUser();
+  if (!currentUser || !currentUser.isAdmin) {
+    return redirect('/auth/sign-in');
+  }
+
+  const allUsers = await db.user.findMany();
 
   return (
     <>
@@ -12,7 +20,7 @@ export default async function AdminPage() {
             Nutzerübersicht
           </h1>
 
-          <UserList defaultUsers={users} />
+          <UserList defaultUsers={allUsers} />
         </div>
       </section>
     </>
