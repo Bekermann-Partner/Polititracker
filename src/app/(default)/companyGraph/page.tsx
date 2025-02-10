@@ -29,7 +29,7 @@ export default function GraphPage() {
             <CompanySearchBar
               onSelect={(company) => setSelectedCompany(company)}
             />
-            <div className="mt-10">
+            <div className="mt-10 px-6 py-6 border border-gray-200 dark:border-gray-700 rounded-lg p-2 shadow-md mb-6 dark:bg-gray-800">
               <CompanyInfoDB companyId={selectedCompany.id} />
             </div>
             <div className="mt-10">
