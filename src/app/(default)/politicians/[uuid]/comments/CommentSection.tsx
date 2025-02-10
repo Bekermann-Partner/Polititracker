@@ -114,7 +114,7 @@ export default function CommentSection({
 
           {/* Display comments (or 'No comments found') */}
           {comments.length === 0 ? (
-            <div className="text-gray-500 text-center mt-4">
+            <div className="text-gray-500 text-center mt-4 mb-4">
               <p>
                 Es wurden noch keine Kommentare für {politician.first_name}{' '}
                 {politician.last_name} geschrieben.
