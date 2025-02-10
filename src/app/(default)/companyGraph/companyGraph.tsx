@@ -1,7 +1,14 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+} from 'react';
 import cytoscape from 'cytoscape';
+import { ETheme, getTheme } from '@/_lib/providers/themeProvider';
 
 interface Rating {
   id: number;
@@ -66,17 +73,38 @@ export default function CompanyGraph({ selectedCompany }: CompanyGraphProps) {
   const [isDark, setIsDark] = useState<boolean>(false);
   const [visibleCompanies, setVisibleCompanies] = useState<string[]>([]);
 
+  // Set initial theme using your theme provider.
   useEffect(() => {
-    const html = document.documentElement;
-    setIsDark(!html.classList.contains('dark'));
-
-    function handleThemeChange() {
-      setIsDark(!document.documentElement.classList.contains('dark'));
-    }
-    window.addEventListener('theme-mode-change', handleThemeChange);
-    return () =>
-      window.removeEventListener('theme-mode-change', handleThemeChange);
+    const theme = getTheme();
+    setIsDark(theme === ETheme.DARK);
   }, []);
+
+  const handleThemeChange = useCallback((e: CustomEventInit<string>) => {
+    if (!e.detail) return;
+    switch (e.detail) {
+      case 'light':
+        setIsDark(true);
+        break;
+      case 'dark':
+        setIsDark(false);
+        break;
+      default:
+        break;
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener(
+      'theme-mode-change',
+      handleThemeChange as EventListener
+    );
+    return () => {
+      window.removeEventListener(
+        'theme-mode-change',
+        handleThemeChange as EventListener
+      );
+    };
+  }, [handleThemeChange]);
 
   useEffect(() => {
     if (selectedCompany) {
@@ -104,7 +132,6 @@ export default function CompanyGraph({ selectedCompany }: CompanyGraphProps) {
     }
   }, [isDark]);
 
-  // Fetch ratings and build nodes/edges.
   useEffect(() => {
     if (selectedCompany) {
       fetch(`/api/graph/ratings?companyId=${selectedCompany.id}`)
@@ -178,7 +205,6 @@ export default function CompanyGraph({ selectedCompany }: CompanyGraphProps) {
     }
   }, [selectedCompany]);
 
-  // Initialize Cytoscape after a short delay to ensure the container is rendered.
   useEffect(() => {
     if (containerRef.current && elements.length > 0) {
       setTimeout(() => {
@@ -203,6 +229,8 @@ export default function CompanyGraph({ selectedCompany }: CompanyGraphProps) {
                   'background-image': 'data(logo)',
                   'background-fit': 'contain',
                   'background-color': themeStyles.companyNode.backgroundColor,
+                  'border-color': themeStyles.companyNode.borderColor,
+                  'border-width': 2,
                   label: 'data(label)',
                   color: themeStyles.textColor,
                   'text-valign': 'bottom',
@@ -219,6 +247,8 @@ export default function CompanyGraph({ selectedCompany }: CompanyGraphProps) {
                   'background-fit': 'contain',
                   'background-color':
                     themeStyles.politicianNode.backgroundColor,
+                  'border-color': themeStyles.politicianNode.borderColor,
+                  'border-width': 2,
                   label: 'data(label)',
                   color: themeStyles.textColor,
                   'text-valign': 'bottom',
@@ -263,7 +293,30 @@ export default function CompanyGraph({ selectedCompany }: CompanyGraphProps) {
         }
       };
     }
-  }, [elements, themeStyles]);
+  }, [elements]);
+
+  useEffect(() => {
+    if (cyInstanceRef.current) {
+      const cy = cyInstanceRef.current;
+      // Update company nodes.
+      cy.nodes('.company').css({
+        'background-color': themeStyles.companyNode.backgroundColor,
+        'border-color': themeStyles.companyNode.borderColor,
+        color: themeStyles.textColor,
+      });
+      // Update politician nodes.
+      cy.nodes('.politician').css({
+        'background-color': themeStyles.politicianNode.backgroundColor,
+        'border-color': themeStyles.politicianNode.borderColor,
+        color: themeStyles.textColor,
+      });
+      // Update rating edges.
+      cy.edges('.rating').css({
+        'line-color': themeStyles.edge.lineColor,
+        'target-arrow-color': themeStyles.edge.lineColor,
+      });
+    }
+  }, [themeStyles]);
 
   useEffect(() => {
     if (cyInstanceRef.current) {

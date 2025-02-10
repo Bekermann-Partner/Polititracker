@@ -1,7 +1,14 @@
 'use client';
 
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+} from 'react';
 import cytoscape from 'cytoscape';
+import { ETheme, getTheme } from '@/_lib/providers/themeProvider';
 
 interface Rating {
   id: number;
@@ -9,12 +16,14 @@ interface Rating {
   politician_id: number;
   url: string;
   stars: number;
-  company?: {
-    id: number;
-    name: string;
-    image: string;
-  } | null;
+  company?: Company | null;
   politician?: Politician | null;
+}
+
+interface Company {
+  id: number;
+  name: string;
+  image: string;
 }
 
 interface Politician {
@@ -65,20 +74,39 @@ export default function PoliticianGraph({
     []
   );
   const [isDark, setIsDark] = useState<boolean>(false);
-  // For filtering companies in the graph
   const [visibleCompanies, setVisibleCompanies] = useState<string[]>([]);
 
-  // Dark mode detection.
   useEffect(() => {
-    const html = document.documentElement;
-    setIsDark(!html.classList.contains('dark'));
-    function handleThemeChange() {
-      setIsDark(!document.documentElement.classList.contains('dark'));
-    }
-    window.addEventListener('theme-mode-change', handleThemeChange);
-    return () =>
-      window.removeEventListener('theme-mode-change', handleThemeChange);
+    const theme = getTheme();
+    setIsDark(theme === ETheme.DARK);
   }, []);
+
+  const handleThemeChange = useCallback((e: CustomEventInit<string>) => {
+    if (!e.detail) return;
+    switch (e.detail) {
+      case 'light':
+        setIsDark(true);
+        break;
+      case 'dark':
+        setIsDark(false);
+        break;
+      default:
+        break;
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener(
+      'theme-mode-change',
+      handleThemeChange as EventListener
+    );
+    return () => {
+      window.removeEventListener(
+        'theme-mode-change',
+        handleThemeChange as EventListener
+      );
+    };
+  }, [handleThemeChange]);
 
   useEffect(() => {
     setVisibleCompanies([]);
@@ -104,37 +132,58 @@ export default function PoliticianGraph({
     }
   }, [isDark]);
 
-  // Fetch ratings for the politician and build nodes/edges.
   useEffect(() => {
     fetch(`/api/graph/ratings?politicianId=${politicianId}`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to load ratings for politician');
         return res.json();
       })
-      .then((data: Rating[]) => {
+      .then((ratings: Rating[]) => {
+        let politicianInfo: Politician | null = null;
+        for (const rating of ratings) {
+          if (rating.politician && rating.politician.first_name) {
+            politicianInfo = rating.politician;
+            break;
+          }
+        }
+        if (!politicianInfo) {
+          return fetch(`/api/politician/${politicianId}`)
+            .then((res) => {
+              if (!res.ok) throw new Error('Failed to load politician info');
+              return res.json();
+            })
+            .then((polData: Politician) => ({
+              ratings,
+              politicianInfo: polData,
+            }));
+        }
+        return { ratings, politicianInfo };
+      })
+      .then(({ ratings, politicianInfo }) => {
         const nodes: CytoscapeNode[] = [];
         const edges: CytoscapeEdge[] = [];
 
-        const politicianNodeId = `p-${politicianId}`;
+        const politicianLabel = politicianInfo
+          ? `${politicianInfo.first_name} ${politicianInfo.last_name}`
+          : `Politician ${politicianId}`;
+        const politicianNodeId = politicianInfo
+          ? `p-${politicianInfo.ext_abgeordnetenwatch_id}`
+          : `p-${politicianId}`;
+
         nodes.push({
           data: {
             id: politicianNodeId,
-            label: `Politician ${politicianId}`,
+            label: politicianLabel,
             profileImg: `/pol_profile_img/${politicianId}.png`,
           },
           classes: 'politician',
         });
 
-        // Aggregate ratings by company.
         const companyRatingSums: Record<
           number,
-          {
-            sum: number;
-            count: number;
-            company: { id: number; name: string; image: string };
-          }
+          { sum: number; count: number; company: Company }
         > = {};
-        data.forEach((rating) => {
+        ratings.forEach((rating) => {
           if (rating.company) {
             const companyId = rating.company.id;
             if (!companyRatingSums[companyId]) {
@@ -163,7 +212,7 @@ export default function PoliticianGraph({
             });
             edges.push({
               data: {
-                id: `edge-${politicianId}-${company.id}`,
+                id: `edge-${politicianNodeId}-${company.id}`,
                 source: politicianNodeId,
                 target: companyNodeId,
                 label: `${Math.round(avgRating)} ⭐`,
@@ -180,7 +229,6 @@ export default function PoliticianGraph({
       );
   }, [politicianId]);
 
-  // Initialize Cytoscape.
   useEffect(() => {
     if (containerRef.current && elements.length > 0) {
       if (cyInstanceRef.current) {
@@ -203,6 +251,8 @@ export default function PoliticianGraph({
               'background-image': 'data(profileImg)',
               'background-fit': 'contain',
               'background-color': themeStyles.politicianNode.backgroundColor,
+              'border-color': themeStyles.politicianNode.borderColor,
+              'border-width': 2,
               label: 'data(label)',
               color: themeStyles.textColor,
               'text-valign': 'bottom',
@@ -219,6 +269,8 @@ export default function PoliticianGraph({
               'background-image': 'data(logo)',
               'background-fit': 'contain',
               'background-color': themeStyles.companyNode.backgroundColor,
+              'border-color': themeStyles.companyNode.borderColor,
+              'border-width': 2,
               label: 'data(label)',
               color: themeStyles.textColor,
               'text-valign': 'bottom',
@@ -261,7 +313,27 @@ export default function PoliticianGraph({
         }
       };
     }
-  }, [elements, themeStyles]);
+  }, [elements]);
+
+  useEffect(() => {
+    if (cyInstanceRef.current) {
+      const cy = cyInstanceRef.current;
+      cy.nodes('.politician').css({
+        'background-color': themeStyles.politicianNode.backgroundColor,
+        'border-color': themeStyles.politicianNode.borderColor,
+        color: themeStyles.textColor,
+      });
+      cy.nodes('.company').css({
+        'background-color': themeStyles.companyNode.backgroundColor,
+        'border-color': themeStyles.companyNode.borderColor,
+        color: themeStyles.textColor,
+      });
+      cy.edges('.rating').css({
+        'line-color': themeStyles.edge.lineColor,
+        'target-arrow-color': themeStyles.edge.lineColor,
+      });
+    }
+  }, [themeStyles]);
 
   useEffect(() => {
     if (cyInstanceRef.current) {
