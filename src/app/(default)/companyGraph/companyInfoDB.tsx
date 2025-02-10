@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useEffect, useState, useMemo } from 'react';
-import { ETheme, getTheme } from '@/_lib/providers/themeProvider';
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import Skeleton from 'react-loading-skeleton';
+import { SkeletonThemeWrapper } from '@/app/components/SkeletonThemeWrapper';
 
 export interface CompanyProfileDB {
   id: number;
@@ -53,56 +55,8 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
   const [profile, setProfile] = useState<CompanyProfileDB | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
-  const [isDark, setIsDark] = useState<boolean>(false);
 
-  // Set the initial dark mode state based on your theme provider.
-  useEffect(() => {
-    const theme = getTheme();
-    setIsDark(theme === ETheme.DARK);
-  }, []);
-
-  // Listen for theme changes via a custom event, similar to your Apex hook.
-  useEffect(() => {
-    const handleThemeChange = (e: CustomEventInit<string>) => {
-      if (!e.detail) return;
-      // In your Apex code, a detail of 'light' means switching to dark mode.
-      if (e.detail === 'light') {
-        setIsDark(true);
-      } else if (e.detail === 'dark') {
-        setIsDark(false);
-      }
-    };
-
-    window.addEventListener(
-      'theme-mode-change',
-      handleThemeChange as EventListener
-    );
-    return () => {
-      window.removeEventListener(
-        'theme-mode-change',
-        handleThemeChange as EventListener
-      );
-    };
-  }, []);
-
-  // Update styles based on the isDark state.
-  const themeStyles = useMemo(() => {
-    return isDark
-      ? {
-          containerBackground: 'transparent',
-          containerBorder: '1px solid #fff',
-          textColor: '#fff',
-          linkColor: '#9cf',
-        }
-      : {
-          containerBackground: 'transparent',
-          containerBorder: '1px solid #000',
-          textColor: '#000',
-          linkColor: '#0070f3',
-        };
-  }, [isDark]);
-
-  // Fetch the company profile.
+  // Fetch the company profile
   useEffect(() => {
     async function fetchCompanyProfile() {
       try {
@@ -131,87 +85,95 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
   }, [companyId]);
 
   if (loading) {
-    return <p style={{ textAlign: 'center' }}>Loading company profile...</p>;
+    return <LoadingCompanyInfo />;
   }
   if (error) {
-    return <p style={{ textAlign: 'center' }}>Error: {error}</p>;
+    return <p className="text-center text-red-600">Error: {error}</p>;
   }
   if (!profile) {
-    return <p style={{ textAlign: 'center' }}>No profile available.</p>;
+    return <p className="text-center">No profile available.</p>;
   }
 
-  // Compute the image URL based on the company name.
+  // Compute the logo source.
   const logoSrc = `/logos/${profile.name.replace(/\s+/g, '_')}_image.png`;
 
+  // Format the "founded" value.
+  let foundedFormatted = 'N/A';
+  if (profile.founded) {
+    foundedFormatted =
+      typeof profile.founded === 'number'
+        ? profile.founded.toString()
+        : new Date(profile.founded).toLocaleDateString();
+  }
+
   return (
-    <div
-      style={{
-        marginTop: '20px',
-        padding: '20px',
-        border: themeStyles.containerBorder,
-        borderRadius: '8px',
-        backgroundColor: themeStyles.containerBackground,
-        maxWidth: '800px',
-        margin: '20px auto',
-        color: themeStyles.textColor,
-      }}
-    >
-      <div
-        style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}
-      >
-        <img
+    <div className="flex flex-row">
+      <div className="relative h-32 w-32 rounded-xl overflow-hidden">
+        <Image
           src={logoSrc}
           alt={profile.companyName}
-          style={{
-            width: '100px',
-            height: '100px',
-            objectFit: 'contain',
-            marginRight: '20px',
-          }}
+          fill
+          className="object-contain object-center"
         />
-        <div>
-          <h3 style={{ margin: 0 }}>
-            {profile.companyName} ({profile.symbol})
-          </h3>
+      </div>
+      <div className="w-full ml-6">
+        <div className="flex justify-between">
+          <div>
+            <h1 className="text-3xl text-gray-950 font-semibold dark:text-white">
+              {profile.companyName} ({profile.symbol})
+            </h1>
+            <h2 className="text-xl text-gray-600 dark:text-gray-300">
+              {profile.industry}
+            </h2>
+          </div>
         </div>
-      </div>
 
-      <div style={{ marginBottom: '20px', fontSize: '14px', lineHeight: 1.5 }}>
-        <p>
-          <strong>CEO:</strong> {profile.ceo}
-        </p>
-        <p>
-          <strong>Founded:</strong>{' '}
-          {profile.founded
-            ? profile.founded instanceof Date
-              ? profile.founded.toLocaleDateString()
-              : String(profile.founded)
-            : 'N/A'}
-        </p>
-      </div>
+        <div className="border-b mt-2 mb-2 border-b-gray-300 dark:border-b-gray-600"></div>
 
-      <div style={{ marginBottom: '20px', fontSize: '14px', lineHeight: 1.5 }}>
-        <p>
-          <strong>Description:</strong> {profile.description}
-        </p>
-      </div>
+        <h2 className="text-gray-600 dark:text-gray-400">CEO: {profile.ceo}</h2>
+        <h2 className="text-gray-600 dark:text-gray-400">
+          Gegründet: {foundedFormatted}
+        </h2>
 
-      {profile.website && (
-        <div>
-          <a
-            href={profile.website}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              color: themeStyles.linkColor,
-              fontWeight: 'bold',
-              fontSize: '16px',
-            }}
-          >
-            Visit Website
-          </a>
+        {profile.description && (
+          <>
+            <div className="border-t mt-4 mb-4 border-gray-300 dark:border-gray-600"></div>
+            <p className="text-gray-600 dark:text-gray-400">
+              {profile.description}
+            </p>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function LoadingCompanyInfo() {
+  return (
+    <div className="flex flex-row">
+      <SkeletonThemeWrapper>
+        <div className="relative h-32 w-32 rounded-xl overflow-hidden">
+          <Skeleton
+            width={150}
+            height={150}
+            className="h-full w-auto object-cover dark:bg-gray-600"
+          />
         </div>
-      )}
+        <div className="w-full ml-6">
+          <div className="flex justify-between">
+            <div>
+              <Skeleton width={300} height={36} />
+              <Skeleton width={400} height={28} />
+            </div>
+          </div>
+
+          <div className="border-b mt-2 mb-2 border-b-gray-300 dark:border-b-gray-600"></div>
+
+          <h2 className="text-gray-600 dark:text-gray-400">
+            <Skeleton count={2} width={200} />
+          </h2>
+        </div>
+      </SkeletonThemeWrapper>
     </div>
   );
 }
