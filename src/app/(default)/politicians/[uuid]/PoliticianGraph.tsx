@@ -348,20 +348,10 @@ export default function PoliticianGraph({
   }, [visibleCompanies]);
 
   return (
-    <div style={{ position: 'relative' }}>
-      <h3
-        style={{
-          textAlign: 'center',
-          fontFamily: 'Helvetica, Arial, sans-serif',
-          marginBottom: '10px',
-          color: themeStyles.textColor,
-        }}
-      >
-        Politician Graph
-      </h3>
+    <div className="relative">
       <div
         ref={containerRef}
-        style={{ width: '100%', height: '500px', border: '1px solid black' }}
+        className="w-full h-[500px] border border-gray-200 dark:border-gray-700 rounded-lg p-2 shadow-md mb-6 dark:bg-gray-900"
       />
     </div>
   );
