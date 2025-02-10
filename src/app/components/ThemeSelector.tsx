@@ -30,6 +30,9 @@ export function ThemeSelector() {
   function toggleTheme() {
     const htmlRootNode = document.getElementsByTagName('html')[0];
 
+    const ev = new CustomEvent('theme-mode-change', { detail: theme });
+    window.dispatchEvent(ev);
+
     if (theme === ETheme.LIGHT) {
       setTheme(ETheme.DARK);
       htmlRootNode.classList.add('dark');

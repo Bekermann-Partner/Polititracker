@@ -29,7 +29,9 @@ async function getSideJobsFromMandates(
   return res.data;
 }
 
-export default {
+const abgeordnetenWatchApiProvider = {
   getCandidacyMandates,
   getSideJobsFromMandates,
 };
+
+export default abgeordnetenWatchApiProvider;

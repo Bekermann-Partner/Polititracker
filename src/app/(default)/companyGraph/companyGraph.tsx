@@ -1,7 +1,14 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+  useCallback,
+} from 'react';
 import cytoscape from 'cytoscape';
+import { ETheme, getTheme } from '@/_lib/providers/themeProvider';
 
 interface Rating {
   id: number;
@@ -63,6 +70,67 @@ export default function CompanyGraph({ selectedCompany }: CompanyGraphProps) {
   const [elements, setElements] = useState<(CytoscapeNode | CytoscapeEdge)[]>(
     []
   );
+  const [isDark, setIsDark] = useState<boolean>(false);
+  const [visibleCompanies, setVisibleCompanies] = useState<string[]>([]);
+
+  // Set initial theme using your theme provider.
+  useEffect(() => {
+    const theme = getTheme();
+    setIsDark(theme === ETheme.DARK);
+  }, []);
+
+  const handleThemeChange = useCallback((e: CustomEventInit<string>) => {
+    if (!e.detail) return;
+    switch (e.detail) {
+      case 'light':
+        setIsDark(true);
+        break;
+      case 'dark':
+        setIsDark(false);
+        break;
+      default:
+        break;
+    }
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener(
+      'theme-mode-change',
+      handleThemeChange as EventListener
+    );
+    return () => {
+      window.removeEventListener(
+        'theme-mode-change',
+        handleThemeChange as EventListener
+      );
+    };
+  }, [handleThemeChange]);
+
+  useEffect(() => {
+    if (selectedCompany) {
+      setVisibleCompanies([selectedCompany.name]);
+    }
+  }, [selectedCompany]);
+
+  const themeStyles = useMemo(() => {
+    if (isDark) {
+      return {
+        containerBackground: 'transparent',
+        companyNode: { backgroundColor: 'gray', borderColor: '#388e3c' },
+        politicianNode: { backgroundColor: '#42a5f5', borderColor: '#1e88e5' },
+        edge: { lineColor: '#90a4ae' },
+        textColor: '#fff',
+      };
+    } else {
+      return {
+        containerBackground: 'transparent',
+        companyNode: { backgroundColor: 'gray', borderColor: '#1b4332' },
+        politicianNode: { backgroundColor: '#1d3557', borderColor: '#457b9d' },
+        edge: { lineColor: '#a8dadc' },
+        textColor: '#000',
+      };
+    }
+  }, [isDark]);
 
   useEffect(() => {
     if (selectedCompany) {
@@ -113,6 +181,7 @@ export default function CompanyGraph({ selectedCompany }: CompanyGraphProps) {
                   id: politicianNodeId,
                   label: `${politician.first_name} ${politician.last_name}`,
                   profileImg: `/pol_profile_img/${politician.ext_abgeordnetenwatch_id}.png`,
+                  averageRating: avgRating,
                 },
                 classes: 'politician',
               });
@@ -138,57 +207,80 @@ export default function CompanyGraph({ selectedCompany }: CompanyGraphProps) {
 
   useEffect(() => {
     if (containerRef.current && elements.length > 0) {
-      const cy = cytoscape({
-        container: containerRef.current,
-        elements,
-        style: [
-          {
-            selector: 'node.company',
-            style: {
-              'background-image': 'data(logo)',
-              'background-fit': 'contain',
-              'background-color': '#28a745',
-              label: 'data(label)',
-              color: '#fff',
-              'text-valign': 'bottom',
-              'text-halign': 'center',
-              'font-size': '10px',
-              width: '80px',
-              height: '80px',
-            },
-          },
-          {
-            selector: 'node.politician',
-            style: {
-              'background-image': 'data(profileImg)',
-              'background-fit': 'contain',
-              'background-color': '#007bff',
-              label: 'data(label)',
-              color: '#fff',
-              'text-valign': 'bottom',
-              'text-halign': 'center',
-              'font-size': '10px',
-              width: '80px',
-              height: '80px',
-            },
-          },
-          {
-            selector: 'edge.rating',
-            style: {
-              width: 2,
-              'line-color': '#aaa',
-              'target-arrow-shape': 'triangle',
-              'target-arrow-color': '#aaa',
-              label: 'data(label)',
-              'text-margin-y': -10,
-              'font-size': '10px',
-              color: '#555',
-            },
-          },
-        ],
-        layout: { name: 'cose', animate: false },
-      });
-      cyInstanceRef.current = cy;
+      setTimeout(() => {
+        if (containerRef.current) {
+          if (cyInstanceRef.current) {
+            try {
+              cyInstanceRef.current.destroy();
+            } catch (error) {
+              console.error('Error destroying Cytoscape instance:', error);
+            }
+            cyInstanceRef.current = null;
+          }
+
+          const cy = cytoscape({
+            container: containerRef.current,
+            elements,
+            style: [
+              {
+                selector: 'node.company',
+                style: {
+                  shape: 'ellipse',
+                  'background-image': 'data(logo)',
+                  'background-fit': 'contain',
+                  'background-color': themeStyles.companyNode.backgroundColor,
+                  'border-color': themeStyles.companyNode.borderColor,
+                  'border-width': 2,
+                  label: 'data(label)',
+                  color: themeStyles.textColor,
+                  'text-valign': 'bottom',
+                  'text-halign': 'center',
+                  'font-size': '10px',
+                  width: '80px',
+                  height: '80px',
+                },
+              },
+              {
+                selector: 'node.politician',
+                style: {
+                  'background-image': 'data(profileImg)',
+                  'background-fit': 'contain',
+                  'background-color':
+                    themeStyles.politicianNode.backgroundColor,
+                  'border-color': themeStyles.politicianNode.borderColor,
+                  'border-width': 2,
+                  label: 'data(label)',
+                  color: themeStyles.textColor,
+                  'text-valign': 'bottom',
+                  'text-halign': 'center',
+                  'font-size': '10px',
+                  width: '80px',
+                  height: '80px',
+                },
+              },
+              {
+                selector: 'edge.rating',
+                style: {
+                  width: 2,
+                  'line-color': themeStyles.edge.lineColor,
+                  'target-arrow-shape': 'triangle',
+                  'target-arrow-color': themeStyles.edge.lineColor,
+                  label: 'data(label)',
+                  'text-margin-y': -10,
+                  'font-size': '10px',
+                  color: '#555',
+                },
+              },
+            ],
+            layout: { name: 'cose', animate: false },
+            userZoomingEnabled: true,
+            userPanningEnabled: true,
+            minZoom: 0.4,
+            maxZoom: 5.0,
+          });
+          cyInstanceRef.current = cy;
+        }
+      }, 300);
 
       return () => {
         if (cyInstanceRef.current) {
@@ -203,9 +295,60 @@ export default function CompanyGraph({ selectedCompany }: CompanyGraphProps) {
     }
   }, [elements]);
 
+  useEffect(() => {
+    if (cyInstanceRef.current) {
+      const cy = cyInstanceRef.current;
+      // Update company nodes.
+      cy.nodes('.company').css({
+        'background-color': themeStyles.companyNode.backgroundColor,
+        'border-color': themeStyles.companyNode.borderColor,
+        color: themeStyles.textColor,
+      });
+      // Update politician nodes.
+      cy.nodes('.politician').css({
+        'background-color': themeStyles.politicianNode.backgroundColor,
+        'border-color': themeStyles.politicianNode.borderColor,
+        color: themeStyles.textColor,
+      });
+      // Update rating edges.
+      cy.edges('.rating').css({
+        'line-color': themeStyles.edge.lineColor,
+        'target-arrow-color': themeStyles.edge.lineColor,
+      });
+    }
+  }, [themeStyles]);
+
+  useEffect(() => {
+    if (cyInstanceRef.current) {
+      const cy = cyInstanceRef.current;
+      cy.nodes('.company').forEach((node) => {
+        const companyName = node.data('label') as string;
+        if (visibleCompanies.includes(companyName)) {
+          node.style('display', 'element');
+          node.connectedEdges().forEach((edge) => {
+            edge.style('display', 'element');
+          });
+        } else {
+          node.style('display', 'none');
+          node.connectedEdges().forEach((edge) => {
+            edge.style('display', 'none');
+          });
+        }
+      });
+    }
+  }, [visibleCompanies]);
+
   return (
-    <div>
-      <h3 style={{ textAlign: 'center' }}>{selectedCompany.name}</h3>
+    <div style={{ position: 'relative' }}>
+      <h3
+        style={{
+          textAlign: 'center',
+          fontFamily: 'Helvetica, Arial, sans-serif',
+          marginBottom: '10px',
+        }}
+      >
+        {selectedCompany.name}
+      </h3>
       <div
         ref={containerRef}
         style={{ width: '100%', height: '500px', border: '1px solid black' }}

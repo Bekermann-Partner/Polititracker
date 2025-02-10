@@ -25,7 +25,7 @@ export default async function LandingPage() {
   });
 
   return (
-    <section className="pt-24 mb-4">
+    <section className="mt-10 mb-4">
       <div className="mx-auto max-w-6xl">
         {/* Hero Section */}
         <section className="text-center mb-12">

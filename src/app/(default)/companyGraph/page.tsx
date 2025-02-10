@@ -16,7 +16,7 @@ export default function GraphPage() {
       </h2>
 
       {!selectedCompany && (
-        <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+        <div style={{ marginBottom: '380px', textAlign: 'center' }}>
           <CompanySearchBar
             onSelect={(company) => setSelectedCompany(company)}
           />
@@ -25,6 +25,9 @@ export default function GraphPage() {
 
       {selectedCompany && (
         <div>
+          <CompanySearchBar
+            onSelect={(company) => setSelectedCompany(company)}
+          />
           <CompanyInfoDB companyId={selectedCompany.id} />
           <CompanyGraph selectedCompany={selectedCompany} />
         </div>

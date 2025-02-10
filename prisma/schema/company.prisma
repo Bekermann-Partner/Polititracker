@@ -6,7 +6,7 @@ model Company {
   companyName       String?  // z.B. "Apple Inc."
   price             Float?
   beta              Float?
-  volAvg            Int?
+  volAvg            Decimal?
   mktCap            Decimal? @db.Decimal(20, 2)
   lastDiv           Float?
   range             String?
@@ -19,7 +19,7 @@ model Company {
   exchangeShortName String?
   industry          String?
   website           String?
-  description       String?
+  description       String? @db.LongText
   ceo               String?
   sector            String?
   country           String?
@@ -37,6 +37,7 @@ model Company {
   isActivelyTrading Boolean  @default(true)
   isAdr             Boolean  @default(false)
   isFund            Boolean  @default(false)
+  founded           Int?
 
   ratings           Rating[]
 }

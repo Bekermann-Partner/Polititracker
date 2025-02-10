@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
+import { ETheme, getTheme } from '@/_lib/providers/themeProvider';
 
 export interface CompanyProfileDB {
   id: number;
@@ -41,6 +42,7 @@ export interface CompanyProfileDB {
   isActivelyTrading: boolean;
   isAdr: boolean;
   isFund: boolean;
+  founded: Date | number;
 }
 
 interface CompanyInfoDBProps {
@@ -51,7 +53,56 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
   const [profile, setProfile] = useState<CompanyProfileDB | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
+  const [isDark, setIsDark] = useState<boolean>(false);
 
+  // Set the initial dark mode state based on your theme provider.
+  useEffect(() => {
+    const theme = getTheme();
+    setIsDark(theme === ETheme.DARK);
+  }, []);
+
+  // Listen for theme changes via a custom event, similar to your Apex hook.
+  useEffect(() => {
+    const handleThemeChange = (e: CustomEventInit<string>) => {
+      if (!e.detail) return;
+      // In your Apex code, a detail of 'light' means switching to dark mode.
+      if (e.detail === 'light') {
+        setIsDark(true);
+      } else if (e.detail === 'dark') {
+        setIsDark(false);
+      }
+    };
+
+    window.addEventListener(
+      'theme-mode-change',
+      handleThemeChange as EventListener
+    );
+    return () => {
+      window.removeEventListener(
+        'theme-mode-change',
+        handleThemeChange as EventListener
+      );
+    };
+  }, []);
+
+  // Update styles based on the isDark state.
+  const themeStyles = useMemo(() => {
+    return isDark
+      ? {
+          containerBackground: 'transparent',
+          containerBorder: '1px solid #fff',
+          textColor: '#fff',
+          linkColor: '#9cf',
+        }
+      : {
+          containerBackground: 'transparent',
+          containerBorder: '1px solid #000',
+          textColor: '#000',
+          linkColor: '#0070f3',
+        };
+  }, [isDark]);
+
+  // Fetch the company profile.
   useEffect(() => {
     async function fetchCompanyProfile() {
       try {
@@ -80,32 +131,36 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
   }, [companyId]);
 
   if (loading) {
-    return <p>Loading company profile...</p>;
+    return <p style={{ textAlign: 'center' }}>Loading company profile...</p>;
   }
   if (error) {
-    return <p>Error: {error}</p>;
+    return <p style={{ textAlign: 'center' }}>Error: {error}</p>;
   }
   if (!profile) {
-    return <p>No profile available.</p>;
+    return <p style={{ textAlign: 'center' }}>No profile available.</p>;
   }
+
+  // Compute the image URL based on the company name.
+  const logoSrc = `/logos/${profile.name.replace(/\s+/g, '_')}_image.png`;
 
   return (
     <div
       style={{
         marginTop: '20px',
         padding: '20px',
-        border: '1px solid #ddd',
+        border: themeStyles.containerBorder,
         borderRadius: '8px',
-        backgroundColor: '#f9f9f9',
+        backgroundColor: themeStyles.containerBackground,
         maxWidth: '800px',
         margin: '20px auto',
+        color: themeStyles.textColor,
       }}
     >
       <div
         style={{ display: 'flex', alignItems: 'center', marginBottom: '20px' }}
       >
         <img
-          src={profile.image}
+          src={logoSrc}
           alt={profile.companyName}
           style={{
             width: '100px',
@@ -118,10 +173,6 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
           <h3 style={{ margin: 0 }}>
             {profile.companyName} ({profile.symbol})
           </h3>
-          <p style={{ margin: 0 }}>
-            Price: {profile.price} {profile.currency}
-          </p>
-          <p style={{ margin: 0 }}>Exchange: {profile.exchangeShortName}</p>
         </div>
       </div>
 
@@ -130,33 +181,12 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
           <strong>CEO:</strong> {profile.ceo}
         </p>
         <p>
-          <strong>Industry:</strong> {profile.industry}
-        </p>
-        <p>
-          <strong>Sector:</strong> {profile.sector}
-        </p>
-        <p>
-          <strong>Founded (IPO Date):</strong>{' '}
-          {profile.ipoDate
-            ? profile.ipoDate instanceof Date
-              ? profile.ipoDate.toLocaleDateString()
-              : String(profile.ipoDate)
+          <strong>Founded:</strong>{' '}
+          {profile.founded
+            ? profile.founded instanceof Date
+              ? profile.founded.toLocaleDateString()
+              : String(profile.founded)
             : 'N/A'}
-        </p>
-        <p>
-          <strong>Market Cap:</strong>{' '}
-          {profile.mktCap ? profile.mktCap.toLocaleString() : 'N/A'}{' '}
-          {profile.currency}
-        </p>
-        <p>
-          <strong>Employees:</strong> {profile.fullTimeEmployees}
-        </p>
-        <p>
-          <strong>Headquarters:</strong> {profile.address}, {profile.city},{' '}
-          {profile.state} {profile.zip}
-        </p>
-        <p>
-          <strong>Phone:</strong> {profile.phone}
         </p>
       </div>
 
@@ -172,7 +202,11 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
             href={profile.website}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: '#0070f3', fontWeight: 'bold', fontSize: '16px' }}
+            style={{
+              color: themeStyles.linkColor,
+              fontWeight: 'bold',
+              fontSize: '16px',
+            }}
           >
             Visit Website
           </a>

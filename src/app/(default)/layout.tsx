@@ -8,7 +8,7 @@ export default function layout({ children }: { children: React.ReactNode }) {
     <>
       <Header />
 
-      {children}
+      <main className={'overflow-hidden pt-12 lg:pt-16'}>{children}</main>
 
       <Footer />
     </>
