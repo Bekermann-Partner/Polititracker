@@ -5,6 +5,7 @@ import { User } from '@prisma/client';
 import { redirect } from 'next/navigation';
 import { UserStats } from '@/app/(default)/admin/userStats';
 import dayjs from 'dayjs';
+import Link from 'next/link';
 
 export default async function AdminPage() {
   const currentUser: User | null = await getUser();
@@ -30,9 +31,22 @@ export default async function AdminPage() {
     <>
       <section className="mt-10 pb-24">
         <div className="mx-auto max-w-6xl">
-          <h1 className={'text-3xl font-bold mb-5 dark:text-white'}>
-            Nutzerübersicht
-          </h1>
+          <div className={'flex justify-between'}>
+            <h1 className={'text-3xl font-bold mb-5 dark:text-white'}>
+              Nutzerübersicht
+            </h1>
+
+            <div>
+              <Link
+                href={'/admin/advanced'}
+                className={
+                  'flex w-full justify-center rounded-md bg-black dark:bg-gray-700 hover:bg-gray-800 transition-colors px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                }
+              >
+                Fortgeschritten
+              </Link>
+            </div>
+          </div>
 
           <UserList defaultUsers={allUsers} />
           <UserStats
