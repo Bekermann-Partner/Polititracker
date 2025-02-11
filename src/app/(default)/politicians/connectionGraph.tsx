@@ -33,13 +33,13 @@ export function ConnectionGraph({
     for (const [party, count] of partyRatingHash) {
       series.push(count);
       labels.push(party);
-      colors.push(partyColors[party] ?? DEFAULT_COLOR)
+      colors.push(partyColors[party] ?? DEFAULT_COLOR);
     }
 
     return {
       series,
       labels,
-      colors
+      colors,
     };
   }, [partyRatingHash]);
 
@@ -50,8 +50,8 @@ export function ConnectionGraph({
         labels: createPartyRatingSeries.labels,
         colors: createPartyRatingSeries.colors,
         tooltip: {
-          theme: "light",
-        }
+          theme: 'light',
+        },
       }}
       series={createPartyRatingSeries.series}
       type={'pie'}
