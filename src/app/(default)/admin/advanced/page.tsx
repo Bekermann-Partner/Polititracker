@@ -128,8 +128,7 @@ ORDER BY pol.last_name;`}
               </li>
               <li className="mb-3">
                 <strong>
-                  Verbindungen von bestimmten Politikern und Unternehmen und die
-                  dazugehörigen Ratings und URLs
+                  Alle Artikel und Ratings von bestimmten Politikern und Unternehmen
                 </strong>
                 <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded mt-2 font-mono text-sm">
                   {`SELECT
@@ -148,7 +147,7 @@ ORDER BY r.stars DESC;`}
                 </pre>
               </li>
               <li className="mb-3">
-                <strong>Durchschnittliche Ratings für Unternehmen</strong>
+                <strong>Welche Unternehmen haben die besten Ratings?</strong>
                 <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded mt-2 font-mono text-sm">
                   {`SELECT
     comp.name AS Unternehmen,
@@ -158,8 +157,8 @@ FROM polititracker.Company AS comp
 JOIN polititracker.Rating AS r
     ON comp.id = r.company_id
 GROUP BY comp.id, comp.name
-ORDER BY avg_rating DESC
--- WHERE comp.name = 'Tesla' -- Filtern nach bestimmtem Unternehmen;`}
+HAVING COUNT(r.id) > 10
+ORDER BY DurschnittlichesRating DESC;`}
                 </pre>
               </li>
               <li>
