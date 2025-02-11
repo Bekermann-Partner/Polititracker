@@ -2,22 +2,22 @@
 
 import prisma from '@/_lib/db';
 
-function transformBigInts(value: any): any {
+function transformBigInts(value: unknown): unknown {
   if (typeof value === 'bigint') {
     return value.toString();
   } else if (Array.isArray(value)) {
     return value.map(transformBigInts);
   } else if (value !== null && typeof value === 'object') {
-    const newObj: Record<string, any> = {};
-    for (const key in value) {
-      newObj[key] = transformBigInts(value[key]);
+    const newObj: Record<string, unknown> = {};
+    for (const key in value as Record<string, unknown>) {
+      newObj[key] = transformBigInts((value as Record<string, unknown>)[key]);
     }
     return newObj;
   }
   return value;
 }
 
-export async function executeRequest(query: string) {
+export async function executeRequest(query: string): Promise<unknown[]> {
   const qLower = query.toLowerCase();
 
   if (
@@ -29,9 +29,9 @@ export async function executeRequest(query: string) {
     throw new Error('Invalid SQL keyword provided!');
   }
 
-  const result = await prisma.$queryRawUnsafe(query);
+  const result: unknown = await prisma.$queryRawUnsafe(query);
 
-  const normalizedResult = Array.isArray(result) ? result : [result];
+  const normalizedResult: unknown[] = Array.isArray(result) ? result : [result];
 
-  return transformBigInts(normalizedResult);
+  return transformBigInts(normalizedResult) as unknown[];
 }
