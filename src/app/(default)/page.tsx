@@ -212,17 +212,17 @@ export default async function LandingPage() {
                 <li>
                   <strong>Datenvielfalt:</strong>
                   <p>
-                    Wir integrieren Informationen aus zahlreichen Nachrichtenportalen, 
-                    um ein umfassendes Netzwerk politischer und 
-                    wirtschaftlicher Zusammenhänge abzubilden.
+                    Wir integrieren Informationen aus zahlreichen
+                    Nachrichtenportalen, um ein umfassendes Netzwerk politischer
+                    und wirtschaftlicher Zusammenhänge abzubilden.
                   </p>
                 </li>
                 <li>
                   <strong>Interaktivität:</strong>
                   <p>
-                    Unsere Plattform bietet interaktive Visualisierungen, 
-                    mit denen Nutzer die komplexen Datenmuster selbstständig erkunden 
-                    und eigene Analysen durchführen können.
+                    Unsere Plattform bietet interaktive Visualisierungen, mit
+                    denen Nutzer die komplexen Datenmuster selbstständig
+                    erkunden und eigene Analysen durchführen können.
                   </p>
                 </li>
                 <li></li>
