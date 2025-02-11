@@ -36,9 +36,13 @@ export default function Page() {
           </div>
 
           <textarea
-            className={'font-mono w-full bg-gray-100 dark:bg-gray-800 dark:text-gray-100 p-4 rounded-xl shadow-md border dark:border-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'}
-            rows={10} value={value}
-            onChange={(e) => setValue(e.target.value)} />
+            className={
+              'font-mono w-full bg-gray-100 dark:bg-gray-800 dark:text-gray-100 p-4 rounded-xl shadow-md border dark:border-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+            }
+            rows={10}
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
 
           <div
             onClick={() => handleExecuteRequest()}
