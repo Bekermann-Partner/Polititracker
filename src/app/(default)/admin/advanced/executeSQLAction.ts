@@ -2,7 +2,22 @@
 
 import prisma from '@/_lib/db';
 
-export async function executeRequest(query: string) {
+function transformBigInts(value: unknown): unknown {
+  if (typeof value === 'bigint') {
+    return value.toString();
+  } else if (Array.isArray(value)) {
+    return value.map(transformBigInts);
+  } else if (value !== null && typeof value === 'object') {
+    const newObj: Record<string, unknown> = {};
+    for (const key in value as Record<string, unknown>) {
+      newObj[key] = transformBigInts((value as Record<string, unknown>)[key]);
+    }
+    return newObj;
+  }
+  return value;
+}
+
+export async function executeRequest(query: string): Promise<unknown[]> {
   const qLower = query.toLowerCase();
 
   if (
@@ -14,8 +29,9 @@ export async function executeRequest(query: string) {
     throw new Error('Invalid SQL keyword provided!');
   }
 
-  const result = await prisma.$queryRawUnsafe(query);
+  const result: unknown = await prisma.$queryRawUnsafe(query);
 
-  // Falls das Ergebnis kein Array ist (z. B. bei einer COUNT-Abfrage), packen wir es in ein Array.
-  return Array.isArray(result) ? result : [result];
+  const normalizedResult: unknown[] = Array.isArray(result) ? result : [result];
+
+  return transformBigInts(normalizedResult) as unknown[];
 }
