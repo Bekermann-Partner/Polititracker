@@ -152,7 +152,8 @@ ORDER BY r.stars DESC;`}
                 <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded mt-2 font-mono text-sm">
                   {`SELECT
     comp.name AS Unternehmen,
-    AVG(r.stars) AS DurschnittlichesRating
+    AVG(r.stars) AS DurschnittlichesRating,
+    COUNT(r.id) AS AnzahlRatings
 FROM polititracker.Company AS comp
 JOIN polititracker.Rating AS r
     ON comp.id = r.company_id
@@ -170,13 +171,13 @@ ORDER BY avg_rating DESC
                   {`SELECT
     pol.first_name AS Vorname,
     pol.last_name AS Nachname,
-    COUNT(r.id) AS Anzahl Verbindungen,
-    AVG(r.stars) AS Durchschnittliche Ratings
+    COUNT(r.id) AS AnzahlVerbindungen,
+    AVG(r.stars) AS DurchschnittlicheRatings
 FROM polititracker.Politician AS pol
 LEFT JOIN polititracker.Rating AS r
     ON pol.ext_abgeordnetenwatch_id = r.politician_id
 GROUP BY pol.ext_abgeordnetenwatch_id, pol.first_name, pol.last_name
-ORDER BY Anzahl_Verbindungen DESC;`}
+ORDER BY AnzahlVerbindungen DESC;`}
                 </pre>
               </li>
             </ol>
