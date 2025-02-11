@@ -3,13 +3,33 @@ import { ApexOptions } from 'apexcharts';
 import { ETheme, getTheme } from '@/_lib/providers/themeProvider';
 
 const defaultOptions: ApexOptions = {
-  chart: {
-    id: 'basic-bar',
-  },
   theme: {
     mode: 'light',
   },
+  chart: { background: 'rgb(255,255,255)' },
   colors: ['rgb(55, 48, 163)'],
+  legend: {
+    labels: {
+      colors: '#000000',
+    },
+    markers: {
+      offsetX: -5,
+    },
+  },
+  xaxis: {
+    labels: {
+      style: {
+        colors: '#000000',
+      },
+    },
+  },
+  yaxis: {
+    labels: {
+      style: {
+        colors: '#000000',
+      },
+    },
+  },
 };
 
 export function useApexConfig(xAxisCategory: string[] | number[]) {
@@ -28,16 +48,32 @@ export function useApexConfig(xAxisCategory: string[] | number[]) {
       case 'light':
         setConfig({
           ...defaultOptions,
-          chart: { background: 'rgb(75, 85, 99)' },
-          theme: { mode: 'dark' },
+          chart: { background: '#111827' },
+          legend: {
+            labels: {
+              colors: '#ffffff',
+            },
+          },
+          xaxis: {
+            labels: {
+              style: {
+                colors: '#ffffff',
+              },
+            },
+          },
+          yaxis: {
+            labels: {
+              style: {
+                colors: '#ffffff',
+              },
+            },
+          },
         });
         break;
 
       case 'dark':
         setConfig({
           ...defaultOptions,
-          chart: { background: 'rgb(255,255,255)' },
-          theme: { mode: 'light' },
         });
         break;
     }
@@ -49,8 +85,6 @@ export function useApexConfig(xAxisCategory: string[] | number[]) {
     if (theme == ETheme.DARK) {
       setConfig({
         ...defaultOptions,
-        chart: { background: 'rgb(75,85,99)' },
-        theme: { mode: 'dark' },
       });
     }
   }, []);
