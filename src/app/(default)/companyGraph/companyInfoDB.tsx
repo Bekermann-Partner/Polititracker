@@ -156,7 +156,7 @@ export function LoadingCompanyInfo() {
           <Skeleton
             width={150}
             height={150}
-            className="h-full w-auto object-cover dark:bg-gray-600"
+            className="h-full w-auto object-cover dark:bg-gray-800"
           />
         </div>
         <div className="w-full ml-6">
@@ -167,7 +167,7 @@ export function LoadingCompanyInfo() {
             </div>
           </div>
 
-          <div className="border-b mt-2 mb-2 border-b-gray-300 dark:border-b-gray-600"></div>
+          <div className="border-b mt-2 mb-2 border-b-gray-300 dark:border-b-gray-700"></div>
 
           <h2 className="text-gray-600 dark:text-gray-400">
             <Skeleton count={2} width={200} />

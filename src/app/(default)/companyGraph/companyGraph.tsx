@@ -339,20 +339,10 @@ export default function CompanyGraph({ selectedCompany }: CompanyGraphProps) {
   }, [visibleCompanies]);
 
   return (
-    <div style={{ position: 'relative' }}>
-      <h3
-        style={{
-          textAlign: 'center',
-          fontFamily: 'Helvetica, Arial, sans-serif',
-          marginBottom: '10px',
-        }}
-        className="dark:text-white"
-      >
-        {selectedCompany.name}
-      </h3>
+    <div className="relative">
       <div
         ref={containerRef}
-        style={{ width: '100%', height: '500px', border: '1px solid black' }}
+        className="w-full h-[500px] border border-gray-300 dark:border-gray-700 rounded-xl shadow-md overflow-hidden dark:bg-gray-800"
       />
     </div>
   );
