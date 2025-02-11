@@ -13,11 +13,19 @@ export default function Page() {
   async function handleExecuteRequest() {
     setError(null);
     try {
-      const res = await executeRequest(value);
-      setData(res);
-      // eslint-disable-next-line
-    } catch (e: any) {
-      setError(e.message);
+      const res: { count: number }[] = await executeRequest(value);
+
+      if (res && Array.isArray(res) && res.length > 0) {
+        setData([{ count: res[0].count }]);
+      }
+    } catch (e: unknown) {
+      if (e instanceof Error) {
+        console.error('Error executing request:', e.message);
+        setError(e.message);
+      } else {
+        console.error('An unknown error occurred:', e);
+        setError('An unknown error occurred.');
+      }
     }
   }
 
@@ -80,23 +88,24 @@ export default function Page() {
             <ul className="list-disc ml-6 mb-4 dark:text-gray-300">
               <li>
                 <strong>Politician</strong>: Enthält biografische Daten der
-                Politiker (z. B. <code>first_name</code>, <code>last_name</code>{' '}
-                etc.).
+                Politiker (z. B. <code>first_name</code>, <code>last_name</code>
+                , etc.).
               </li>
               <li>
                 <strong>Company</strong>: Enthält Informationen zu den
-                Unternehmen (z. B. <code>id</code>, <code>name</code>,{' '}
-                <code>symbol</code> etc.).
+                Unternehmen (z. B. <code>name</code>, <code>country</code>,{' '}
+                <code>industry</code>, <code>sector</code> etc.).
               </li>
               <li>
                 <strong>Rating</strong>: Speichert die Bewertungen von
                 Nachrichtenartikeln, die die Verbindung zwischen Politikern und
-                Unternehmen dokumentieren.
+                Unternehmen dokumentieren (z. B. <code>url</code>,{' '}
+                <code>stars</code> etc.).
               </li>
               <li>
                 <strong>Party</strong>: Enthält Angaben zu den politischen
-                Parteien (z. B. <code>short</code> und <code>long</code>{' '}
-                Bezeichnungen).
+                Parteien (z. B. ihre Namen <code>short</code> und{' '}
+                <code>long</code> Bezeichnungen).
               </li>
             </ul>
 
@@ -113,7 +122,8 @@ export default function Page() {
     party.short AS Partei
 FROM polititracker.Politician AS pol
 JOIN polititracker.Party AS party
-    ON pol.party_id = party.id;`}
+    ON pol.party_id = party.id
+ORDER BY pol.last_name;`}
                 </pre>
               </li>
               <li className="mb-3">
@@ -161,13 +171,13 @@ ORDER BY avg_rating DESC
                   {`SELECT
     pol.first_name AS Vorname,
     pol.last_name AS Nachname,
-    COUNT(r.id) AS Anzahl Verbindungen,
-    AVG(r.stars) AS Durchschnittliche Ratings
+    COUNT(r.id) AS AnzahlVerbindungen,
+    AVG(r.stars) AS DurchschnittlicheRatings
 FROM polititracker.Politician AS pol
 LEFT JOIN polititracker.Rating AS r
     ON pol.ext_abgeordnetenwatch_id = r.politician_id
 GROUP BY pol.ext_abgeordnetenwatch_id, pol.first_name, pol.last_name
-ORDER BY Anzahl_Verbindungen DESC;`}
+ORDER BY AnzahlVerbindungen DESC;`}
                 </pre>
               </li>
             </ol>
