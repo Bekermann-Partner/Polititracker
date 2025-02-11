@@ -137,7 +137,7 @@ export default function CompanyInfoDB({ companyId }: CompanyInfoDBProps) {
 
         {profile.description && (
           <>
-            <div className="border-t mt-4 mb-4 border-gray-300 dark:border-gray-00"></div>
+            <div className="border-t mt-4 mb-4 border-gray-300 dark:border-gray-600"></div>
             <p className="text-gray-600 dark:text-gray-400">
               {profile.description}
             </p>
