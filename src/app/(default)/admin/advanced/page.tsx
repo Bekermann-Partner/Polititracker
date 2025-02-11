@@ -13,19 +13,11 @@ export default function Page() {
   async function handleExecuteRequest() {
     setError(null);
     try {
-      const res: { count: number }[] = await executeRequest(value);
-
-      if (res && Array.isArray(res) && res.length > 0) {
-        setData([{ count: res[0].count }]);
-      }
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        console.error('Error executing request:', e.message);
-        setError(e.message);
-      } else {
-        console.error('An unknown error occurred:', e);
-        setError('An unknown error occurred.');
-      }
+      const res = await executeRequest(value);
+      setData(res);
+      // eslint-disable-next-line
+    } catch (e: any) {
+      setError(e.message);
     }
   }
 
