@@ -14,6 +14,8 @@ export async function executeRequest(query: string) {
     throw new Error('Invalid SQL keyword provided!');
   }
 
-  // eslint-disable-next-line
-  return prisma.$queryRawUnsafe(query) as Promise<any[]>;
+  const result = await prisma.$queryRawUnsafe(query);
+
+  // Falls das Ergebnis kein Array ist (z. B. bei einer COUNT-Abfrage), packen wir es in ein Array.
+  return Array.isArray(result) ? result : [result];
 }
