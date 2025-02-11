@@ -143,7 +143,7 @@ export default async function LandingPage() {
         </div>
 
         <h2 className="mt-10 text-2xl dark:text-white font-semibold mb-4">
-          📊 Parteien nach Ratings
+          📊 Gefundene Verbindungen zwischen Politikern und Firmen nach Parteizugehörigkeit
         </h2>
         <div className={'w-full h-96 border rounded-lg shadow-md p-4'}>
           <ConnectionGraph partyRatingHash={partyRatingHashMap} />
