@@ -1,9 +1,6 @@
 'use client';
 
-import MonacoEditor from 'react-monaco-editor/lib/editor';
-import 'monaco-sql-languages/esm/languages/mysql/mysql.contribution';
-import React, { useEffect, useState } from 'react';
-import { LanguageIdEnum, setupLanguageFeatures } from 'monaco-sql-languages';
+import React, { useState } from 'react';
 import Toast from '@/app/components/Toast';
 import { executeRequest } from '@/app/(default)/admin/advanced/executeSQLAction';
 
@@ -12,15 +9,6 @@ export default function Page() {
   const [error, setError] = useState<string | null>(null);
   // eslint-disable-next-line
   const [data, setData] = useState<any[]>([]);
-
-  useEffect(() => {
-    setupLanguageFeatures(LanguageIdEnum.MYSQL, {
-      completionItems: {
-        enable: true,
-        triggerCharacters: [' ', '.'],
-      },
-    });
-  }, []);
 
   async function handleExecuteRequest() {
     setError(null);
@@ -47,19 +35,19 @@ export default function Page() {
             </h1>
           </div>
 
-          <MonacoEditor
-            language={LanguageIdEnum.MYSQL}
-            theme={'vs-dark'}
-            height={400}
-            className={'rounded'}
+          <textarea
+            className={
+              'font-mono w-full bg-gray-100 dark:bg-gray-800 dark:text-gray-100 p-4 rounded-xl shadow-md border dark:border-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+            }
+            rows={10}
             value={value}
-            onChange={setValue}
+            onChange={(e) => setValue(e.target.value)}
           />
 
           <div
             onClick={() => handleExecuteRequest()}
             className={
-              'mt-5 flex w-full justify-center rounded-md bg-black dark:bg-gray-700 hover:bg-gray-800 transition-colors px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+              'mt-5 hover:cursor-pointer flex w-full justify-center rounded-md bg-black dark:bg-gray-700 hover:bg-gray-800 transition-colors px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
             }
           >
             Anfrage ausführen
