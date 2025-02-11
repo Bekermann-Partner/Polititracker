@@ -62,35 +62,52 @@ export default function Page() {
           </pre>
 
           <section className="mt-10 bg-gray-50 dark:bg-gray-900 p-6 rounded-xl shadow-md">
-            <h2 className="text-2xl font-bold mb-4 dark:text-white">Nutzungsanleitung</h2>
+            <h2 className="text-2xl font-bold mb-4 dark:text-white">
+              Nutzungsanleitung
+            </h2>
             <p className="mb-4 dark:text-gray-300">
-              Auf dieser Seite kannst Du ausschließlich <strong>lesende SQL-Abfragen</strong> ausführen,
-              um Informationen aus den Tabellen <em>Politician</em>, <em>Company</em>, <em>Rating</em> und <em>Party</em> abzurufen.
-              Unsere Plattform – Polititracker – nutzt diese Daten, um Beziehungen zwischen Politikern und wirtschaftlichen Interessen sichtbar zu machen.
+              Auf dieser Seite kannst Du ausschließlich{' '}
+              <strong>lesende SQL-Abfragen</strong> ausführen, um Informationen
+              aus den Tabellen <em>Politician</em>, <em>Company</em>,{' '}
+              <em>Rating</em> und <em>Party</em> abzurufen. Unsere Plattform –
+              Polititracker – nutzt diese Daten, um Beziehungen zwischen
+              Politikern und wirtschaftlichen Interessen sichtbar zu machen.
             </p>
 
-            <h3 className="text-xl font-bold mb-2 dark:text-white">Überblick der relevanten Tabellen</h3>
+            <h3 className="text-xl font-bold mb-2 dark:text-white">
+              Überblick der relevanten Tabellen
+            </h3>
             <ul className="list-disc ml-6 mb-4 dark:text-gray-300">
               <li>
-                <strong>Politician</strong>: Enthält biografische Daten der Politiker (z. B. <code>first_name</code>, <code>last_name</code> etc.).
+                <strong>Politician</strong>: Enthält biografische Daten der
+                Politiker (z. B. <code>first_name</code>, <code>last_name</code>{' '}
+                etc.).
               </li>
               <li>
-                <strong>Company</strong>: Enthält Informationen zu den Unternehmen (z. B. <code>id</code>, <code>name</code>, <code>symbol</code> etc.).
+                <strong>Company</strong>: Enthält Informationen zu den
+                Unternehmen (z. B. <code>id</code>, <code>name</code>,{' '}
+                <code>symbol</code> etc.).
               </li>
               <li>
-                <strong>Rating</strong>: Speichert die Bewertungen von Nachrichtenartikeln, die die Verbindung zwischen Politikern und Unternehmen dokumentieren.
+                <strong>Rating</strong>: Speichert die Bewertungen von
+                Nachrichtenartikeln, die die Verbindung zwischen Politikern und
+                Unternehmen dokumentieren.
               </li>
               <li>
-                <strong>Party</strong>: Enthält Angaben zu den politischen Parteien (z. B. <code>short</code> und <code>long</code> Bezeichnungen).
+                <strong>Party</strong>: Enthält Angaben zu den politischen
+                Parteien (z. B. <code>short</code> und <code>long</code>{' '}
+                Bezeichnungen).
               </li>
             </ul>
 
-            <h3 className="text-xl font-bold mb-2 dark:text-white">Beispiel-Queries</h3>
+            <h3 className="text-xl font-bold mb-2 dark:text-white">
+              Beispiel-Queries
+            </h3>
             <ol className="list-decimal ml-6 dark:text-gray-300">
               <li className="mb-3">
                 <strong>Alle Politiker mit ihren Parteien</strong>
                 <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded mt-2 font-mono text-sm">
-{`SELECT
+                  {`SELECT
     pol.first_name AS Vorname,
     pol.last_name AS Nachname,
     party.short AS Partei
@@ -100,9 +117,12 @@ JOIN polititracker.Party AS party
                 </pre>
               </li>
               <li className="mb-3">
-                <strong>Verbindungen von bestimmten Politikern und Unternehmen und die dazugehörigen Ratings und URLs</strong>
+                <strong>
+                  Verbindungen von bestimmten Politikern und Unternehmen und die
+                  dazugehörigen Ratings und URLs
+                </strong>
                 <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded mt-2 font-mono text-sm">
-{`SELECT
+                  {`SELECT
     pol.first_name AS Vorname,
     pol.last_name AS Nachname,
     comp.name AS Unternehmen,
@@ -120,7 +140,7 @@ ORDER BY r.stars DESC;`}
               <li className="mb-3">
                 <strong>Durchschnittliche Ratings für Unternehmen</strong>
                 <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded mt-2 font-mono text-sm">
-{`SELECT
+                  {`SELECT
     comp.name AS Unternehmen,
     AVG(r.stars) AS DurschnittlichesRating,
     COUNT(r.id) AS AnzahlRatings
@@ -133,9 +153,12 @@ ORDER BY avg_rating DESC
                 </pre>
               </li>
               <li>
-                <strong>Welche Politiker werden am häufigsten in Verbindung mit Unternehmen erwähnt?</strong>
+                <strong>
+                  Welche Politiker werden am häufigsten in Verbindung mit
+                  Unternehmen erwähnt?
+                </strong>
                 <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded mt-2 font-mono text-sm">
-{`SELECT
+                  {`SELECT
     pol.first_name AS Vorname,
     pol.last_name AS Nachname,
     COUNT(r.id) AS Anzahl Verbindungen,
@@ -154,4 +177,3 @@ ORDER BY Anzahl_Verbindungen DESC;`}
     </>
   );
 }
-
