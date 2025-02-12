@@ -13,19 +13,11 @@ export function SqlForm() {
   async function handleExecuteRequest() {
     setError(null);
     try {
-      const res: { count: number }[] = await executeRequest(value);
-
-      if (res && Array.isArray(res) && res.length > 0) {
-        setData([{ count: res[0].count }]);
-      }
-    } catch (e: unknown) {
-      if (e instanceof Error) {
-        console.error('Error executing request:', e.message);
-        setError(e.message);
-      } else {
-        console.error('An unknown error occurred:', e);
-        setError('An unknown error occurred.');
-      }
+      const res = await executeRequest(value);
+      setData(res);
+      // eslint-disable-next-line
+    } catch (e: any) {
+      setError(e.message);
     }
   }
 
@@ -128,8 +120,8 @@ ORDER BY pol.last_name;`}
               </li>
               <li className="mb-3">
                 <strong>
-                  Alle Artikel und Ratings von bestimmten Politikern und
-                  Unternehmen
+                  Verbindungen von bestimmten Politikern und Unternehmen und die
+                  dazugehörigen Ratings und URLs
                 </strong>
                 <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded mt-2 font-mono text-sm">
                   {`SELECT
@@ -148,7 +140,7 @@ ORDER BY r.stars DESC;`}
                 </pre>
               </li>
               <li className="mb-3">
-                <strong>Welche Unternehmen haben die besten Ratings?</strong>
+                <strong>Welche Unternehmen haben die höchsten Ratings?</strong>
                 <pre className="bg-gray-100 dark:bg-gray-800 p-2 rounded mt-2 font-mono text-sm">
                   {`SELECT
     comp.name AS Unternehmen,
