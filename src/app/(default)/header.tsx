@@ -41,7 +41,7 @@ export async function Header() {
                       height={32}
                       className="rounded-full mr-2"
                     />
-                    Polititracker
+                    Polititracker Showcase
                   </Link>
                 </h1>
                 <HeaderDropDownToggle />
