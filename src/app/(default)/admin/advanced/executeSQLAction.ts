@@ -24,7 +24,11 @@ export async function executeRequest(query: string): Promise<unknown[]> {
     qLower.includes('delete') ||
     qLower.includes('update') ||
     qLower.includes('drop') ||
-    qLower.includes('truncate')
+    qLower.includes('truncate') ||
+    qLower.includes('create') ||
+    qLower.includes('exec') ||
+    qLower.includes('insert') ||
+    qLower.includes('user')
   ) {
     throw new Error('Invalid SQL keyword provided!');
   }
