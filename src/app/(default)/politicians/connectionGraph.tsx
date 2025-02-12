@@ -25,6 +25,10 @@ export function ConnectionGraph({
   };
   const DEFAULT_COLOR = 'rgb(160, 160, 160)'; // gray
 
+  partyRatingHash = new Map(
+    [...partyRatingHash.entries()].sort((a, b) => b[1] - a[1])
+  );
+
   const createPartyRatingSeries = React.useMemo(() => {
     const series = [];
     const labels = [];
