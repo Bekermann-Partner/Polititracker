@@ -1,7 +1,43 @@
 model Company {
-  id       Int      @id @default(autoincrement())
-  name     String
-  image    String   @default("company_placeholder.png")
+  id                Int      @id @default(autoincrement())
+  name              String
+  image             String   @default("company_placeholder.png")
+  symbol            String   @default("NONE")
+  companyName       String?  // z.B. "Apple Inc."
+  price             Float?
+  beta              Float?
+  volAvg            Decimal?
+  mktCap            Decimal? @db.Decimal(20, 2)
+  lastDiv           Float?
+  range             String?
+  changes           Float?
+  currency          String?
+  cik               String?
+  isin              String?
+  cusip             String?
+  exchange          String?
+  exchangeShortName String?
+  industry          String?
+  website           String?
+  description       String? @db.LongText
+  ceo               String?
+  sector            String?
+  country           String?
+  fullTimeEmployees String?
+  phone             String?
+  address           String?
+  city              String?
+  state             String?
+  zip               String?
+  dcfDiff           Float?
+  dcf               Float?
+  ipoDate           DateTime?
+  defaultImage      Boolean  @default(false)
+  isEtf             Boolean  @default(false)
+  isActivelyTrading Boolean  @default(true)
+  isAdr             Boolean  @default(false)
+  isFund            Boolean  @default(false)
+  founded           Int?
 
-  ratings  Rating[]
+  ratings           Rating[]
 }

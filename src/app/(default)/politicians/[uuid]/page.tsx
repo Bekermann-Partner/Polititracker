@@ -2,17 +2,17 @@ import db from '@/_lib/db';
 import {
   LoadingSideJobs,
   SideJobs,
-} from '@/app/(default)/politician/[uuid]/SideJobs';
+} from '@/app/(default)/politicians/[uuid]/SideJobs';
 import React from 'react';
 import {
   LoadingPoliticianDetails,
   PoliticianDetails,
-} from '@/app/(default)/politician/[uuid]/PoliticianDetails';
-import CommentSectionWrapper from '@/app/(default)/politician/[uuid]/comments/CommentSectionWrapper';
+} from '@/app/(default)/politicians/[uuid]/PoliticianDetails';
+import CommentSectionWrapper from '@/app/(default)/politicians/[uuid]/comments/CommentSectionWrapper';
 import PoliticianGraph from './PoliticianGraph';
 
 async function fetchPolitician(uuid: string) {
-  return db.politician.findFirst({
+  const politician = db.politician.findFirst({
     where: {
       uuid,
     },
@@ -20,6 +20,20 @@ async function fetchPolitician(uuid: string) {
       party: true,
     },
   });
+
+  if (!politician) return null;
+
+  // increment click_count by one
+  await db.politician.update({
+    where: { uuid },
+    data: {
+      click_count: {
+        increment: 1,
+      },
+    },
+  });
+
+  return politician;
 }
 
 export default async function PoliticianView({
@@ -36,24 +50,30 @@ export default async function PoliticianView({
   }
 
   return (
-    <section className="pt-24">
+    <section className={'mt-10'}>
       <div className="mx-auto max-w-6xl">
         <React.Suspense fallback={<LoadingPoliticianDetails />}>
           <PoliticianDetails politicianPromise={Promise.resolve(politician)} />
         </React.Suspense>
 
-        <h1 className="mt-8 text-2xl font-semibold">Nebentätigkeiten:</h1>
+        <h1 className="mt-8 text-2xl dark:text-white font-semibold">
+          Nebentätigkeiten:
+        </h1>
         <React.Suspense fallback={<LoadingSideJobs />}>
           <SideJobs politicianPromise={Promise.resolve(politician)} />
         </React.Suspense>
 
-        <h1 className="mt-8 text-2xl font-semibold">Kommentare:</h1>
+        <h1 className="mt-8 text-2xl dark:text-white font-semibold">
+          Kommentare:
+        </h1>
         <CommentSectionWrapper
           politicianPromise={Promise.resolve(politician)}
         />
 
         {/*Graph inserted here*/}
-        <React.Suspense fallback={<div>Loading Graph...</div>}>
+        <React.Suspense
+          fallback={<div className="dark:text-white ">Loading Graph...</div>}
+        >
           <PoliticianGraph politicianId={politicianNumericId} />
         </React.Suspense>
       </div>

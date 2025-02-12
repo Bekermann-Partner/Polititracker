@@ -4,8 +4,8 @@ import { User, Politician, Comment } from '@prisma/client';
 import { useEffect, useState } from 'react';
 import { CommentWithNestedReplies } from './types';
 import Toast from '@/app/components/Toast';
-import DisplayComment from '@/app/(default)/politician/[uuid]/comments/DisplayComment';
-import AddCommentEditor from '@/app/(default)/politician/[uuid]/comments/AddCommentEditor';
+import DisplayComment from '@/app/(default)/politicians/[uuid]/comments/DisplayComment';
+import AddCommentEditor from '@/app/(default)/politicians/[uuid]/comments/AddCommentEditor';
 import Skeleton from 'react-loading-skeleton';
 
 interface CommentsProps {
@@ -114,7 +114,7 @@ export default function CommentSection({
 
           {/* Display comments (or 'No comments found') */}
           {comments.length === 0 ? (
-            <div className="text-gray-500 text-center mt-4">
+            <div className="text-gray-500 text-center mt-4 mb-4">
               <p>
                 Es wurden noch keine Kommentare für {politician.first_name}{' '}
                 {politician.last_name} geschrieben.

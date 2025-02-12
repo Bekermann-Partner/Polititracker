@@ -12,7 +12,7 @@ export default function PoliticianCard({
   party,
 }: PoliticianCardProps) {
   return (
-    <Link href={`/politician/${politician.uuid}`}>
+    <Link href={`/politicians/${politician.uuid}`}>
       <div className="border rounded-lg shadow-md p-4 flex items-center space-x-4 hover:shadow-lg transition-all duration-200 dark:bg-gray-900 hover:dark:bg-gray-800 dark:border-gray-700">
         <Image
           src={`/pol_profile_img/${politician.profile_image}`}
